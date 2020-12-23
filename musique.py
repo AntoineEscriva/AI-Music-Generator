@@ -12,7 +12,7 @@ margeY = 0
 
 #######################################################
 
-class Ktane(tkinter.Tk):
+class Musique(tkinter.Tk):
 	def __init__(self):
 		tkinter.Tk.__init__(self)
 		self.frame = None
@@ -99,7 +99,7 @@ class UneFonction(tkinter.Frame):
 
 if __name__ == "__main__":
 
-	app = Ktane()	
+	app = Musique()	
 	app.mainloop()
 	
 
