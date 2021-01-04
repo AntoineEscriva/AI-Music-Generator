@@ -5,6 +5,9 @@ import tkinter.font as tkFont
 from tkinter import filedialog 
 from tkinter import ttk
 from tkinter import *
+
+import lecteur as lecteur 
+
 largeurBout = 15
 hauteurBout = 2
 margeX = 0
@@ -17,7 +20,7 @@ class Musique(tkinter.Tk):
 		tkinter.Tk.__init__(self)
 		self.frame = None
 		self.title("Génération musique aléatoire")
-		self.geometry("600x300")
+		self.geometry("480x300")
 		self.switch_frame(Menu)
 
 	def switch_frame(self, frame_class):
@@ -36,41 +39,42 @@ class Menu(tkinter.Frame):
 
 		#---------Label------------#
 		
-		# Séléctionner un dossier
-		tkinter.Label(self, text="Sélectionner un dossier",height = hauteurBout).grid(row = 0, column = 0, sticky="EW")
+		#Zone pour l'affichage du chemin
+		self.entry_text = tkinter.StringVar()
+		self.usr_input = ttk.Entry(self,state='readonly',textvariable=self.entry_text)
+		self.usr_input.grid(row=0,column=1, sticky='EW')
 
+		#Label sélectionner un dossier
+		tkinter.Label(self, text="Sélectionner un dossier",height = hauteurBout).grid(row = 0, column = 0, sticky="W")
+		
+		#Bouton ouvrir dossier
+		self.UF = tkinter.Button(self, text="Choisir", bg = "white", width = largeurBout,command = lambda:[master.switch_frame(self.Browser())])
+		self.UF.grid(row = 0, column = 2, sticky="EW")
+		
 		#Nombre de morceaux
-		tkinter.Label(self, text="Nombre de morceaux",height = hauteurBout).grid(row = 1, column =0, sticky="EW")
+		tkinter.Label(self, text="Nombre de morceaux",height = hauteurBout).grid(row = 1, column =0, sticky="W")
 		self.nbMorceaux = tkinter.Spinbox(self, from_=1, to=20).grid(row = 1, column =1, sticky="EW")
 
 		# Durée de morceaux
-		tkinter.Label(self, text="Durée de morceaux",height = hauteurBout).grid(row = 2, column =0, sticky="EW")
+		tkinter.Label(self, text="Durée de morceaux",height = hauteurBout).grid(row = 2, column =0, sticky="W")
 		
-		# Choix de génération
-		tkinter.Label(self, text="Choix de génération", width = 20, height = hauteurBout).grid(row = 3, column =0, sticky="EW")
-		
-		#Bouton ouvrir dossier
-		self.UF = tkinter.Button(self, text="Ouvrir", bg = "white", width = largeurBout,command = lambda:[master.switch_frame(self.Browser())])
-		self.UF.grid(row = 0, column = 2, sticky="EW")
-		
+		#Choix de génération
+		tkinter.Label(self, text="Choix de génération", width = 15, height = hauteurBout).grid(row = 3, column =0, sticky="W")
+				
 		#Bouton nb morceau
 		self.dureeMorceau = tkinter.Spinbox(self, from_=60,to=340)
 		self.dureeMorceau.grid(row = 2, column =1, sticky="EW")
 		
 		#Bouton valider
-		self.Valider = tkinter.Button(self, text="Valider", bg = "white",  command=lambda :[master.switch_frame(UneFonction)])
-		self.Valider.grid(row=5,column = 3,sticky="EW")
+		self.Valider = tkinter.Button(self, text="Valider", bg = "white",  command=lambda :[master.switch_frame(lecteur.Lecteur)])
+		self.Valider.grid(row=5,column = 1,sticky="EW")
 		
 		#Bouton Choix generation	
 		self.comboboite = ttk.Combobox(self, values = ["Rythme seulement","Rythme et mélodie","Polyphonie"])
 		self.comboboite.current(0)
 		self.comboboite.grid(row=3, column=1)
 		
-		#Zone pour l'affichage du chemin
-		self.entry_text = tkinter.StringVar()
-		self.usr_input = ttk.Entry(self,state='readonly',textvariable=self.entry_text)
-		self.usr_input.grid(row=0,column=1, sticky='EW')
-		
+
 	def Browser(self):
 		filename = filedialog.askdirectory(initialdir = "/")
 		new_text = "Ici le chemin"
@@ -93,7 +97,7 @@ class UneFonction(tkinter.Frame):
 		self.result.set("Solution: ")
 
 	def UneFonctionalite(self):
-		self.result.set("Mes couilles")
+		self.result.set("Une phrase")
 
 
 
