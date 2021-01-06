@@ -20,7 +20,7 @@ class Musique(tkinter.Tk):
 		tkinter.Tk.__init__(self)
 		self.frame = None
 		self.title("Génération musique aléatoire")
-		self.geometry("470x255")
+		self.geometry("420x270")
 		self.switch_frame(Menu)
 		self.configure(bg='white')
 		#self.font = tkinter.font.Font(size=55)
@@ -30,7 +30,7 @@ class Musique(tkinter.Tk):
 		if(self.frame is not None):
 			self.frame.grid_remove()
 		self.frame = newFrame
-		self.frame.grid(padx = 10, pady = 10, sticky = "ewsn")
+		self.frame.grid(padx = 20, pady = 15, sticky = "ewsn")
 		
 #######################################################
 
@@ -84,7 +84,7 @@ class Menu(tkinter.Frame):
 	def Browser(self):
 		filename = filedialog.askdirectory(initialdir = "/")
 		self.entry_text.set(filename)
-		
+			
 ####################################################### 
 
 ##Ci-dessous, deux fonctions copiées collées de Google pour centrer la fenêtre au milieu de l'écran
