@@ -5,6 +5,7 @@ import tkinter.font as tkFont
 from tkinter import filedialog 
 from tkinter import ttk
 from tkinter import *
+from ctypes import windll
 
 import lecteur as lecteur 
 
@@ -105,6 +106,8 @@ if __name__ == "__main__":
 	app = Musique()
 	centrefenetre(app)
 	app.resizable(width=False, height=False)
+#	windll.shcore.SetProcessDpiAwareness(1)
+
 	app.mainloop()
 	
 
