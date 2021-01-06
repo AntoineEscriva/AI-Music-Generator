@@ -7,7 +7,7 @@ from tkinter import ttk
 from tkinter import *
 from ctypes import windll
 import lecteur as lecteur 
-
+import os
 
 largeurBout = 15
 hauteurBout = 2
@@ -21,7 +21,7 @@ class Musique(tkinter.Tk):
 		tkinter.Tk.__init__(self)
 		self.frame = None
 		self.title("Génération musique aléatoire")
-		self.geometry("500x340")
+		self.geometry("510x340")
 		self.switch_frame(Menu)
 		self.configure(bg='white')
 		
@@ -113,7 +113,8 @@ if __name__ == "__main__":
 	app.resizable(width=False, height=False)
 	
 	#Pour la netteté de la police de caractères
-	windll.shcore.SetProcessDpiAwareness(1)
+	if(os.name != "posix"):
+		windll.shcore.SetProcessDpiAwareness(1)
 	
 	app.mainloop()
 	
