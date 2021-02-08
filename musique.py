@@ -45,10 +45,10 @@ class Menu(tkinter.Frame):
 		self.texte = tkFont.Font(family='Helvetica', size=13)
 		#Réglage police combobox
 		master.option_add("*Font", "Helvetica 13")
-		
-		#---------Label------------#
+		#Réglage arrière plan
 		self.configure(bg='white')
 		
+		#---------Label------------#
 		#titre
 		self.titre = tkinter.Label(self, text="Configuration", bg='white', font = self.titre).grid(row=0,column=0)
 
@@ -94,11 +94,12 @@ class Menu(tkinter.Frame):
 ####################################################### 
 
 ##Ci-dessous, deux fonctions copiées collées de Google pour centrer la fenêtre au milieu de l'écran
-
+#Récupère les infos relatives à l'écran
 def geoliste(g):
     r=[i for i in range(0,len(g)) if not g[i].isdigit()]
     return [int(g[0:r[0]]),int(g[r[0]+1:r[1]]),int(g[r[1]+1:r[2]]),int(g[r[2]+1:])]
 
+#Centre la fenetre au milieu de l'écran
 def centrefenetre(fen):
     fen.update_idletasks()
     l,h,x,y=geoliste(fen.geometry())
@@ -107,7 +108,9 @@ def centrefenetre(fen):
 
 if __name__ == "__main__":
 
+	#instancie la classe
 	app = Musique()
+	#Centrage du futur affichage
 	centrefenetre(app)
 
 	app.resizable(width=False, height=False)
@@ -115,7 +118,8 @@ if __name__ == "__main__":
 	#Pour la netteté de la police de caractères
 	if(os.name != "posix"):
 		windll.shcore.SetProcessDpiAwareness(1)
-	
+
+	#Boucle principale de l'interface
 	app.mainloop()
 	
 

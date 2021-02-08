@@ -11,7 +11,6 @@ from tkinter import simpledialog
 import musique as musique
 
 
-LST_Types = [ ( "Fichier texte" , ".txt" ) , ( "Script python" , ".py" ) , ( "Autres types" , ".*" ) ]
 largeurBout = 15
 hauteurBout = 2
 margeX = 0
@@ -32,25 +31,25 @@ class Lecteur(tkinter.Frame):
 		#Titre
 		tkinter.Label(self, text="Résultat de la génération", font = self.titre, height = hauteurBout, bg='white').grid(row = 0, column = 0, sticky="W", columnspan=2) 
 		
-		#Skip Left
+		#Bouton Skip Left
 		self.skip_left = PhotoImage(file="./buttons_resize/sl1.png")
 		self.skip_left_button = tkinter.Button(self)
 		self.skip_left_button.grid(row = 1, column = 0, sticky="W")
 		self.skip_left_button.config(image = self.skip_left, bd=0,bg='white')
 		
-		#Play
+		#Bouton Play
 		self.play = PhotoImage(file="./buttons_resize/pl1.png")
 		self.play_button = tkinter.Button(self)
 		self.play_button.grid(row = 1, column = 0)
 		self.play_button.config(image = self.play, bd=0,bg='white')
 		
-		#Pause
+		#Bouton Pause
 		self.pause = PhotoImage(file="./buttons_resize/pa1.png")
 		self.pause_button = tkinter.Button(self)
 		self.pause_button.grid(row = 1, column =0, sticky="E")
 		self.pause_button.config(image = self.pause, bd=0, bg='white')
 		
-		#Skip Right
+		#Bouton Skip Right
 		self.skip_right = PhotoImage(file="./buttons_resize/sr1.png")
 		self.skip_right_button = tkinter.Button(self)
 		self.skip_right_button.grid(row = 1, column = 1)
@@ -72,7 +71,7 @@ class Lecteur(tkinter.Frame):
 		#self.usr_input = ttk.Entry(self, state='readonly', textvariable=self.entry_text)
 		#self.usr_input.grid(row=4,column=3, sticky='EW')
 		
-		#Enregistrement
+		#Bouton Enregistrement
 		self.download_button = tkinter.Button(self, text="Enregistrer sous", font = self.texte,  command = lambda:[self.FNC_Selection(self.extension.get())])
 		self.download_button.grid(row = 4, column =2, sticky="E")
 		self.download_button.config(bg='white')
@@ -84,7 +83,6 @@ class Lecteur(tkinter.Frame):
 		self.retour.grid(row=7,column=0, sticky="WS")
 		self.retour.config(bd=1, bg="white")
 		
-		#tkinter.Label(self, text="  ", bg="white").grid(row=6, column=0)
 			
 	
 	#Fonction d'enregistrement de fichier
