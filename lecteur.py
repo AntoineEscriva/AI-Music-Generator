@@ -10,19 +10,16 @@ from PIL import Image,ImageTk
 from tkinter import simpledialog
 import musique as musique
 
-
-largeurBout = 15
-hauteurBout = 2
-margeX = 0
-margeY = 0
-		
+#######################################################
+# Classe du lecteur de musique
 #######################################################
 
 class Lecteur(tkinter.Frame):
 	def __init__(self, master):
+		#Initialisation du Cadre du lecteur MP3
 		tkinter.Frame.__init__(self, master)
 		
-		#Réglages de la police
+		#Réglages de la police du titre puis du texte
 		self.titre = tkFont.Font(family='Helvetica', size=20)
 		self.texte = tkFont.Font(family='Helvetica', size=13)
 		#Couleur de fond
@@ -32,60 +29,79 @@ class Lecteur(tkinter.Frame):
 		tkinter.Label(self, text="Résultat de la génération", font = self.titre, height = hauteurBout, bg='white').grid(row = 0, column = 0, sticky="W", columnspan=2) 
 		
 		#Bouton Skip Left
+		#Affectation d'une image de bouton à une variable
 		self.skip_left = PhotoImage(file="./buttons_resize/sl1.png")
+		#Création du bouton
 		self.skip_left_button = tkinter.Button(self)
+		#Placement du bouton
 		self.skip_left_button.grid(row = 1, column = 0, sticky="W")
+		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.skip_left_button.config(image = self.skip_left, bd=0,bg='white')
 		
 		#Bouton Play
+		#Affectation d'une image de bouton à une variable
 		self.play = PhotoImage(file="./buttons_resize/pl1.png")
+		#Création du bouton
 		self.play_button = tkinter.Button(self)
+		#Placement du bouton
 		self.play_button.grid(row = 1, column = 0)
+		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.play_button.config(image = self.play, bd=0,bg='white')
 		
 		#Bouton Pause
+		#Affectation d'une image de bouton à une variable
 		self.pause = PhotoImage(file="./buttons_resize/pa1.png")
+		#Création du bouton
 		self.pause_button = tkinter.Button(self)
+		#Placement du bouton
 		self.pause_button.grid(row = 1, column =0, sticky="E")
+		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.pause_button.config(image = self.pause, bd=0, bg='white')
 		
 		#Bouton Skip Right
+		#Affectation d'une image de bouton à une variable
 		self.skip_right = PhotoImage(file="./buttons_resize/sr1.png")
+		#Création du bouton
 		self.skip_right_button = tkinter.Button(self)
+		#Placement du bouton
 		self.skip_right_button.grid(row = 1, column = 1)
+		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white')
 		
 		#Some Labels
 		#Un label vide pour faire de l'espace
 		tkinter.Label(self, text="",height = hauteurBout,bg='white').grid(row = 2, column = 0, sticky="NESW") 
+		#Création et placement du Label Enregistrement, avec background blanc
 		tkinter.Label(self, text="Enregistrement",bg='white', font = self.titre).grid(row = 2, column = 0, sticky="W") 
+		#Création et placement du label Choix de l'Extension
 		tkinter.Label(self, text="Choix de l'extension :", font = self.texte, height = hauteurBout,bg='white').grid(row = 3, column = 0, sticky="W") 
 		
-		#Combobox
+		#Création d'une Combobox pour le choix de l'extension
 		self.extension = ttk.Combobox(self,state='readonly', values = [".midi",".wav"],width="5")
+		#Selection de l'item par défaut
 		self.extension.current(0)
+		#Placement
 		self.extension.grid(row=4, column=0, sticky = "EW")
 		
-		#Zone pour l'affichage du chemin
-		#self.entry_text = tkinter.StringVar()
-		#self.usr_input = ttk.Entry(self, state='readonly', textvariable=self.entry_text)
-		#self.usr_input.grid(row=4,column=3, sticky='EW')
-		
 		#Bouton Enregistrement
+		#Création du bouton, relié à une fonction de sélection du chemin d'enregistrement (FNC_selection)
 		self.download_button = tkinter.Button(self, text="Enregistrer sous", font = self.texte,  command = lambda:[self.FNC_Selection(self.extension.get())])
+		#Placement
 		self.download_button.grid(row = 4, column =2, sticky="E")
+		#Réglage du background
 		self.download_button.config(bg='white')
-		#self.download_button.config(image = self.download,bg='white')
-		
-		
+			
 		#Bouton Retour
+		#Creation du bouton retour, relié la classe menu 
 		self.retour = tkinter.Button(self, text="Retour", font = self.texte, command=lambda : [master.switch_frame(musique.Menu)])
+		#Placement
 		self.retour.grid(row=7,column=0, sticky="WS")
+		#Réglage de la bordure du bouton et du background
 		self.retour.config(bd=1, bg="white")
 		
 			
 	
-	#Fonction d'enregistrement de fichier
+	#Fonction d'enregistrement de fichier, pas grand chose à expliquer, le code se comprend tout seul
 	def FNC_Selection(self, formatChoisi) :
 		if(formatChoisi==".midi"):
 			extension = [("fichier MIDI",".midi")]
