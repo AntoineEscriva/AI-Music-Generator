@@ -9,7 +9,6 @@ from ctypes import windll
 import lecteur as lecteur 
 import os
 
-#Quelques valeurs définies en global
 largeurBout = 15
 hauteurBout = 2
 margeX = 0
@@ -18,6 +17,7 @@ margeY = 0
 #######################################################
 #Classe mère de l'interface
 #######################################################
+
 class Musique(tkinter.Tk):
 	def __init__(self):
 		#Initialisation d'une fenetre TKinter
@@ -46,6 +46,8 @@ class Musique(tkinter.Tk):
 		#Réglage des marges
 		self.frame.grid(padx = 20, pady = 15, sticky = "ewsn")
 		
+#######################################################
+#Classe du menu de l'interface
 #######################################################
 
 class Menu(tkinter.Frame):
@@ -124,8 +126,8 @@ def centrefenetre(fen):
     l,h,x,y=geoliste(fen.geometry())
     fen.geometry("%dx%d%+d%+d" % (l,h,(fen.winfo_screenwidth()-l)//2,(fen.winfo_screenheight()-h)//2))
 
-####################################################### 
-#######################################################  
+##############################################################################################################
+##############################################################################################################  
 
 if __name__ == "__main__":
 	#instancie la classe Musique

@@ -10,6 +10,12 @@ from PIL import Image,ImageTk
 from tkinter import simpledialog
 import musique as musique
 
+hauteurBout = 10
+largeurBout = 15
+hauteurBout = 2
+margeX = 0
+margeY = 0
+
 #######################################################
 # Classe du lecteur de musique
 #######################################################
