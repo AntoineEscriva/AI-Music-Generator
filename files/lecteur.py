@@ -8,7 +8,8 @@ from tkinter import ttk
 from tkinter import *
 from PIL import Image,ImageTk
 from tkinter import simpledialog
-import musique as musique
+from files import musique as musique
+import pygame
 
 hauteurBout = 10
 largeurBout = 15
@@ -52,7 +53,8 @@ class Lecteur(tkinter.Frame):
 		#Placement du bouton
 		self.play_button.grid(row = 1, column = 0)
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
-		self.play_button.config(image = self.play, bd=0,bg='white')
+		self.play_button.config(image = self.play, bd=0,bg='white', command= lambda: [pygame.mixer.music.unpause()])
+		
 		
 		#Bouton Pause
 		#Affectation d'une image de bouton à une variable
@@ -62,7 +64,7 @@ class Lecteur(tkinter.Frame):
 		#Placement du bouton
 		self.pause_button.grid(row = 1, column =0, sticky="E")
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
-		self.pause_button.config(image = self.pause, bd=0, bg='white')
+		self.pause_button.config(image = self.pause, bd=0, bg='white', command = lambda: [pygame.mixer.music.pause()])
 		
 		#Bouton Skip Right
 		#Affectation d'une image de bouton à une variable
@@ -91,7 +93,7 @@ class Lecteur(tkinter.Frame):
 		
 		#Bouton Enregistrement
 		#Création du bouton, relié à une fonction de sélection du chemin d'enregistrement (FNC_selection)
-		self.download_button = tkinter.Button(self, text="Enregistrer sous", font = self.texte,  command = lambda:[self.FNC_Selection(self.extension.get())])
+		self.download_button = tkinter.Button(self, text="Supprimer les fichiers", font = self.texte,  command = lambda:[self.supprimerFichiers()])
 		#Placement
 		self.download_button.grid(row = 4, column =2, sticky="E")
 		#Réglage du background
@@ -105,9 +107,16 @@ class Lecteur(tkinter.Frame):
 		#Réglage de la bordure du bouton et du background
 		self.retour.config(bd=1, bg="white")
 		
-			
+		pygame.init()
+		pygame.mixer.init()
+		pygame.mixer.music.load("./files/midi/alb_esp2.mid")
+		pygame.mixer.music.play()
+		
+		
+	def supprimerFichiers(self):
+		print("Code effectif à écrire")
 	
-	#Fonction d'enregistrement de fichier, pas grand chose à expliquer, le code se comprend tout seul
+	'''#Fonction d'enregistrement de fichier, pas grand chose à expliquer, le code se comprend tout seul
 	def FNC_Selection(self, formatChoisi) :
 		if(formatChoisi==".midi"):
 			extension = [("fichier MIDI",".midi")]
@@ -116,7 +125,7 @@ class Lecteur(tkinter.Frame):
 			extension = [("fichier WAV",".wav")]
 			defaut = '".wav"'
 		file = tkinter.filedialog.asksaveasfile(filetypes = extension, title="Choisissez le nom de fichier", defaultextension = defaut)
-
+	'''
 	#Fonction de l'explorateur de fichier
 	def BrowserFile(self):
 		filename = filedialog.askdirectory(initialdir = "/")

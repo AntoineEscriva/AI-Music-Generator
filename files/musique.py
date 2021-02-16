@@ -6,7 +6,9 @@ from tkinter import filedialog
 from tkinter import ttk
 from tkinter import *
 from ctypes import windll
-import lecteur as lecteur 
+from files import lecteur as lecteur 
+from files.scripts import script as script 
+import time
 import os
 
 largeurBout = 15
@@ -96,7 +98,7 @@ class Menu(tkinter.Frame):
 		self.dureeMorceau.grid(row = 3, column =1, sticky="EW")
 		
 		#Création et placement du Bouton valider
-		self.Valider = tkinter.Button(self, text="Valider", bg="white", font = self.texte, bd=1, command=lambda :[master.switch_frame(lecteur.Lecteur)])
+		self.Valider = tkinter.Button(self, text="Valider", bg="white", font = self.texte, bd=1, command=lambda :[self.charging(Frame),script.main(),master.switch_frame(lecteur.Lecteur)])
 		self.Valider.grid(row=5,column = 1,sticky="EW")
 		
 		#Création de la combobox de Choix de generation	
@@ -105,6 +107,13 @@ class Menu(tkinter.Frame):
 		self.comboboite.current(0)
 		#Placement
 		self.comboboite.grid(row=4, column=1)
+		
+
+	def charging(self, Frame):
+		chargement = PhotoImage(file="./files/gif/charging.gif")
+		self.imageChargement = tkinter.Label(self, text="chargement" ).grid(row=6, column=0)
+		#self.imageChargement.config(image = chargement)
+		
 		
 	#Méthode pour l'explorateur de fichier
 	def Browser(self):
@@ -129,7 +138,7 @@ def centrefenetre(fen):
 ##############################################################################################################
 ##############################################################################################################  
 
-if __name__ == "__main__":
+def start():
 	#instancie la classe Musique
 	app = Musique()
 	#Centrage du futur affichage
