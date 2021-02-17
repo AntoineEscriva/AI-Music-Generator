@@ -8,4 +8,5 @@ def export(parametres):
 	fichier.write(str(parametres))
 	
 	fichier.close()
-	print("Fichier exporté")
+	print("Fichier de paramètres exporté")
+	return

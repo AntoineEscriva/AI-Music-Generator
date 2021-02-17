@@ -11,6 +11,8 @@ from files.scripts import script as script
 from files.scripts import exportParam as exportParam 
 import time
 import os
+if(os.name != "posix"):
+	from ctypes import windll
 
 largeurBout = 15
 hauteurBout = 2
@@ -100,9 +102,9 @@ class Menu(tkinter.Frame):
 		self.dureeMorceau.grid(row = 3, column =1, sticky="EW")
 		
 		#Création et placement du Bouton valider
-		self.textValider = tkinter.StringVar()
-		self.textValider.set("Validation")
-		self.Valider = tkinter.Button(self, textvariable=self.textValider, bg="white", font = self.texte, bd=1, command=lambda :[self.charging(),self.export(),script.main(),master.switch_frame(lecteur.Lecteur)])
+		self.textBoutonValider = StringVar()
+		self.textBoutonValider.set("Valider")
+		self.Valider = tkinter.Button(self, textvariable=self.textBoutonValider, bg="white", font = self.texte, bd=1, command=lambda :[self.charging(),self.export(),script.main(),master.switch_frame(lecteur.Lecteur)])
 		self.Valider.grid(row=5,column = 1,sticky="EW")
 		
 		
@@ -113,21 +115,23 @@ class Menu(tkinter.Frame):
 		#Placement
 		self.comboboite.grid(row=4, column=1)
 		
+	def charging(self):
+		self.textBoutonValider.set("En chargement")
+		print(self.textBoutonValider.get())
+		self.chargement = PhotoImage(file="./files/gif/charging.gif", format="gif -index 2")
+		self.imageChargement = tkinter.Label(self, text="chargement")
+		self.imageChargement.grid(row=5, column=0)
+		return
+		
+
 	def export(self):
 		self.parametres = 	{"URL_Dossier": self.entry_text.get(),
 						"NombreMorceaux": self.nbMorceaux.get(),
 						"DureeMorceaux": self.dureeMorceau.get(),
 						"TypeGeneration":self.comboboite.get()}
 		exportParam.export(self.parametres)
-
-	def charging(self):
-		self.textValider.set("Chargement...")
-		self.textValider.set("Chargement..")
-		self.textValider.set("Chargement.")
-		chargement = PhotoImage(file="./files/gif/charging.gif")
-		self.imageChargement = tkinter.Label(self, text="chargement" ).grid(row=6, column=0)
-		#self.imageChargement.config(image = chargement)
-		
+		return
+	
 		
 	#Méthode pour l'explorateur de fichier
 	def Browser(self):

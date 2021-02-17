@@ -46,14 +46,16 @@ class Lecteur(tkinter.Frame):
 		self.skip_left_button.config(image = self.skip_left, bd=0,bg='white')
 		
 		#Bouton Play
+		#Ajout d'un compteur au bouton play
+		self.comptePlay = 0
 		#Affectation d'une image de bouton à une variable
-		self.play = PhotoImage(file="./buttons_resize/pl1.png")
+		self.play = PhotoImage(file="./buttons_resize/pl1.png")	
 		#Création du bouton
 		self.play_button = tkinter.Button(self)
 		#Placement du bouton
 		self.play_button.grid(row = 1, column = 0)
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
-		self.play_button.config(image = self.play, bd=0,bg='white', command= lambda: [pygame.mixer.music.unpause()])
+		self.play_button.config(image = self.play, bd=0,bg='white', command= lambda: [self.playUnPause()])
 		
 		
 		#Bouton Pause
@@ -101,7 +103,7 @@ class Lecteur(tkinter.Frame):
 			
 		#Bouton Retour
 		#Creation du bouton retour, relié la classe menu 
-		self.retour = tkinter.Button(self, text="Retour", font = self.texte, command=lambda : [master.switch_frame(musique.Menu)])
+		self.retour = tkinter.Button(self, text="Retour", font = self.texte, command=lambda : [pygame.mixer.music.pause(),master.switch_frame(musique.Menu)])
 		#Placement
 		self.retour.grid(row=7,column=0, sticky="WS")
 		#Réglage de la bordure du bouton et du background
@@ -110,8 +112,15 @@ class Lecteur(tkinter.Frame):
 		pygame.init()
 		pygame.mixer.init()
 		pygame.mixer.music.load("./files/midi/alb_esp2.mid")
-		pygame.mixer.music.play()
 		
+		
+	def playUnPause(self):
+		if(self.comptePlay ==0):
+			pygame.mixer.music.play()
+			self.comptePlay +=1
+		else:
+			pygame.mixer.music.unpause()
+		return 
 		
 	def supprimerFichiers(self):
 		print("Code effectif à écrire")
