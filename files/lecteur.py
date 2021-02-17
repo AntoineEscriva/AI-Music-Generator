@@ -111,8 +111,10 @@ class Lecteur(tkinter.Frame):
 		
 		pygame.init()
 		pygame.mixer.init()
-		pygame.mixer.music.load("./files/midi/alb_esp2.mid")
-		
+		try:
+			pygame.mixer.music.load("./files/midi/alb_esp2.mid")
+		except pygame.error:
+			print("Echec de chargement du fichier midi\n")
 		
 	def playUnPause(self):
 		if(self.comptePlay ==0):
