@@ -6,7 +6,7 @@ import time
 
 def main():
 	print("Je suis un script")
-	time.sleep(2)
+	time.sleep(3)
 	
 	
 if __name__ == "__main__":

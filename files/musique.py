@@ -115,12 +115,14 @@ class Menu(tkinter.Frame):
 		#Placement
 		self.comboboite.grid(row=4, column=1)
 		
+		
+
 	def charging(self):
-		self.textBoutonValider.set("En chargement")
-		print(self.textBoutonValider.get())
-		self.chargement = PhotoImage(file="./files/gif/charging.gif", format="gif -index 2")
-		self.imageChargement = tkinter.Label(self, text="chargement")
-		self.imageChargement.grid(row=5, column=0)
+		self.textBoutonValider.set("En chargement...")
+		#self.chargement = PhotoImage(file="./files/gif/charging.gif", format="gif -index 2")
+		#self.imageChargement = tkinter.Label(self, text="chargement")
+		#self.imageChargement.grid(row=5, column=0)
+		self.update()
 		return
 		
 
