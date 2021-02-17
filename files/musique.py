@@ -8,6 +8,7 @@ from tkinter import *
 from ctypes import windll
 from files import lecteur as lecteur 
 from files.scripts import script as script 
+from files.scripts import exportParam as exportParam 
 import time
 import os
 
@@ -84,7 +85,8 @@ class Menu(tkinter.Frame):
 		#Création et placement du label Nombre de morceaux
 		tkinter.Label(self, text="Nombre de morceaux",height = hauteurBout, font = self.texte, bg='white').grid(row = 2, column =0, sticky="W")
 		#Création et placement d'une spinbox pour choisir le nombre de morceaux
-		self.nbMorceaux = tkinter.Spinbox(self, from_=1, to=20).grid(row = 2, column =1, sticky="EW")
+		self.nbMorceaux = tkinter.Spinbox(self, from_=1, to=20)
+		self.nbMorceaux.grid(row = 2, column =1, sticky="EW")
 
 		#Création et placement du label Durée de morceaux
 		tkinter.Label(self, text="Durée de morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 3, column =0, sticky="W")
@@ -98,8 +100,11 @@ class Menu(tkinter.Frame):
 		self.dureeMorceau.grid(row = 3, column =1, sticky="EW")
 		
 		#Création et placement du Bouton valider
-		self.Valider = tkinter.Button(self, text="Valider", bg="white", font = self.texte, bd=1, command=lambda :[self.charging(Frame),script.main(),master.switch_frame(lecteur.Lecteur)])
+		self.textValider = tkinter.StringVar()
+		self.textValider.set("Validation")
+		self.Valider = tkinter.Button(self, textvariable=self.textValider, bg="white", font = self.texte, bd=1, command=lambda :[self.charging(),self.export(),script.main(),master.switch_frame(lecteur.Lecteur)])
 		self.Valider.grid(row=5,column = 1,sticky="EW")
+		
 		
 		#Création de la combobox de Choix de generation	
 		self.comboboite = ttk.Combobox(self, values = ["Rythme seulement","Rythme et mélodie","Polyphonie"])
@@ -108,8 +113,17 @@ class Menu(tkinter.Frame):
 		#Placement
 		self.comboboite.grid(row=4, column=1)
 		
+	def export(self):
+		self.parametres = 	{"URL_Dossier": self.entry_text.get(),
+						"NombreMorceaux": self.nbMorceaux.get(),
+						"DureeMorceaux": self.dureeMorceau.get(),
+						"TypeGeneration":self.comboboite.get()}
+		exportParam.export(self.parametres)
 
-	def charging(self, Frame):
+	def charging(self):
+		self.textValider.set("Chargement...")
+		self.textValider.set("Chargement..")
+		self.textValider.set("Chargement.")
 		chargement = PhotoImage(file="./files/gif/charging.gif")
 		self.imageChargement = tkinter.Label(self, text="chargement" ).grid(row=6, column=0)
 		#self.imageChargement.config(image = chargement)
