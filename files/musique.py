@@ -96,14 +96,14 @@ class Menu(tkinter.Frame):
 		#Tonalité de morceaux
 		tkinter.Label(self, text="Tonalité de morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 4, column =0, sticky="W")
 		#Bouton Tonalite du morceau
-		self.dureeMorceau = tkinter.Spinbox(self, values = ("A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"))
-        	self.dureeMorceau.grid(row = 4, column =1, sticky="EW")
+		self.tonaliteMorceau = tkinter.Spinbox(self, values = ("A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"))
+        	self.tonaliteMorceau.grid(row = 4, column =1, sticky="EW")
 		
 		#bpm des morceaux
 		tkinter.Label(self, text="vitesse des morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 5, column =0, sticky="W")
 		#Bouton bpm des morceau
-		self.dureeMorceau = tkinter.Spinbox(self, from_=30,to=240)
-        	self.dureeMorceau.grid(row = 5, column =1, sticky="EW")
+		self.bpmMorceau = tkinter.Spinbox(self, from_=30,to=240)
+        	self.bpmMorceau.grid(row = 5, column =1, sticky="EW")
 		
 		#Choix de génération
 		tkinter.Label(self, text="Type de génération", width = 15, height = hauteurBout, font = self.texte, bg='white').grid(row = 6, column =0, sticky="W")
@@ -142,6 +142,8 @@ class Menu(tkinter.Frame):
 		self.parametres = 	{"URL_Dossier": self.entry_text.get(),
 						"NombreMorceaux": self.nbMorceaux.get(),
 						"DureeMorceaux": self.dureeMorceau.get(),
+					 	"TonaliteMorceaux": self.tonaliteMorceau.get(),
+					 	"VitesseMorceaux": self.bpmMorceau.get(),
 						"TypeGeneration":self.comboboite.get()}
 		exportParam.export(self.parametres)
 		return
