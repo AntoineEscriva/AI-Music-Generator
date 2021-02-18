@@ -97,13 +97,13 @@ class Menu(tkinter.Frame):
 		tkinter.Label(self, text="Tonalité de morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 4, column =0, sticky="W")
 		#Bouton Tonalite du morceau
 		self.tonaliteMorceau = tkinter.Spinbox(self, values = ("A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"))
-        	self.tonaliteMorceau.grid(row = 4, column =1, sticky="EW")
+		self.tonaliteMorceau.grid(row = 4, column =1, sticky="EW")
 		
 		#bpm des morceaux
 		tkinter.Label(self, text="vitesse des morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 5, column =0, sticky="W")
 		#Bouton bpm des morceau
 		self.bpmMorceau = tkinter.Spinbox(self, from_=30,to=240)
-        	self.bpmMorceau.grid(row = 5, column =1, sticky="EW")
+		self.bpmMorceau.grid(row = 5, column =1, sticky="EW")
 		
 		#Choix de génération
 		tkinter.Label(self, text="Type de génération", width = 15, height = hauteurBout, font = self.texte, bg='white').grid(row = 6, column =0, sticky="W")
@@ -160,14 +160,14 @@ class Menu(tkinter.Frame):
 ##Ci-dessous, deux fonctions copiées collées de Google pour centrer la fenêtre au milieu de l'écran
 #Récupère les infos relatives à l'écran
 def geoliste(g):
-    r=[i for i in range(0,len(g)) if not g[i].isdigit()]
-    return [int(g[0:r[0]]),int(g[r[0]+1:r[1]]),int(g[r[1]+1:r[2]]),int(g[r[2]+1:])]
+	r=[i for i in range(0,len(g)) if not g[i].isdigit()]
+	return [int(g[0:r[0]]),int(g[r[0]+1:r[1]]),int(g[r[1]+1:r[2]]),int(g[r[2]+1:])]
 
 #Centre la fenetre au milieu de l'écran
 def centrefenetre(fen):
-    fen.update_idletasks()
-    l,h,x,y=geoliste(fen.geometry())
-    fen.geometry("%dx%d%+d%+d" % (l,h,(fen.winfo_screenwidth()-l)//2,(fen.winfo_screenheight()-h)//2))
+	fen.update_idletasks()
+	l,h,x,y=geoliste(fen.geometry())
+	fen.geometry("%dx%d%+d%+d" % (l,h,(fen.winfo_screenwidth()-l)//2,(fen.winfo_screenheight()-h)//2))
 
 ##############################################################################################################
 ##############################################################################################################  
