@@ -1,1 +1,0 @@
-{'URL_Dossier': 'C:/Program Files (x86)', 'NombreMorceaux': '1', 'DureeMorceaux': '60', 'TonaliteMorceaux': 'A', 'VitesseMorceaux': '30', 'TypeGeneration': 'Rythme seulement'}

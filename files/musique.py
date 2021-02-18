@@ -8,7 +8,7 @@ from tkinter import *
 from ctypes import windll
 from files import lecteur as lecteur 
 from files.scripts import script as script 
-from files.scripts import exportParam as exportParam 
+from files.scripts import ImportExportParam
 import time
 import os
 if(os.name != "posix"):
@@ -145,7 +145,7 @@ class Menu(tkinter.Frame):
 					 	"TonaliteMorceaux": self.tonaliteMorceau.get(),
 					 	"VitesseMorceaux": self.bpmMorceau.get(),
 						"TypeGeneration":self.comboboite.get()}
-		exportParam.exportInCSV(self.parametres)
+		ImportExportParam.exportInCSV(self.parametres)
 		return
 	
 		
