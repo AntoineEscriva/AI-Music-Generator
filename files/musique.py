@@ -32,7 +32,7 @@ class Musique(tkinter.Tk):
 		#Affectation du titre de la fenêtre
 		self.title("Génération musique aléatoire")
 		#Réglage de la taille de la fenêtre
-		self.geometry("515x380")
+		self.geometry("515x420")
 		#Réglage du fond en blanc
 		self.configure(bg='white')
 		#Appel de la methode switch_frame qui se situe ci-dessous
@@ -145,7 +145,7 @@ class Menu(tkinter.Frame):
 					 	"TonaliteMorceaux": self.tonaliteMorceau.get(),
 					 	"VitesseMorceaux": self.bpmMorceau.get(),
 						"TypeGeneration":self.comboboite.get()}
-		exportParam.export(self.parametres)
+		exportParam.exportInCSV(self.parametres)
 		return
 	
 		
