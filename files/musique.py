@@ -32,7 +32,7 @@ class Musique(tkinter.Tk):
 		#Affectation du titre de la fenêtre
 		self.title("Génération musique aléatoire")
 		#Réglage de la taille de la fenêtre
-		self.geometry("510x340")
+		self.geometry("515x380")
 		#Réglage du fond en blanc
 		self.configure(bg='white')
 		#Appel de la methode switch_frame qui se situe ci-dessous
@@ -93,8 +93,20 @@ class Menu(tkinter.Frame):
 		#Création et placement du label Durée de morceaux
 		tkinter.Label(self, text="Durée de morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 3, column =0, sticky="W")
 		
+		#Tonalité de morceaux
+		tkinter.Label(self, text="Tonalité de morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 4, column =0, sticky="W")
+		#Bouton Tonalite du morceau
+		self.dureeMorceau = tkinter.Spinbox(self, values = ("A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"))
+        	self.dureeMorceau.grid(row = 4, column =1, sticky="EW")
+		
+		#bpm des morceaux
+		tkinter.Label(self, text="vitesse des morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 5, column =0, sticky="W")
+		#Bouton bpm des morceau
+		self.dureeMorceau = tkinter.Spinbox(self, from_=30,to=240)
+        	self.dureeMorceau.grid(row = 5, column =1, sticky="EW")
+		
 		#Choix de génération
-		tkinter.Label(self, text="Type de génération", width = 15, height = hauteurBout, font = self.texte, bg='white').grid(row = 4, column =0, sticky="W")
+		tkinter.Label(self, text="Type de génération", width = 15, height = hauteurBout, font = self.texte, bg='white').grid(row = 6, column =0, sticky="W")
 				
 		#Création du spinbox de durée du morceau
 		self.dureeMorceau = tkinter.Spinbox(self, from_=60,to=340)
@@ -105,7 +117,7 @@ class Menu(tkinter.Frame):
 		self.textBoutonValider = StringVar()
 		self.textBoutonValider.set("Valider")
 		self.Valider = tkinter.Button(self, textvariable=self.textBoutonValider, bg="white", font = self.texte, bd=1, command=lambda :[self.charging(),self.export(),script.main(),master.switch_frame(lecteur.Lecteur)])
-		self.Valider.grid(row=5,column = 1,sticky="EW")
+		self.Valider.grid(row=7,column = 1,sticky="EW")
 		
 		
 		#Création de la combobox de Choix de generation	
@@ -113,7 +125,7 @@ class Menu(tkinter.Frame):
 		#Réglage de l'item actuel sur 0
 		self.comboboite.current(0)
 		#Placement
-		self.comboboite.grid(row=4, column=1)
+		self.comboboite.grid(row=6, column=1)
 		
 		
 
