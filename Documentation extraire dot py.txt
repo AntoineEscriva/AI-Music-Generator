@@ -1,0 +1,38 @@
+La classe Morceau permet de stocker un fichier MIDI-CSV dans un objet python
+pour récupérer plus facilement ses informations.
+
+
+méthode get_header_info() :
+
+prend un tableau de chaînes de caractère en entrée
+retourne None si la première chaîne n'est pas le Header du morceau
+retourne le tableau amputé de sa première ligne sinon
+
+lit les informations contenues sur la ligne Header et stocke les données
+correspondantes dans les attributs format, nbTracks, division & trackList
+
+
+Structure de l'objet Morceau :
+
+attributs :
+
+filename			nom du fichier MIDI-CSV concerné
+# Header information
+format				format du fichier MIDI-CSV
+nbTracks			nombre de pistes du fichier
+division			nombre de coup d'horloge par quart de note
+# SMPTE_offset information
+smpteHour			heure de début
+smpteMinute			minute de début
+smpteSecond			seconde de début
+smpteFrame			frame (fraction de seconde) de début
+smpteFracFrame			fraction de frame de début
+# Time signature information
+tsNum				numérateur de la signature temporelle
+tsDenom				dénominateur de la signature temporelle
+tsClick				nombre de MIDI clicks par click de métronome
+tsNotesQ			nombre de 32èmes de note dans 
+# Tempo information
+tempoList			Liste des tempos
+# Tracks information
+trackList			liste de listes contenant les informations d'une piste
