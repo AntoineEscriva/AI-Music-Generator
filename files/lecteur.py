@@ -112,7 +112,7 @@ class Lecteur(tkinter.Frame):
 		pygame.init()
 		pygame.mixer.init()
 		try:
-			pygame.mixer.music.load("./files/midi/alb_esp2.mid")
+			pygame.mixer.music.load("./files/midi/elise.mid")
 		except pygame.error:
 			print("Echec de chargement du fichier midi\n")
 		

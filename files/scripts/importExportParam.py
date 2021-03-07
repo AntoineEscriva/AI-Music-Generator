@@ -31,4 +31,4 @@ def importFromCSV():
 			parametres['TonaliteMorceaux']= row['TonaliteMorceaux']
 			parametres['VitesseMorceaux']= row['VitesseMorceaux']
 			parametres['TypeGeneration'] = row['TypeGeneration']
-	return
+	return parametres
