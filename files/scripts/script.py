@@ -6,7 +6,7 @@ from files.scripts import RNN as RNN
 
 def main():
 	print("Je suis un script")
-	
+	RNN.main()
 	#time(3)
 	#testrnn_colab
 	
