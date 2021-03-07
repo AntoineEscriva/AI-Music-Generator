@@ -5,7 +5,6 @@ import tkinter.font as tkFont
 from tkinter import filedialog 
 from tkinter import ttk
 from tkinter import *
-from ctypes import windll
 from files import lecteur as lecteur 
 from files.scripts import script as script 
 from files.scripts import importExportParam

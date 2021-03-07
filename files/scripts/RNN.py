@@ -21,70 +21,70 @@ import numpy as np
 import time
 
 
-def main():
-	# torch.cuda.is_available() checks and returns a Boolean True if a GPU is available, else it'll return False
-	is_cuda = torch.cuda.is_available()
 
-	# If we have a GPU available, we'll set our device to GPU. We'll use this device variable later in our code.
-	if is_cuda:
-		device = torch.device("cuda")
-		print("GPU is available")
-	else:
-		device = torch.device("cpu")
-		print("GPU not available, CPU used")
+# torch.cuda.is_available() checks and returns a Boolean True if a GPU is available, else it'll return False
+is_cuda = torch.cuda.is_available()
 
-
-	taille = 100 #length of a sequence # de 100 à 200 généralement (50 pk pas)
-	batch_len = 64 # 16 ou 32
-	id_last_car = len(txt)-taille #index of the last character to parse for creating the sequences
-	text = []
+# If we have a GPU available, we'll set our device to GPU. We'll use this device variable later in our code.
+if is_cuda:
+    device = torch.device("cuda")
+    print("GPU is available")
+else:
+    device = torch.device("cpu")
+    print("GPU not available, CPU used")
 
 
-	for i in range(id_last_car):
-		text.append(txt[i:i+taille+1])
-
-	"""
-	for i in range(0, id_last_car, taille+1):
-		text.append(txt[i:i+taille+1])
-	"""
+taille = 100 #length of a sequence # de 100 à 200 généralement (50 pk pas)
+batch_len = 64 # 16 ou 32
+id_last_car = len(txt)-taille #index of the last character to parse for creating the sequences
+text = []
 
 
-	# Join all the sentences together and extract the unique characters from the combined sentences
-	chars = set(''.join(text))
+for i in range(id_last_car):
+    text.append(txt[i:i+taille+1])
 
-	# Creating a dictionary that maps integers to the characters
-	int2char = dict(enumerate(chars))
-
-	# Creating another dictionary that maps characters to integers
-	char2int = {char: ind for ind, char in int2char.items()}
-
-
-	# Finding the length of the longest string in our data
-	maxlen = len(max(text, key=len))
+"""
+for i in range(0, id_last_car, taille+1):
+    text.append(txt[i:i+taille+1])
+"""
 
 
+# Join all the sentences together and extract the unique characters from the combined sentences
+chars = set(''.join(text))
 
-	# Creating lists that will hold our input and target sequences
-	input_seq = []
-	target_seq = []
+# Creating a dictionary that maps integers to the characters
+int2char = dict(enumerate(chars))
 
-	for i in range(len(text)):
-		# Remove last character for input sequence
-	  input_seq.append(text[i][:-1])
-		
-		# Remove first character for target sequence
-	  target_seq.append(text[i][1:])
-	  #print("Input Sequence: {}\nTarget Sequence: {}".format(input_seq[i], target_seq[i]))
+# Creating another dictionary that maps characters to integers
+char2int = {char: ind for ind, char in int2char.items()}
 
 
-	for i in range(len(text)):
-		input_seq[i] = [char2int[character] for character in input_seq[i]]
-		target_seq[i] = [char2int[character] for character in target_seq[i]]
+# Finding the length of the longest string in our data
+maxlen = len(max(text, key=len))
 
 
-	dict_size = len(char2int)
-	seq_len = maxlen - 1
-	batch_size = len(text)
+
+# Creating lists that will hold our input and target sequences
+input_seq = []
+target_seq = []
+
+for i in range(len(text)):
+    # Remove last character for input sequence
+  input_seq.append(text[i][:-1])
+    
+    # Remove first character for target sequence
+  target_seq.append(text[i][1:])
+  #print("Input Sequence: {}\nTarget Sequence: {}".format(input_seq[i], target_seq[i]))
+
+
+for i in range(len(text)):
+    input_seq[i] = [char2int[character] for character in input_seq[i]]
+    target_seq[i] = [char2int[character] for character in target_seq[i]]
+
+
+dict_size = len(char2int)
+seq_len = maxlen - 1
+batch_size = len(text)
 
 def one_hot_encode(sequence, dict_size, seq_len, batch_size):
     # Creating a multi-dimensional array of zeros with the desired output shape
