@@ -3,6 +3,7 @@
 #code pour extraire les données d'un morceau de musique depuis un fichier MIDI CSV et les mettre dans un objet
 import py_midicsv as pm
 import csv
+import os
 
 class Morceau:
 	def __init__(self, filename):
@@ -45,12 +46,11 @@ class Morceau:
 			exit
 			
 		csv_list = pm.midi_to_csv(name_in) #midi to csv
-		
 		name_out = name_in.replace(".mid",".csv")
-		file_out = open("/Temp"+name_out, 'w')
-		for row in csv_list:
-			file_out.write(row)
-		file_out.close()
+		#os.remove("./files/midi/alb_esp2.csv")
+		with open(name_out, 'w+') as file_out :
+			for row in csv_list:
+				file_out.write(row)
 		self.filename = name_out
 
 	def __str__(self):

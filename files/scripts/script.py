@@ -13,6 +13,11 @@ def main():
 	listeFichiers = []
 	for (repertoire, sousRepertoires, fichiers) in walk(parametres["URL_Dossier"]):
 		listeFichiers.extend(fichiers)
+	print(listeFichiers)
+	listeFichiers = [i for i in listeFichiers if ".mid" in i]
+	
+	print(listeFichiers)
+	
 	listeMorceaux = []
 	for files in listeFichiers:
 		listeMorceaux.append(extraire.Morceau(parametres["URL_Dossier"]+'/'+files))

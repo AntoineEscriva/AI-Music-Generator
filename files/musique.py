@@ -8,7 +8,7 @@ from tkinter import *
 from files import lecteur as lecteur 
 from files.scripts import script as script 
 from files.scripts import importExportParam
-
+from os import walk
 import time
 import os
 if(os.name != "posix"):

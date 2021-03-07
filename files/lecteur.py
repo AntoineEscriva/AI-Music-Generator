@@ -10,6 +10,7 @@ from PIL import Image,ImageTk
 from tkinter import simpledialog
 from files import musique as musique
 import pygame
+from os import walk
 
 hauteurBout = 10
 largeurBout = 15
@@ -76,7 +77,7 @@ class Lecteur(tkinter.Frame):
 		#Placement du bouton
 		self.skip_right_button.grid(row = 1, column = 1)
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
-		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white')
+		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white', command = lambda: [pygame.mixer.music.set_endevent()])
 		
 		#Some Labels
 		#Un label vide pour faire de l'espace
@@ -109,12 +110,9 @@ class Lecteur(tkinter.Frame):
 		#Réglage de la bordure du bouton et du background
 		self.retour.config(bd=1, bg="white")
 		
-		pygame.init()
-		pygame.mixer.init()
-		try:
-			pygame.mixer.music.load("./files/midi/elise.mid")
-		except pygame.error:
-			print("Echec de chargement du fichier midi\n")
+		#Initialisation des musiques lecteur 
+		self.initLecteur()
+		
 		
 	def playUnPause(self):
 		if(self.comptePlay ==0):
@@ -142,6 +140,42 @@ class Lecteur(tkinter.Frame):
 		filename = filedialog.askdirectory(initialdir = "/")
 		self.entry_text.set(filename)		
 	
+	def initLecteur(self):
+		pygame.init()
+		pygame.mixer.init()
+
+		listeMusiques = []
+		for (repertoire, sousRepertoires, fichiers) in walk("./files/midi/"):
+			listeMusiques.extend(fichiers)
+		
+		listeMusiques = [i for i in listeMusiques if ".mid" in i]
+		print(str(listeMusiques[0]))
+		try:
+			pygame.mixer.music.load("./files/midi/"+str(listeMusiques[0]))
+			for musique in listeMusiques:
+				if(musique == listeMusiques[0]):
+					pass
+				pygame.mixer.music.queue("./files/midi/"+str(musique))
+		except pygame.error:
+			print("Echec de chargement du fichier midi\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
