@@ -33,6 +33,7 @@ class Lecteur(tkinter.Frame):
 		#Couleur de fond
 		self.configure(bg='white')
 		
+		#Quelques variables utiles pour la gestion des musiques
 		self.numeroTitre = 0
 		self.listeMusiques = []
 		#Titre
@@ -44,7 +45,7 @@ class Lecteur(tkinter.Frame):
 		#Création du bouton
 		self.skip_left_button = tkinter.Button(self)
 		#Placement du bouton
-		self.skip_left_button.grid(row = 1, column = 0, sticky="W")
+		self.skip_left_button.grid(row = 2, column = 0, sticky="W")
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.skip_left_button.config(image = self.skip_left, bd=0,bg='white', command= lambda:[self.previousSong()])
 		
@@ -56,7 +57,7 @@ class Lecteur(tkinter.Frame):
 		#Création du bouton
 		self.play_button = tkinter.Button(self)
 		#Placement du bouton
-		self.play_button.grid(row = 1, column = 0)
+		self.play_button.grid(row = 2, column = 0)
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.play_button.config(image = self.play, bd=0,bg='white', command= lambda: [self.playUnPause()])
 		
@@ -67,7 +68,7 @@ class Lecteur(tkinter.Frame):
 		#Création du bouton
 		self.pause_button = tkinter.Button(self)
 		#Placement du bouton
-		self.pause_button.grid(row = 1, column =0, sticky="E")
+		self.pause_button.grid(row = 2, column =0, sticky="E")
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.pause_button.config(image = self.pause, bd=0, bg='white', command = lambda: [pygame.mixer.music.pause()])
 		
@@ -77,30 +78,34 @@ class Lecteur(tkinter.Frame):
 		#Création du bouton
 		self.skip_right_button = tkinter.Button(self)
 		#Placement du bouton
-		self.skip_right_button.grid(row = 1, column = 1)
+		self.skip_right_button.grid(row = 2, column = 1)
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white', command = lambda:[self.nextSong()])
 		
-		#Some Labels
-		#Un label vide pour faire de l'espace
-		tkinter.Label(self, text="",height = hauteurBout,bg='white').grid(row = 2, column = 0, sticky="NESW") 
+		#Labels
+		#Titre de la musique en cours
+		self.titreMusique = tkinter.StringVar()
+		self.boxTitreMusique = tkinter.Label(self, textvariable=self.titreMusique, bg='white', font = self.texte).grid(row=1,column=0, sticky = "W")
+		
+		#tkinter.Label(self, text="",height = hauteurBout,bg='white').grid(row = 2, column = 0, sticky="NESW") 
+		
 		#Création et placement du Label Enregistrement, avec background blanc
-		tkinter.Label(self, text="Enregistrement",bg='white', font = self.titre).grid(row = 2, column = 0, sticky="W") 
+		tkinter.Label(self, text="Enregistrement",bg='white', font = self.titre).grid(row = 3, column = 0, sticky="W") 
 		#Création et placement du label Choix de l'Extension
-		tkinter.Label(self, text="Choix de l'extension :", font = self.texte, height = hauteurBout,bg='white').grid(row = 3, column = 0, sticky="W") 
+		tkinter.Label(self, text="Choix de l'extension :", font = self.texte, height = hauteurBout,bg='white').grid(row = 4, column = 0, sticky="W") 
 		
 		#Création d'une Combobox pour le choix de l'extension
 		self.extension = ttk.Combobox(self,state='readonly', values = [".midi",".wav"],width="5")
 		#Selection de l'item par défaut
 		self.extension.current(0)
 		#Placement
-		self.extension.grid(row=4, column=0, sticky = "EW")
+		self.extension.grid(row=5, column=0, sticky = "EW")
 		
 		#Bouton Enregistrement
 		#Création du bouton, relié à une fonction de sélection du chemin d'enregistrement (FNC_selection)
 		self.download_button = tkinter.Button(self, text="Supprimer les fichiers", font = self.texte,  command = lambda:[self.supprimerFichiers()])
 		#Placement
-		self.download_button.grid(row = 4, column =2, sticky="E")
+		self.download_button.grid(row = 5, column =2, sticky="E")
 		#Réglage du background
 		self.download_button.config(bg='white')
 			
@@ -152,11 +157,11 @@ class Lecteur(tkinter.Frame):
 			self.listeMusiques.extend(fichiers)
 			
 		self.listeMusiques = [i for i in self.listeMusiques if ".mid" in i] #Filtre les fichiers pour n'avoir que du .mid
-		print(str(self.listeMusiques))
 		try:
 			pygame.mixer.music.load("./files/midi/"+str(self.listeMusiques[0]))	#Charge le premier titre
 		except pygame.error:
 			print("Echec de chargement du fichier midi\n")
+		self.titreMusique.set("Titre: "+self.listeMusiques[0])
 	
 	def nextSong(self):
 		if self.comptePlay == 1: #Si c'est 1 c'est qu'un son est joué
@@ -167,6 +172,7 @@ class Lecteur(tkinter.Frame):
 			self.numeroTitre += 1 # else, next song
 		pygame.mixer.music.load("./files/midi/"+str(self.listeMusiques[self.numeroTitre]))
 		pygame.mixer.music.play() # play the song var corresponds to
+		self.titreMusique.set("Titre: "+self.listeMusiques[self.numeroTitre])
 
 	def previousSong(self):
 		if self.comptePlay == 1: #Si c'est 1 c'est qu'un son est joué
@@ -177,7 +183,7 @@ class Lecteur(tkinter.Frame):
 			self.numeroTitre -= 1 # else, previous song
 		pygame.mixer.music.load("./files/midi/"+str(self.listeMusiques[self.numeroTitre]))
 		pygame.mixer.music.play() # play the song var corresponds to
-
+		self.titreMusique.set("Titre: "+self.listeMusiques[self.numeroTitre])
 
 
 
