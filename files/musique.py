@@ -123,7 +123,7 @@ class Menu(tkinter.Frame):
 		
 		
 		#Création de la combobox de Choix de generation	
-		self.comboboite = ttk.Combobox(self, values = ["Rythme seulement","Rythme et mélodie","Polyphonie"])
+		self.comboboite = ttk.Combobox(self, values = ["Rythme seulement","Rythme et mélodie","Polyphonie"],state="readonly")
 		#Réglage de l'item actuel sur 0
 		self.comboboite.current(0)
 		#Placement
