@@ -77,6 +77,8 @@ class Menu(tkinter.Frame):
 		
 		#Création de la Zone d'affichage du chemin
 		self.entry_text = tkinter.StringVar()
+		self.cheminAbsolu = os.getcwd()
+		self.entry_text.set(self.cheminAbsolu+"/files/midi")
 		#Placement de la zone et affectation d'un texte dans cette zone d'affichage
 		self.usr_input = ttk.Entry(self, state='readonly', textvariable=self.entry_text).grid(row=1,column=1, sticky='EW')
 		
@@ -100,7 +102,7 @@ class Menu(tkinter.Frame):
 		self.tonaliteMorceau.grid(row = 4, column =1, sticky="EW")
 		
 		#bpm des morceaux
-		tkinter.Label(self, text="vitesse des morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 5, column =0, sticky="W")
+		tkinter.Label(self, text="Vitesse des morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 5, column =0, sticky="W")
 		#Bouton bpm des morceau
 		self.bpmMorceau = tkinter.Spinbox(self, from_=30,to=240)
 		self.bpmMorceau.grid(row = 5, column =1, sticky="EW")
@@ -139,6 +141,7 @@ class Menu(tkinter.Frame):
 		
 
 	def export(self):
+	
 		self.parametres = 	{"URL_Dossier": self.entry_text.get(),
 						"NombreMorceaux": self.nbMorceaux.get(),
 						"DureeMorceaux": self.dureeMorceau.get(),
@@ -151,7 +154,8 @@ class Menu(tkinter.Frame):
 		
 	#Méthode pour l'explorateur de fichier
 	def Browser(self):
-		filename = filedialog.askdirectory(initialdir = "/")
+		filename = filedialog.askdirectory(initialdir = "./project2020-2021/files/midi/")
+		print("Filename is "+filename)
 		self.entry_text.set(filename)
 			
 ####################################################### 

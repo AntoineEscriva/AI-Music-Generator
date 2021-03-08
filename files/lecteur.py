@@ -33,6 +33,8 @@ class Lecteur(tkinter.Frame):
 		#Couleur de fond
 		self.configure(bg='white')
 		
+		self.numeroTitre = 0
+		self.listeMusiques = []
 		#Titre
 		tkinter.Label(self, text="Résultat de la génération", font = self.titre, height = hauteurBout, bg='white').grid(row = 0, column = 0, sticky="W", columnspan=2) 
 		
@@ -44,7 +46,7 @@ class Lecteur(tkinter.Frame):
 		#Placement du bouton
 		self.skip_left_button.grid(row = 1, column = 0, sticky="W")
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
-		self.skip_left_button.config(image = self.skip_left, bd=0,bg='white')
+		self.skip_left_button.config(image = self.skip_left, bd=0,bg='white', command= lambda:[self.previousSong()])
 		
 		#Bouton Play
 		#Ajout d'un compteur au bouton play
@@ -77,7 +79,7 @@ class Lecteur(tkinter.Frame):
 		#Placement du bouton
 		self.skip_right_button.grid(row = 1, column = 1)
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
-		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white', command = lambda: [pygame.mixer.music.set_endevent()])
+		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white', command = lambda:[self.nextSong()])
 		
 		#Some Labels
 		#Un label vide pour faire de l'espace
@@ -113,11 +115,10 @@ class Lecteur(tkinter.Frame):
 		#Initialisation des musiques lecteur 
 		self.initLecteur()
 		
-		
 	def playUnPause(self):
 		if(self.comptePlay ==0):
 			pygame.mixer.music.play()
-			self.comptePlay +=1
+			self.comptePlay = 1
 		else:
 			pygame.mixer.music.unpause()
 		return 
@@ -138,27 +139,44 @@ class Lecteur(tkinter.Frame):
 	#Fonction de l'explorateur de fichier
 	def BrowserFile(self):
 		filename = filedialog.askdirectory(initialdir = "/")
-		self.entry_text.set(filename)		
+		print("Filename is "+filename)
+		self.entry_text.set(filename)
 	
 	def initLecteur(self):
+		#initiliastion du lecteur
 		pygame.init()
 		pygame.mixer.init()
-
-		listeMusiques = []
-		for (repertoire, sousRepertoires, fichiers) in walk("./files/midi/"):
-			listeMusiques.extend(fichiers)
 		
-		listeMusiques = [i for i in listeMusiques if ".mid" in i]
-		print(str(listeMusiques[0]))
+		#parcours les fichiers du repertoire
+		for (repertoire, sousRepertoires, fichiers) in walk("./files/midi/"):
+			self.listeMusiques.extend(fichiers)
+			
+		self.listeMusiques = [i for i in self.listeMusiques if ".mid" in i] #Filtre les fichiers pour n'avoir que du .mid
+		print(str(self.listeMusiques))
 		try:
-			pygame.mixer.music.load("./files/midi/"+str(listeMusiques[0]))
-			for musique in listeMusiques:
-				if(musique == listeMusiques[0]):
-					pass
-				pygame.mixer.music.queue("./files/midi/"+str(musique))
+			pygame.mixer.music.load("./files/midi/"+str(self.listeMusiques[0]))	#Charge le premier titre
 		except pygame.error:
 			print("Echec de chargement du fichier midi\n")
+	
+	def nextSong(self):
+		if self.comptePlay == 1: #Si c'est 1 c'est qu'un son est joué
+			pygame.mixer.music.stop() # stop current song
+		if self.numeroTitre+1 == len(self.listeMusiques): # if it's the last song
+			self.numeroTitre = 0 # set the var to represent the first song
+		else:
+			self.numeroTitre += 1 # else, next song
+		pygame.mixer.music.load("./files/midi/"+str(self.listeMusiques[self.numeroTitre]))
+		pygame.mixer.music.play() # play the song var corresponds to
 
+	def previousSong(self):
+		if self.comptePlay == 1: #Si c'est 1 c'est qu'un son est joué
+			pygame.mixer.music.stop() # stop current song
+		if self.numeroTitre == 0: # if it's the first song
+			self.numeroTitre = len(self.listeMusiques)-1 # set the var to represent the last song
+		else:
+			self.numeroTitre -= 1 # else, previous song
+		pygame.mixer.music.load("./files/midi/"+str(self.listeMusiques[self.numeroTitre]))
+		pygame.mixer.music.play() # play the song var corresponds to
 
 
 
