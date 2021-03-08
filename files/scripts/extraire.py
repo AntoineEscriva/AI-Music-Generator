@@ -183,7 +183,7 @@ class Morceau:
 
     def preparer_track(self, numero):
         L = self.get_track(numero)  # on récupère la piste
-        prepared = [] 
+        save = None
         chaine_retour = "" #chaine de retour
         
         while L != []:
@@ -194,23 +194,23 @@ class Morceau:
             b = 0
             line2 = [-1,-1,-1,-1,-1]
             while int(line2[4]) != note : # on cherche la note qui termine
-                        #si la note ne se termine, alors on dit qu'elle n'existe pas
-                        #prévoir : "and b < len(L)"
-                        b += 1
-                        line2 = L[b].split(",")
+                #si la note ne se termine, alors on dit qu'elle n'existe pas
+                #prévoir : "and b < len(L)"
+                b += 1
+                line2 = L[b].split(",")
 
             time2 = int(line2[1]) # récupération deuxième temps
             duree = self.arrondi_note(time2-time1)
             type_note = self.time_to_note_dict[duree]
 
 
-            if len(prepared) == 0:
-                        prepared = [[time1, type_note, note]]
-                        chaine_retour = str(time1)+":"+str(type_note)+":"+str(note)+" "
+            if save == None:
+                chaine_retour = str(time1)+":"+str(type_note)+":"+str(note)+" "
             else:
-                        prepared = [[time1-prepared[0][0], type_note, note]] # ajout des données
-                        chaine_retour += str(time1)+":"+str(type_note)+":"+str(note)+" "
+                chaine_retour += str(time1-save)+":"+str(type_note)+":"+str(note)+" "
 
+            save = time1
+            
             L = L[1:b]+L[b+1:] # on enleve les deux lignes
         return chaine_retour
 
