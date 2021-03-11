@@ -77,6 +77,20 @@ class Menu(tkinter.Frame):
 		self.entry_text = tkinter.StringVar()
 		self.entry_text.set(os.getcwd()+"/files/midi")
 		
+				
+
+		#Barre de Menu
+		self.menubarre = tkinter.Menu(self.master)
+		
+		self.menuPropos = tkinter.Menu(self.menubarre, tearoff=0)
+		self.menuPropos.add_command(label="A propos",command = self.about)
+		self.menuPropos.add_command(label="Crédits", command = self.credits)
+		
+		self.menubarre.add_cascade(label="A propos", menu = self.menuPropos)
+		
+		self.master.config(menu = self.menubarre)
+
+		
 		#Traitement affichage chemin
 		self.affichageChemin = tkinter.StringVar()
 		self.affichageChemin.set(self.entry_text.get())
@@ -168,7 +182,6 @@ class Menu(tkinter.Frame):
 		label.pack(side="top", fill="x", pady=10)
 		ok = tkinter.Button(popup, text="Ok", bg="white", command = popup.destroy, width=10)
 		ok.pack()
-		popup.mainloop()
 
 	def charging(self, master):
 		if(self.valide()):
@@ -197,7 +210,32 @@ class Menu(tkinter.Frame):
 		print("Filename is "+filename)
 		self.affichageChemin.set(self.traitementAffichage(filename,20))
 		self.entry_text.set(filename)
-			
+
+
+	def credits(self):
+		pageCredit = tkinter.Tk()
+		pageCredit.geometry("600x220")
+		pageCredit.config(bg='white')
+		pageCredit.title("Credits")
+		centrefenetre(pageCredit)
+		texte = "Créé par Antoine Escriva, Florian Bossard, Clément Guérin, Raphaël Garnier, Clément Bruschini"
+		tkinter.Label(pageCredit, text=texte, bg="white", relief = RAISED).grid(row=0, column=0, sticky="EW")
+		#tkinter.Message(pageCredit, text=texte, bg="white", relief = RAISED, anchor = 'w', width =500).pack(fill = tkinter.X)
+		tkinter.Button(pageCredit,text="Ok", width=10,bg="white",command= pageCredit.destroy).grid(row=2,column=1)
+		
+		print("Page credits")
+	
+	def about(self):
+		pageAbout = tkinter.Tk()
+		pageAbout.geometry("400x400")
+		pageAbout.config(bg='white')
+		pageAbout.title("A propos")
+		centrefenetre(pageAbout)
+		text = "Application développée dans le cadre de la matière Gestion de Projet en 2e année d'Ingénieur à Sup Galilée. Version 1.0, 2021"
+		tkinter.Message(pageAbout, text=text, bg="white", relief = RAISED).grid(row =0, column=0)
+		tkinter.Button(pageAbout,text="Ok",bg="white",command= pageAbout.destroy, width=10).grid(row =1, column=0)
+		
+	
 ####################################################### 
 ####################################################### 
 
@@ -215,6 +253,7 @@ def centrefenetre(fen):
 
 ##############################################################################################################
 ##############################################################################################################  
+
 
 def start():
 	#instancie la classe Musique
