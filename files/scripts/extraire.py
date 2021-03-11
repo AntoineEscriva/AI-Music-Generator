@@ -228,7 +228,7 @@ class Morceau:
             smpte = "1, 0, SMPTE_offset, {0}, {1}, {2}, {3}, {4}\n".format(self.smpteHour, self.smpteMinute, self.smpteSecond, self.smpteFrame, self.smpteFracFrame)
             time_s = "1, 0, Time_signature, {0}, {1}, {2}, {3}\n".format(self.tsNum, self.tsDenom, self.tsClick, self.tsNotesQ)
             key_s = "1, 0, Key_signature, {0},{1}".format(self.ksKey, self.ksMinMaj)
-            tempo1 = self.tempoList[0]
+            tempo1 = "1, 0, Tempo, {0}\n".format(857142)
             
             csv_notes_list = [header, start1, smpte, time_s, key_s, tempo1]
             
@@ -249,7 +249,7 @@ class Morceau:
             liste_note.sort() #on trie les notes dans l'ordre croissant
 
             
-            tempo2 = "1, {0}, Tempo, {1}".format(temps, self.tempoList[-1].split(", ")[3])
+            tempo2 = "1, {0}, Tempo, {1}\n".format(temps, 857142)
             end1 = "1, {0}, End_track\n".format(temps) # fin du track au temps du dernier tempo
             start2 = "2, 0, Start_track\n"
 
