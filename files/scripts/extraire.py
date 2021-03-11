@@ -229,11 +229,8 @@ class Morceau:
             time_s = "1, 0, Time_signature, {0}, {1}, {2}, {3}\n".format(self.tsNum, self.tsDenom, self.tsClick, self.tsNotesQ)
             key_s = "1, 0, Key_signature, {0},{1}".format(self.ksKey, self.ksMinMaj)
             tempo1 = self.tempoList[0]
-            tempo2 = self.tempoList[-1]
-            end1 = "1, {0}, End_track\n".format(self.tempoList[-1].split(", ")[1]) # fin du track au temps du dernier tempo
-            start2 = "2, 0, Start_track\n"
-
-            csv_notes_list = [header, start1, smpte, time_s, key_s, tempo1, tempo2, end1, start2]
+            
+            csv_notes_list = [header, start1, smpte, time_s, key_s, tempo1]
             
             all_notes = entree.replace("\n", "").split(" ") # on découpe l'entrée note par note
             temps = 0
@@ -251,9 +248,16 @@ class Morceau:
             temps += duree_n
             liste_note.sort() #on trie les notes dans l'ordre croissant
 
+            
+            tempo2 = "1, {0}, Tempo, {1}".format(temps, self.tempoList[-1].split(", ")[3])
+            end1 = "1, {0}, End_track\n".format(temps) # fin du track au temps du dernier tempo
+            start2 = "2, 0, Start_track\n"
+
+            csv_notes_list += [tempo2, end1, start2]
+
             for note in liste_note:
                 csv_notes_list.append(note[1])
-            
+
             end2 = "2, {0}, End_track\n".format(temps) # temps de la dernière note
             end_of_file = "0, 0, End_of_file"
 
@@ -271,5 +275,6 @@ class Morceau:
             with open(name_out, "wb") as output_file:
                 midi_writer = pm.FileWriter(output_file)
                 midi_writer.write(midi_object)
+
                     
             print("Done")
