@@ -32,3 +32,11 @@ def importFromCSV():
 			parametres['VitesseMorceaux']= row['VitesseMorceaux']
 			parametres['TypeGeneration'] = row['TypeGeneration']
 	return parametres
+	
+def getURL():
+	with open('params.csv', newline='') as csvfile:
+		reader = csv.DictReader(csvfile)
+		parametres = {}
+		for row in reader:
+			return row['URL_Dossier']
+			 

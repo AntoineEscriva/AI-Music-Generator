@@ -11,6 +11,7 @@ from tkinter import simpledialog
 from files import musique as musique
 import pygame
 from os import walk
+from files.scripts import importExportParam as iep 
 
 hauteurBout = 10
 largeurBout = 15
@@ -26,6 +27,8 @@ class Lecteur(tkinter.Frame):
 	def __init__(self, master):
 		#Initialisation du Cadre du lecteur MP3
 		tkinter.Frame.__init__(self, master)
+		
+		self.URL = iep.getURL()+'/'
 		
 		#Réglages de la police du titre puis du texte
 		self.titre = tkFont.Font(family='Helvetica', size=20)
@@ -155,12 +158,13 @@ class Lecteur(tkinter.Frame):
 		pygame.mixer.init()
 		
 		#parcours les fichiers du repertoire
-		for (repertoire, sousRepertoires, fichiers) in walk("./files/midi/"):
+		print(self.URL)
+		for (repertoire, sousRepertoires, fichiers) in walk(self.URL):
 			self.listeMusiques.extend(fichiers)
 			
 		self.listeMusiques = [i for i in self.listeMusiques if ".mid" in i] #Filtre les fichiers pour n'avoir que du .mid
 		try:
-			pygame.mixer.music.load("./files/midi/"+str(self.listeMusiques[0]))	#Charge le premier titre
+			pygame.mixer.music.load(self.URL+str(self.listeMusiques[0]))	#Charge le premier titre
 		except pygame.error:
 			print("Echec de chargement du fichier midi\n")
 		self.comboTitres["values"]=self.listeMusiques
@@ -182,7 +186,7 @@ class Lecteur(tkinter.Frame):
 			self.numeroTitre = 0 # set the var to represent the first song
 		else:
 			self.numeroTitre += 1 # else, next song
-		pygame.mixer.music.load("./files/midi/"+str(self.listeMusiques[self.numeroTitre]))
+		pygame.mixer.music.load(self.URL+str(self.listeMusiques[self.numeroTitre]))
 		pygame.mixer.music.play() # play the song var corresponds to
 		#self.titreMusique.set("Titre: "+self.listeMusiques[self.numeroTitre])
 		self.comboTitres.current(self.numeroTitre)
@@ -194,7 +198,7 @@ class Lecteur(tkinter.Frame):
 			self.numeroTitre = len(self.listeMusiques)-1 # set the var to represent the last song
 		else:
 			self.numeroTitre -= 1 # else, previous song
-		pygame.mixer.music.load("./files/midi/"+str(self.listeMusiques[self.numeroTitre]))
+		pygame.mixer.music.load(self.URL+str(self.listeMusiques[self.numeroTitre]))
 		pygame.mixer.music.play() # play the song var corresponds to
 		#self.titreMusique.set("Titre: "+self.listeMusiques[self.numeroTitre])
 		self.comboTitres.current(self.numeroTitre)
@@ -202,7 +206,7 @@ class Lecteur(tkinter.Frame):
 	def selectionMusique(self, event):
 		if self.comptePlay == 1: #Si c'est 1 c'est qu'un son est joué
 			pygame.mixer.music.stop() # stop current song
-		pygame.mixer.music.load("./files/midi/"+self.comboTitres.get()) #Charge le titre 
+		pygame.mixer.music.load(self.URL+self.comboTitres.get()) #Charge le titre 
 		pygame.mixer.music.play() # play the song var corresponds to
 		self.numeroTitre = self.comboTitres.current() #On met à jour le numero de titre joué
 		

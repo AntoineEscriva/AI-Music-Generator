@@ -68,6 +68,7 @@ class Menu(tkinter.Frame):
 		#Réglage arrière plan
 		self.configure(bg='white')
 		
+		
 		#---------Label------------#
 		#Création et placement du titre du cadre
 		self.titre = tkinter.Label(self, text="Configuration", bg='white', font = self.titre).grid(row=0,column=0)
@@ -78,7 +79,8 @@ class Menu(tkinter.Frame):
 		
 		#Traitement affichage chemin
 		self.affichageChemin = tkinter.StringVar()
-		self.affichageChemin.set(self.traitementAffichage(self.entry_text.get(),29))
+		self.affichageChemin.set(self.entry_text.get())
+		#self.affichageChemin.set(self.traitementAffichage(self.entry_text.get(),29))
 		
 		#Placement de la zone et affectation d'un texte dans cette zone d'affichage
 		self.usr_input = tkinter.Entry(self, state='readonly', text=self.affichageChemin, width =25)
