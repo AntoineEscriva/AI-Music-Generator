@@ -1,7 +1,7 @@
 # !/usr/bin/python3
 #coding: utf-8
 import time
-#from files.scripts import RNN as RNN 
+from files.scripts import RNN as RNN 
 from files.scripts import importExportParam as iep 
 from files.scripts import extraire as extraire
 from os import walk

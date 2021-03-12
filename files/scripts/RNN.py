@@ -120,7 +120,7 @@ def sample(model, out_len, start):
 
 
 
-def main():
+def rnn():
 	#########################
 	# Debut premier section
 	#########################
