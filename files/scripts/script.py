@@ -22,7 +22,7 @@ def main():
 	for files in listeFichiers:
 		listeMorceaux.append(extraire.Morceau(parametres["URL_Dossier"]+'/'+files))
 	
-	#RNN.main()
+	#RNN.rnn()
 	
 	
 	
