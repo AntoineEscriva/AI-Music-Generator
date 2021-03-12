@@ -16,13 +16,21 @@ def main():
 	print(listeFichiers)
 	listeFichiers = [i for i in listeFichiers if ".mid" in i]
 	
-	print(listeFichiers)
-	
-	listeMorceaux = []
+	listeMorceaux = [] # liste d'objets de type Morceau
 	for files in listeFichiers:
 		listeMorceaux.append(extraire.Morceau(parametres["URL_Dossier"]+'/'+files))
+
+	print(listeMorceaux[0].filename)
+	## A CHANGER ##
+	text = listeMorceaux[0].preparer_track(2) #on récupère la piste 2 du premier morceau qu'on trouve
 	
-	#RNN.rnn()
+	out = RNN.rnn(text) #on envoie au RNN et on récupère la sortie
+
+	listeMorceaux[0].format_to_csv(out[0], listeMorceaux[0].filename+"-généré.mid") # enregistre le morceau sous format MIDI
+
+if __name__ == "__main__":
+	main()
+
 	
 	
 	
