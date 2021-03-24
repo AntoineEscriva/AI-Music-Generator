@@ -22,17 +22,16 @@ def main():
 
 	print(listeMorceaux[0].filename)
 	## A CHANGER ##
-	text = listeMorceaux[0].preparer_track(2) #on récupère la piste 2 du premier morceau qu'on trouve
+	liste_textes = []
+	for m in listeMorceaux:
+		if(m.format == 1 and m.nbTracks > 1):
+			liste_textes.append(m.preparer_track(2)) #on récupère la piste 2 du premier morceau qu'on trouve
 	
-	out = RNN.rnn(text) #on envoie au RNN et on récupère la sortie
+	out = RNN.rnn(liste_textes[0]) #on envoie au RNN et on récupère la sortie
 
-	listeMorceaux[0].format_to_csv(out[0], listeMorceaux[0].filename+"-généré.mid") # enregistre le morceau sous format MIDI
+	for index in range(len(out)):
+		listeMorceaux[index].format_to_csv(out[index], listeMorceaux[index].filename.replace(".csv", "-généré.mid")) # enregistre le morceau sous format MIDI
 
-if __name__ == "__main__":
-	main()
-
-	
-	
 	
 if __name__ == "__main__":
 	main()
