@@ -217,66 +217,65 @@ class Morceau:
 
 
 	def arrondi_note(self, time): #arrondi une note à la plus proche existante
-			l = [abs(k-time) for k in self.liste_notes]
-			note = self.liste_notes[l.index(min(l))]
-			return note
+		l = [abs(k-time) for k in self.liste_notes]
+		note = self.liste_notes[l.index(min(l))]
+		return note
 
-    def format_to_csv(self, entree, output_name="TEST"): # transforme une chaine sous le format et renvoie le csv associé
-            #csv_notes_list = [] #liste de retour sous format csv
-            
-            header = "0, 0, Header, {0}, {1}, {2}\n".format(self.format,self.nbTracks, self.division)
-            start1 = "1, 0, Start_track\n"
-            smpte = "1, 0, SMPTE_offset, {0}, {1}, {2}, {3}, {4}\n".format(self.smpteHour, self.smpteMinute, self.smpteSecond, self.smpteFrame, self.smpteFracFrame)
-            time_s = "1, 0, Time_signature, {0}, {1}, {2}, {3}\n".format(self.tsNum, self.tsDenom, self.tsClick, self.tsNotesQ)
-            key_s = "1, 0, Key_signature, {0},{1}".format(self.ksKey, self.ksMinMaj)
-            tempo1 = "1, 0, Tempo, {0}\n".format(857142)
-            
-            csv_notes_list = [header, start1, smpte, time_s, key_s, tempo1]
-            
-            all_notes = entree.replace("\n", "").split(" ") # on découpe l'entrée note par note
-            temps = 0
-            duree_n = 0
-            liste_note = []
-            for note in all_notes:
-                triplet = note.split(":")
-                if(len(triplet) == 3):
-                    tps, duree_n, note_nb = triplet
-                    tps = int(tps)
-                    duree_n = int(list(self.time_to_note_dict.keys())[list(self.time_to_note_dict.values()).index(duree_n)])
-                    note_nb = int(note_nb)
-                    temps += tps #on incrémente le temps global
-                    liste_note.append([temps, "2, {0}, Note_on_c, 0, {1}, {2}\n".format(temps,note_nb,80)]) # la velocité est mise à 80 par défaut (choix sans raison)
-                    liste_note.append([temps+duree_n,"2, {0}, Note_on_c, 0, {1}, {2}\n".format(temps+duree_n,note_nb,0)]) # la vélocité est mise à 0 (équivalent de Note_off_c)
-            temps += duree_n
-            liste_note.sort() #on trie les notes dans l'ordre croissant
+	def format_to_csv(self, entree, output_name="TEST"): # transforme une chaine sous le format et renvoie le csv associé
+	                header = "0, 0, Header, {0}, {1}, {2}\n".format(self.format,self.nbTracks, self.division)
+	                start1 = "1, 0, Start_track\n"
+	                smpte = "1, 0, SMPTE_offset, {0}, {1}, {2}, {3}, {4}\n".format(self.smpteHour, self.smpteMinute, self.smpteSecond, self.smpteFrame, self.smpteFracFrame)
+	                time_s = "1, 0, Time_signature, {0}, {1}, {2}, {3}\n".format(self.tsNum, self.tsDenom, self.tsClick, self.tsNotesQ)
+	                key_s = "1, 0, Key_signature, {0},{1}".format(self.ksKey, self.ksMinMaj)
+	                tempo1 = "1, 0, Tempo, {0}\n".format(857142)
 
-            
-            tempo2 = "1, {0}, Tempo, {1}\n".format(temps, 857142)
-            end1 = "1, {0}, End_track\n".format(temps) # fin du track au temps du dernier tempo
-            start2 = "2, 0, Start_track\n"
+	                csv_notes_list = [header, start1, smpte, time_s, key_s, tempo1]
 
-            csv_notes_list += [tempo2, end1, start2]
-
-            for note in liste_note:
-                csv_notes_list.append(note[1])
-
-            end2 = "2, {0}, End_track\n".format(temps) # temps de la dernière note
-            end_of_file = "0, 0, End_of_file"
-
-            csv_notes_list += [end2, end_of_file]
-
-            with open(output_name+".csv", 'w+') as file_out :
-                for row in csv_notes_list:
-                    file_out.write(row)
+	                all_notes = entree.replace("\n", "").split(" ") # on découpe l'entrée note par note
+	                temps = 0
+	                duree_n = 0
+	                liste_note = []
+	                for note in all_notes:
+	                    triplet = note.split(":")
+	                    if(len(triplet) == 3):
+	                        tps, duree_n, note_nb = triplet
+	                        tps = int(tps)
+	                        duree_n = int(list(self.time_to_note_dict.keys())[list(self.time_to_note_dict.values()).index(duree_n)])
+	                        note_nb = int(note_nb)
+	                        temps += tps #on incrémente le temps global
+	                        liste_note.append([temps, "2, {0}, Note_on_c, 0, {1}, {2}\n".format(temps,note_nb,80)]) # la velocité est mise à 80 par défaut (choix sans raison)
+	                        liste_note.append([temps+duree_n,"2, {0}, Note_on_c, 0, {1}, {2}\n".format(temps+duree_n,note_nb,0)]) # la vélocité est mise à 0 (équivalent de Note_off_c)
+	                temps += duree_n
+	                liste_note.sort() #on trie les notes dans l'ordre croissant
 
 
-            midi_object = pm.csv_to_midi(output_name+".csv")
-            name_out = output_name+".mid"
+	                tempo2 = "1, {0}, Tempo, {1}\n".format(temps, 857142)
+	                end1 = "1, {0}, End_track\n".format(temps) # fin du track au temps du dernier tempo
+	                start2 = "2, 0, Start_track\n"
 
-            # Save the parsed MIDI file to disk
-            with open(name_out, "wb") as output_file:
-                midi_writer = pm.FileWriter(output_file)
-                midi_writer.write(midi_object)
+	                csv_notes_list += [tempo2, end1, start2]
 
-                    
-            print("Fichier écrit sous le nom "+name_out)
+	                for note in liste_note:
+	                    csv_notes_list.append(note[1])
+
+	                end2 = "2, {0}, End_track\n".format(temps) # temps de la dernière note
+	                end_of_file = "0, 0, End_of_file"
+
+	                csv_notes_list += [end2, end_of_file]
+
+	                with open(output_name+".csv", 'w+') as file_out :
+	                    for row in csv_notes_list:
+	                        file_out.write(row)
+
+
+	                midi_object = pm.csv_to_midi(output_name+".csv")
+	                name_out = output_name+".mid"
+
+	                    # Save the parsed MIDI file to disk
+	                with open(name_out, "wb") as output_file:
+	                    midi_writer = pm.FileWriter(output_file)
+	                    midi_writer.write(midi_object)
+
+	                        
+	                print("Fichier écrit sous le nom "+name_out)
+
