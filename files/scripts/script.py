@@ -42,10 +42,11 @@ def main():
 	liste_textes = []
 	for m in listeMorceaux:
 		if(m.format == 1 and m.nbTracks > 1 ):
-			if (parametres["TypeGeneration"] == "Rythme seulement"):
-				liste_textes.append(m.preparer_track_rythme(2)) #on récupère la piste 2 du premier morceau qu'on trouve
-			if (parametres["TypeGeneration"] == "Rythme et mélodie"):
-				liste_textes.append(m.preparer_track(2)) #on récupère la piste 2 du premier morceau qu'on trouve
+			if (m.filename not in listeFichiersConvert ):
+				if (parametres["TypeGeneration"] == "Rythme seulement"):
+					liste_textes.append(m.preparer_track_rythme(2)) #on récupère la piste 2 du premier morceau qu'on trouve
+				if (parametres["TypeGeneration"] == "Rythme et mélodie"):
+					liste_textes.append(m.preparer_track(2)) #on récupère la piste 2 du premier morceau qu'on trouve
 	
 	#print(liste_textes)
 	

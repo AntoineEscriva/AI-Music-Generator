@@ -226,6 +226,10 @@ class Morceau:
 			chaine_retour += str(type_note)
 
 			L = L[1:b]+L[b+1:] # on enleve les deux lignes
+	
+		f = open(self.path.replace("CSV/"+self.filename+".csv","Conversion/"+self.filename +".rtm"),"+w")
+		f.write(chaine_retour)
+		f.close()
 		return chaine_retour
 
 
@@ -314,6 +318,10 @@ class Morceau:
 			save = time1
 			
 			L = L[1:b]+L[b+1:] # on enleve les deux lignes
+
+		f = open(self.path.replace("CSV/"+self.filename+".csv","Conversion/"+self.filename +".rtmm"),"+w")
+		f.write(chaine_retour)
+		f.close()
 		return chaine_retour
 
 
@@ -377,4 +385,3 @@ class Morceau:
 
 
 		print("Fichier écrit sous le nom "+name_out)
-
