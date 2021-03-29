@@ -4,28 +4,28 @@ import time
 from files.scripts import RNN as RNN 
 from files.scripts import importExportParam as iep 
 from files.scripts import extraire as extraire
-from os import walk, listdir,sep
+from os import walk, listdir, sep
 import os
 
 
 def main():
 	parametres = iep.importFromCSV()
 
-	os.makedirs(parametres["URL_Dossier"]+'/'+"CSV",exist_ok=True)
-	os.makedirs(parametres["URL_Dossier"]+'/'+"Conversion",exist_ok=True)
-	os.makedirs(parametres["URL_Dossier"]+'/'+"Resultat",exist_ok=True)
+	os.makedirs(parametres["URL_Dossier"]+os.sep+"CSV",exist_ok=True)
+	os.makedirs(parametres["URL_Dossier"]+os.sep+"Conversion",exist_ok=True)
+	os.makedirs(parametres["URL_Dossier"]+os.sep+"Resultat",exist_ok=True)
 	
 	#on récupère tous les fichiers .mid du dossier
 	listeFichiers = [i for i in os.listdir(parametres["URL_Dossier"]) if ".mid" in i]
 	print(listeFichiers)
 
 	#on récupère tous les fichiers du dossier /Conversion pour ne pas avoir à reconvertir des fichiers
-	listeFichiersConvert = [i for i in os.listdir(parametres["URL_Dossier"]+os.sep+'Conversion')]
+	listeFichiersConvert = [i for i in os.listdir(parametres["URL_Dossier"]+os.sep+"Conversion")]
 	
 	#on tranforme les fichiers midi en objet Morceau
 	listeMorceaux = [] # liste d'objets de type Morceau
 	for files in listeFichiers:
-		listeMorceaux.append(extraire.Morceau(parametres["URL_Dossier"]+'/'+files))
+		listeMorceaux.append(extraire.Morceau(parametres["URL_Dossier"]+os.sep+files))
 	print(listeMorceaux[0].filename)
 	
 	
