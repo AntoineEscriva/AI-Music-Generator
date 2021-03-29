@@ -8,7 +8,6 @@ from tkinter import *
 from files import lecteur as lecteur 
 from files.scripts import script as script 
 from files.scripts import importExportParam
-from os import walk
 import time
 import os
 if(os.name != "posix"):
@@ -27,7 +26,6 @@ class Musique(tkinter.Tk):
 	def __init__(self):
 		#Initialisation d'une fenetre TKinter
 		tkinter.Tk.__init__(self)
-		#Cette ligne là je sais plus à quoi elle sert
 		self.frame = None
 		#Affectation du titre de la fenêtre
 		self.title("Génération musique aléatoire")
@@ -75,7 +73,7 @@ class Menu(tkinter.Frame):
 
 		#Création de la Zone d'affichage du chemin
 		self.entry_text = tkinter.StringVar()
-		self.entry_text.set(os.getcwd()+"/files/midi")
+		self.entry_text.set(os.getcwd()+os.sep+"files"+os.sep+"midi")
 		
 				
 
@@ -206,7 +204,7 @@ class Menu(tkinter.Frame):
 		
 	#Méthode pour l'explorateur de fichier
 	def Browser(self):
-		filename = filedialog.askdirectory(initialdir = "./project2020-2021/files/midi/")
+		filename = filedialog.askdirectory(initialdir = "."+os.sep+"project2020-2021"+os.sep+"files"+os.sep+"midi"+os.sep)
 		print("Filename is "+filename)
 		self.affichageChemin.set(self.traitementAffichage(filename,20))
 		self.entry_text.set(filename)
@@ -269,8 +267,3 @@ def start():
 
 	#Boucle principale de l'interface
 	app.mainloop()
-	
-
-
-
-
