@@ -48,7 +48,7 @@ class Morceau:
 		
 
 	def conversion(self, name_in):
-		split_path = self.path.split("/")
+		split_path = self.path.split(os.sep)
 		self.filename = split_path[-1].replace(".mid","")
 
 		#convertit un fichier .mid en fichier .csv
@@ -377,4 +377,3 @@ class Morceau:
 
 
 		print("Fichier écrit sous le nom "+name_out)
-
