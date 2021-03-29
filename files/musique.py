@@ -71,7 +71,7 @@ class Menu(tkinter.Frame):
 
 		#Création de la Zone d'affichage du chemin
 		self.entry_text = tkinter.StringVar()
-		self.entry_text.set(os.getcwd()+"/files/midi")
+		self.entry_text.set(os.getcwd()+os.sep+"files"+os.sep+"midi")
 		
 				
 
@@ -180,6 +180,7 @@ class Menu(tkinter.Frame):
 			self.textBoutonValider.set("En chargement...")
 			self.export()
 			script.main()
+			self.textBoutonValider.set("Valider")
 			master.switch_frame(lecteur.Lecteur)
 		return
 		
@@ -199,6 +200,7 @@ class Menu(tkinter.Frame):
 	#Méthode pour l'explorateur de fichier
 	def Browser(self):
 		filename = tkinter.filedialog.askdirectory(initialdir = "./project2020-2021/files/midi/")
+		filename = filedialog.askdirectory(initialdir = "."+os.sep+"project2020-2021"+os.sep+"files"+os.sep+"midi"+os.sep)
 		print("Filename is "+filename)
 		self.affichageChemin.set(self.traitementAffichage(filename,20))
 		self.entry_text.set(filename)
@@ -261,8 +263,3 @@ def start():
 
 	#Boucle principale de l'interface
 	app.mainloop()
-	
-
-
-
-

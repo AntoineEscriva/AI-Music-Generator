@@ -7,8 +7,11 @@ from tkinter import ttk
 import pygame
 from PIL import Image,ImageTk
 from files import musique as musique
+
+import os
+import pygame
 from os import walk
-from files.scripts import importExportParam as iep 
+from files.scripts import importExportParam as iep
 
 hauteurBout = 10
 largeurBout = 15
@@ -25,7 +28,7 @@ class Lecteur(tkinter.Frame):
 		#Initialisation du Cadre du lecteur MP3
 		tkinter.Frame.__init__(self, master)
 		
-		self.URL = iep.getURL()+'/'
+		self.URL = iep.getURL()+os.sep+"Resultat"+os.sep
 		
 		#Réglages de la police du titre puis du texte
 		self.titre = tkFont.Font(family='Helvetica', size=20)
@@ -47,6 +50,7 @@ class Lecteur(tkinter.Frame):
 		#Bouton Skip Left
 		#Affectation d'une image de bouton à une variable
 		self.skip_left = tkinter.PhotoImage(file="./buttons_resize/sl1.png")
+		self.skip_left = tkinter.PhotoImage(file="."+os.sep+"buttons_resize"+os.sep+"sl1.png")
 		#Création du bouton
 		self.skip_left_button = tkinter.Button(self)
 		#Placement du bouton
@@ -60,6 +64,7 @@ class Lecteur(tkinter.Frame):
 		self.comptePlay = 0
 		#Affectation d'une image de bouton à une variable
 		self.play = tkinter.PhotoImage(file="./buttons_resize/pl1.png")	
+		self.play = tkinter.PhotoImage(file="."+os.sep+"buttons_resize"+os.sep+"pl1.png")	
 		#Création du bouton
 		self.play_button = tkinter.Button(self)
 		#Placement du bouton
@@ -70,7 +75,10 @@ class Lecteur(tkinter.Frame):
 		
 		#Bouton Pause
 		#Affectation d'une image de bouton à une variable
+
 		self.pause = tkinter.PhotoImage(file="./buttons_resize/pa1.png")
+		self.pause = tkinter.PhotoImage(file="."+os.sep+"buttons_resize"+os.sep+"pa1.png")
+
 		#Création du bouton
 		self.pause_button = tkinter.Button(self)
 		#Placement du bouton
@@ -81,6 +89,7 @@ class Lecteur(tkinter.Frame):
 		#Bouton Skip Right
 		#Affectation d'une image de bouton à une variable
 		self.skip_right = tkinter.PhotoImage(file="./buttons_resize/sr1.png")
+		self.skip_right = tkinter.PhotoImage(file="."+os.sep+"buttons_resize"+os.sep+"sr1.png")
 		#Création du bouton
 		self.skip_right_button = tkinter.Button(self)
 		#Placement du bouton
@@ -130,7 +139,7 @@ class Lecteur(tkinter.Frame):
 	def supprimerFichiers(self):
 		print("Code effectif à écrire")
 	
-	'''#Fonction d'enregistrement de fichier, pas grand chose à expliquer, le code se comprend tout seul
+	'''#Fonction d'enregistrement de fichier
 	def FNC_Selection(self, formatChoisi) :
 		if(formatChoisi==".midi"):
 			extension = [("fichier MIDI",".midi")]
@@ -142,7 +151,9 @@ class Lecteur(tkinter.Frame):
 	'''
 	#Fonction de l'explorateur de fichier
 	def BrowserFile(self):
+
 		filename = tkinter.filedialog.askdirectory(initialdir = "/")
+		filename = tkinter.filedialog.askdirectory(initialdir = os.sep)
 		print("Filename is "+filename)
 		self.entry_text.set(filename)
 	
@@ -203,20 +214,3 @@ class Lecteur(tkinter.Frame):
 		pygame.mixer.music.load(self.URL+self.comboTitres.get()) #Charge le titre 
 		pygame.mixer.music.play() # play the song var corresponds to
 		self.numeroTitre = self.comboTitres.current() #On met à jour le numero de titre joué
-		
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
