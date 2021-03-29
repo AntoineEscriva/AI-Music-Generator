@@ -52,7 +52,7 @@ class Morceau:
 		csv_list = pm.midi_to_csv(name_in) #midi to csv
 		name_out = name_in.replace(".mid",".csv")
 		#os.remove("./files/midi/alb_esp2.csv") #HERE : pas de hardcoding !!
-		print("Chemin "+name_in)
+		print("Chemin "+name_out)
 		with open(name_out, 'w+') as file_out :
 			for row in csv_list:
 				file_out.write(row)

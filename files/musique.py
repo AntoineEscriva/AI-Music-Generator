@@ -2,15 +2,12 @@
 
 import tkinter
 import tkinter.font as tkFont
-from tkinter import filedialog 
 from tkinter import ttk
-from tkinter import *
-from files import lecteur as lecteur 
-from files.scripts import script as script 
-from files.scripts import importExportParam
-from os import walk
+from files import lecteur
+from files.scripts import script, importExportParam
 import time
 import os
+
 if(os.name != "posix"):
 	from ctypes import windll
 
@@ -27,7 +24,6 @@ class Musique(tkinter.Tk):
 	def __init__(self):
 		#Initialisation d'une fenetre TKinter
 		tkinter.Tk.__init__(self)
-		#Cette ligne là je sais plus à quoi elle sert
 		self.frame = None
 		#Affectation du titre de la fenêtre
 		self.title("Génération musique aléatoire")
@@ -85,7 +81,6 @@ class Menu(tkinter.Frame):
 		self.menuPropos = tkinter.Menu(self.menubarre, tearoff=0)
 		self.menuPropos.add_command(label="A propos",command = self.about)
 		self.menuPropos.add_command(label="Crédits", command = self.credits)
-		
 		self.menubarre.add_cascade(label="A propos", menu = self.menuPropos)
 		
 		self.master.config(menu = self.menubarre)
@@ -137,14 +132,14 @@ class Menu(tkinter.Frame):
 		tkinter.Label(self, text="Entre 60-340", bg="white").grid(row=3, column=1, sticky="e")
 		
 		#Création et placement du Bouton valider
-		self.textBoutonValider = StringVar()
+		self.textBoutonValider = tkinter.StringVar()
 		self.textBoutonValider.set("Valider")
 		self.Valider = tkinter.Button(self, textvariable=self.textBoutonValider, bg="white", font = self.texte, bd=1, command=lambda :[self.charging(master)])
 		self.Valider.grid(row=7,column = 1,sticky="EW")
 		
 		
 		#Création de la combobox de Choix de generation	
-		self.comboboite = ttk.Combobox(self, values = ["Rythme seulement","Rythme et mélodie","Polyphonie"],state="readonly")
+		self.comboboite = tkinter.ttk.Combobox(self, values = ["Rythme seulement","Rythme et mélodie","Polyphonie"],state="readonly")
 		#Réglage de l'item actuel sur 0
 		self.comboboite.current(0)
 		#Placement
@@ -161,13 +156,10 @@ class Menu(tkinter.Frame):
 		valide = True
 		if(int(self.nbMorceaux.get())>20 or int(self.nbMorceaux.get())<1):
 			valide = False
-			#self.valide.set(1)
 		if(int(self.dureeMorceau.get())<60 or int(self.dureeMorceau.get())>340) :
 			valide = False
-			#self.dureeMorceau.set(60),
 		if(int(self.bpmMorceau.get()) <30 or int(self.bpmMorceau.get())>240) :
 			valide=False
-			#self.bpmMorceau.set(30)
 		if(not valide):
 			self.popupmsg()
 		return valide
@@ -206,7 +198,7 @@ class Menu(tkinter.Frame):
 		
 	#Méthode pour l'explorateur de fichier
 	def Browser(self):
-		filename = filedialog.askdirectory(initialdir = "./project2020-2021/files/midi/")
+		filename = tkinter.filedialog.askdirectory(initialdir = "./project2020-2021/files/midi/")
 		print("Filename is "+filename)
 		self.affichageChemin.set(self.traitementAffichage(filename,20))
 		self.entry_text.set(filename)

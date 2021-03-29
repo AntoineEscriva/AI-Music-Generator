@@ -3,13 +3,10 @@
 
 import tkinter
 import tkinter.font as tkFont
-from tkinter import filedialog 
 from tkinter import ttk
-from tkinter import *
-from PIL import Image,ImageTk
-from tkinter import simpledialog
-from files import musique as musique
 import pygame
+from PIL import Image,ImageTk
+from files import musique as musique
 from os import walk
 from files.scripts import importExportParam as iep 
 
@@ -45,12 +42,11 @@ class Lecteur(tkinter.Frame):
 		self.titreMusique = ""
 		self.boxTitreMusique = tkinter.Label(self, text="Titre: ", bg='white', font = self.texte).grid(row=1,column=0, sticky="w")
 		
-		#Espace
 		#tkinter.Label(self, text="",height = hauteurBout,bg='white').grid(row = 2, column = 0) 
 		
 		#Bouton Skip Left
 		#Affectation d'une image de bouton à une variable
-		self.skip_left = PhotoImage(file="./buttons_resize/sl1.png")
+		self.skip_left = tkinter.PhotoImage(file="./buttons_resize/sl1.png")
 		#Création du bouton
 		self.skip_left_button = tkinter.Button(self)
 		#Placement du bouton
@@ -63,7 +59,7 @@ class Lecteur(tkinter.Frame):
 		#Ajout d'un compteur au bouton play
 		self.comptePlay = 0
 		#Affectation d'une image de bouton à une variable
-		self.play = PhotoImage(file="./buttons_resize/pl1.png")	
+		self.play = tkinter.PhotoImage(file="./buttons_resize/pl1.png")	
 		#Création du bouton
 		self.play_button = tkinter.Button(self)
 		#Placement du bouton
@@ -74,7 +70,7 @@ class Lecteur(tkinter.Frame):
 		
 		#Bouton Pause
 		#Affectation d'une image de bouton à une variable
-		self.pause = PhotoImage(file="./buttons_resize/pa1.png")
+		self.pause = tkinter.PhotoImage(file="./buttons_resize/pa1.png")
 		#Création du bouton
 		self.pause_button = tkinter.Button(self)
 		#Placement du bouton
@@ -84,7 +80,7 @@ class Lecteur(tkinter.Frame):
 		
 		#Bouton Skip Right
 		#Affectation d'une image de bouton à une variable
-		self.skip_right = PhotoImage(file="./buttons_resize/sr1.png")
+		self.skip_right = tkinter.PhotoImage(file="./buttons_resize/sr1.png")
 		#Création du bouton
 		self.skip_right_button = tkinter.Button(self)
 		#Placement du bouton
@@ -92,8 +88,6 @@ class Lecteur(tkinter.Frame):
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white', command = lambda:[self.nextSong()])
 		
-
-		#tkinter.Label(self, text="",height = hauteurBout,bg='white').grid(row = 4, column = 0) 
 		
 		#Création et placement du Label Enregistrement, avec background blanc
 		tkinter.Label(self, text="Enregistrement",bg='white', font = self.titre).grid(row = 5, column = 0, sticky="W") 
@@ -148,7 +142,7 @@ class Lecteur(tkinter.Frame):
 	'''
 	#Fonction de l'explorateur de fichier
 	def BrowserFile(self):
-		filename = filedialog.askdirectory(initialdir = "/")
+		filename = tkinter.filedialog.askdirectory(initialdir = "/")
 		print("Filename is "+filename)
 		self.entry_text.set(filename)
 	
