@@ -12,7 +12,7 @@ from files import musique as musique
 import os
 import pygame
 from os import walk
-from files.scripts import importExportParam as iep 
+from files.scripts import importExportParam as iep
 
 hauteurBout = 10
 largeurBout = 15
@@ -29,7 +29,7 @@ class Lecteur(tkinter.Frame):
 		#Initialisation du Cadre du lecteur MP3
 		tkinter.Frame.__init__(self, master)
 		
-		self.URL = iep.getURL()+os.sep
+		self.URL = iep.getURL()+os.sep+"Resultat"+os.sep
 		
 		#Réglages de la police du titre puis du texte
 		self.titre = tkFont.Font(family='Helvetica', size=20)
