@@ -186,6 +186,7 @@ class Menu(tkinter.Frame):
 			self.textBoutonValider.set("En chargement...")
 			self.export()
 			script.main()
+			self.textBoutonValider.set("Valider")
 			master.switch_frame(lecteur.Lecteur)
 		return
 		
