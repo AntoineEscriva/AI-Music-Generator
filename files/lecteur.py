@@ -49,8 +49,8 @@ class Lecteur(tkinter.Frame):
 		
 		#Bouton Skip Left
 		#Affectation d'une image de bouton à une variable
-		self.skip_left = tkinter.PhotoImage(file="./buttons_resize/sl1.png")
 		self.skip_left = tkinter.PhotoImage(file="."+os.sep+"buttons_resize"+os.sep+"sl1.png")
+		
 		#Création du bouton
 		self.skip_left_button = tkinter.Button(self)
 		#Placement du bouton
@@ -63,8 +63,8 @@ class Lecteur(tkinter.Frame):
 		#Ajout d'un compteur au bouton play
 		self.comptePlay = 0
 		#Affectation d'une image de bouton à une variable
-		self.play = tkinter.PhotoImage(file="./buttons_resize/pl1.png")	
 		self.play = tkinter.PhotoImage(file="."+os.sep+"buttons_resize"+os.sep+"pl1.png")	
+		
 		#Création du bouton
 		self.play_button = tkinter.Button(self)
 		#Placement du bouton
@@ -75,9 +75,9 @@ class Lecteur(tkinter.Frame):
 		
 		#Bouton Pause
 		#Affectation d'une image de bouton à une variable
-
-		self.pause = tkinter.PhotoImage(file="./buttons_resize/pa1.png")
 		self.pause = tkinter.PhotoImage(file="."+os.sep+"buttons_resize"+os.sep+"pa1.png")
+
+		
 
 		#Création du bouton
 		self.pause_button = tkinter.Button(self)
@@ -88,8 +88,8 @@ class Lecteur(tkinter.Frame):
 		
 		#Bouton Skip Right
 		#Affectation d'une image de bouton à une variable
-		self.skip_right = tkinter.PhotoImage(file="./buttons_resize/sr1.png")
 		self.skip_right = tkinter.PhotoImage(file="."+os.sep+"buttons_resize"+os.sep+"sr1.png")
+		
 		#Création du bouton
 		self.skip_right_button = tkinter.Button(self)
 		#Placement du bouton
@@ -151,9 +151,9 @@ class Lecteur(tkinter.Frame):
 	'''
 	#Fonction de l'explorateur de fichier
 	def BrowserFile(self):
-
-		filename = tkinter.filedialog.askdirectory(initialdir = "/")
 		filename = tkinter.filedialog.askdirectory(initialdir = os.sep)
+		
+
 		print("Filename is "+filename)
 		self.entry_text.set(filename)
 	
