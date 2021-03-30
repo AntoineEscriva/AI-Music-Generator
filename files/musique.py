@@ -199,8 +199,8 @@ class Menu(tkinter.Frame):
 		
 	#Méthode pour l'explorateur de fichier
 	def Browser(self):
-		filename = tkinter.filedialog.askdirectory(initialdir = "./project2020-2021/files/midi/")
-		filename = filedialog.askdirectory(initialdir = "."+os.sep+"project2020-2021"+os.sep+"files"+os.sep+"midi"+os.sep)
+		filename = tkinter.filedialog.askdirectory(initialdir = "."+os.sep+"project2020-2021"+os.sep+"files"+os.sep+"midi"+os.sep)
+		
 		print("Filename is "+filename)
 		self.affichageChemin.set(self.traitementAffichage(filename,20))
 		self.entry_text.set(filename)
