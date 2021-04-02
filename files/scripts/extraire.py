@@ -58,10 +58,9 @@ class Morceau:
 					
 		csv_list = pm.midi_to_csv(name_in) #midi to csv
 		name_out = name_in.replace(".mid",".csv")
-		#os.remove("./files/midi/alb_esp2.csv") #HERE : pas de hardcoding !!
 		print("Chemin "+name_out)
 		csv_list = pm.midi_to_csv(name_in) #transformation de midi en csv
-		name_out = name_in.replace(self.filename+".mid","CSV/"+ self.filename + ".csv")
+		name_out = name_in.replace(self.filename+".mid","CSV"+os.sep+ self.filename + ".csv")
 		print("Chemin "+name_in)
 		# ecriture du fichier
 		with open(name_out, 'w+') as file_out :
@@ -233,7 +232,7 @@ class Morceau:
 		return chaine_retour
 
 
-	def format_to_csv_rythme(self, entree): 
+	def format_to_csv_rythme(self, entree, save_name="default"): 
 		# transforme une chaine encodé au format rythme et renvoie le csv associé
 		output_path = self.path
 		header = "0, 0, Header, {0}, {1}, {2}\n".format(self.format,self.nbTracks, self.division)
@@ -276,7 +275,11 @@ class Morceau:
 		        file_out.write(row)
 
 		midi_object = pm.csv_to_midi(csv_path)
-		name_out = output_path.replace("CSV/"+self.filename, "Resultat/"+self.filename).replace(".csv","-généré.mid")
+		
+		if(save_name !="default"):
+			name_out = output_path.replace("CSV"+os.sep+self.filename, "Resultat"+os.sep+save_name).replace(".csv", "-généré.mid")
+		else:
+			name_out = output_path.replace("CSV"+os.sep+self.filename, "Resultat"+os.sep+self.filename).replace(".csv","-généré.mid")
 
 		# Save the parsed MIDI file to disk
 		with open(name_out, "wb") as output_file:
@@ -372,7 +375,7 @@ class Morceau:
 
 		        
 		midi_object = pm.csv_to_midi(csv_path)
-		name_out = output_path.replace("CSV/"+self.filename, "Resultat/"+self.filename).replace(".csv","-généré.mid")
+		name_out = output_path.replace("CSV"+os.sep+self.filename, "Resultat"+os.Sep+self.filename).replace(".csv","-généré.mid")
 		   
 		# Save the parsed MIDI file to disk
 		with open(name_out, "wb") as output_file:
