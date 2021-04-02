@@ -6,11 +6,9 @@ import tkinter.font as tkFont
 from tkinter import ttk
 import pygame
 from PIL import Image,ImageTk
-from files import musique as musique
+from files import musique
 
 import os
-import pygame
-from os import walk
 from files.scripts import importExportParam as iep
 
 hauteurBout = 10
@@ -164,7 +162,7 @@ class Lecteur(tkinter.Frame):
 		
 		#parcours les fichiers du repertoire
 		print(self.URL)
-		for (repertoire, sousRepertoires, fichiers) in walk(self.URL):
+		for (repertoire, sousRepertoires, fichiers) in os.walk(self.URL):
 			self.listeMusiques.extend(fichiers)
 			
 		self.listeMusiques = [i for i in self.listeMusiques if ".mid" in i] #Filtre les fichiers pour n'avoir que du .mid
