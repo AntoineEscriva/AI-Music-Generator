@@ -3,7 +3,6 @@
 
 import time
 from files.scripts import RNN, extraire, importExportParam as iep 
-from os import walk, listdir, sep
 import os
 
 def lire_fichier(nom):
