@@ -5,6 +5,9 @@ import torch
 from torch import nn
 import numpy as np
 import time
+from math import ceil
+import random
+from matplotlib import pyplot as plt
 
 
 def one_hot_encode(sequence, dict_size, seq_len, batch_size):
@@ -20,16 +23,15 @@ def one_hot_encode(sequence, dict_size, seq_len, batch_size):
 
 #return nb_samples samples from input_t & target_t
 def sample_seq(nb_samples, total, input_t, target_t):
-    global new_input, new_target, indexes
     indexes = np.random.randint(0, total-1, nb_samples)
-    input_shape = input_seq.size()
-    target_shape = target_seq.size()
+    input_shape = input_t.size()
+    target_shape = target_t.size()
     new_input = torch.randn((nb_samples, input_shape[1], input_shape[2]), dtype=torch.float32)
     new_target = torch.randn((nb_samples, target_shape[1]), dtype=torch.float32)
 
     for a in range(len(indexes)):
-        new_input[a] = input_seq[indexes[a]].detach().clone()
-        new_target[a] = target_seq[indexes[a]].detach().clone()
+        new_input[a] = input_t[indexes[a]].detach().clone()
+        new_target[a] = target_t[indexes[a]].detach().clone()
     return new_input, new_target
 
 
@@ -118,82 +120,111 @@ def device_choice():
 	return device
 
 
+def testfile_number_choice(total):
+	#retourne le nombre de fichiers qui seront utilisés pour le test du RNN mais pas pour l'entraînement
+	return ceil(total * 20/100) # retourne 20% de total arrondi à l'entier supérieur
+
+
+def testfile_choice(liste, nb):
+	#retourne une liste composée des fichiers utilisées pour l'entraînement et des fichiers utilisés pour les tests
+	L = [i for i in range(len(liste))] #liste d'index
+	L_id = random.sample(L, nb) #sample de taille nb d'index
+	test = [liste[i] for i in L_id] #liste de training
+	training = [liste[i] for i in range(len(liste)) if i not in L_id] #liste de test
+	return [training, test]
+
+def decoupe_morceau(morceau, taille):
+	#morceau est sous la forme d'un tableau
+	#découpe un morceau en plusieurs sous-parties de longueur taille+1
+	#si la longueur du morceau n'est pas un multiple de taille+1, la partie restante sera ignorée
+	return [morceau[i:i+taille+1] for i in range(0,len(morceau)-taille, taille+1)]
+
+
 # Partie RNN pour le rythme seulement
 
 
-def rnn_rythme(txt):
+def rnn_rythme(input_list):
 	global device, int2char, char2int, dict_size
 
 	device = device_choice() #choix du device (CPU ou GPU)
 
+	taille = 200 #longueur d'une séquence # de 100 à 200 généralement
+	batch_len = 8 # 16 ou 32
+	is_batch = True
 
-	taille = 10 #length of a sequence # de 100 à 200 généralement (50 pk pas)
-	batch_len = 16 # 16 ou 32
-	id_last_car = len(txt)-taille #index of the last character to parse for creating the sequences
-	text = []
+	training_text = [] # liste des training files de longueur taille+1 que l'on va découper
+	test_text = [] # liste des tests files de longueur taille+1 que l'on va découper 
+
+	nb_test_files = testfile_number_choice(len(input_list))
+	training_files, test_files = testfile_choice(input_list, nb_test_files)
 
 
-	for i in range(id_last_car):
-		text.append(txt[i:i+taille+1])
+	for i in training_files:
+		training_text += decoupe_morceau(i, taille)
 
 
-	# Join all the sentences together and extract the unique characters from the combined sentences
-	chars = set(''.join(text))
+	for i in test_files:
+		test_text += decoupe_morceau(i, taille)
 
-	# Creating a dictionary that maps integers to the characters
+	# on joint les text et on extrait les caractères de manière unique
+	chars = set(''.join(training_text)).union(''.join(test_text))
+
+
+	# on crée un dictionnaire pour maper les entiers aux caractères
 	int2char = dict(enumerate(chars))
 
-	# Creating another dictionary that maps characters to integers
+	# on crée un autre dictionnaire qui map les caractères aux entiers
 	char2int = {char: ind for ind, char in int2char.items()}
 
 
-	# Finding the length of the longest string in our data
-	maxlen = len(max(text, key=len))
-
-
-
 	# Creating lists that will hold our input and target sequences
-	input_seq = []
-	target_seq = []
+	training_input_seq = []
+	training_target_seq = []
+	test_input_seq = []
+	test_target_seq = []
 
-	for i in range(len(text)):
+
+	for i in range(len(training_text)):
 		# Remove last character for input sequence
-	  input_seq.append(text[i][:-1])
-		
+		training_input_seq.append(training_text[i][:-1])
+
 		# Remove first character for target sequence
-	  target_seq.append(text[i][1:])
-	  #print("Input Sequence: {}\nTarget Sequence: {}".format(input_seq[i], target_seq[i]))
+		training_target_seq.append(training_text[i][1:])
+
+	for i in range(len(test_text)):
+		# Remove last character for input sequence
+		test_input_seq.append(test_text[i][:-1])
+
+		# Remove first character for target sequence
+		test_target_seq.append(test_text[i][1:])
 
 
-	for i in range(len(text)):
-		input_seq[i] = [char2int[character] for character in input_seq[i]]
-		target_seq[i] = [char2int[character] for character in target_seq[i]]
 
+	for i in range(len(training_text)):
+		training_input_seq[i] = [char2int[character] for character in training_input_seq[i]]
+		training_target_seq[i] = [char2int[character] for character in training_target_seq[i]]
+
+	for i in range(len(test_text)):
+		test_input_seq[i] = [char2int[character] for character in test_input_seq[i]]
+		test_target_seq[i] = [char2int[character] for character in test_target_seq[i]]
 
 	dict_size = len(char2int)
-	seq_len = maxlen - 1
-	batch_size = len(text)
+	seq_len = taille
+	training_batch_size = len(training_text)
+	test_batch_size = len(test_text)
 
-	##################
-	#Fin premiere section
-	##################
-
-
-
-	###################################
-	# Debut 2e section
-	###################################
 	# Input shape --> (Batch Size, Sequence Length, One-Hot Encoding Size)
-	input_seq = one_hot_encode(input_seq, dict_size, seq_len, batch_size)
+	#encodage pour training
+	training_input_seq = one_hot_encode(training_input_seq, dict_size, seq_len, training_batch_size)
 
-	input_seq = torch.from_numpy(input_seq)
-	target_seq = torch.Tensor(target_seq)
-	###################################
-	# Fin 2e section
-	###################################
+	training_input_seq = torch.from_numpy(training_input_seq)
+	training_target_seq = torch.Tensor(training_target_seq)
 
+	# idem pour test
+	test_input_seq = one_hot_encode(test_input_seq, dict_size, seq_len, test_batch_size)
 
-
+	test_input_seq = torch.from_numpy(test_input_seq)
+	test_target_seq = torch.Tensor(test_target_seq)
 
 
 
@@ -203,14 +234,17 @@ def rnn_rythme(txt):
 	# We'll also set the model to the device that we defined earlier
 	model = model.to(device)
 
-	# set the input_seq ant target_seq to the device used
-	input_seq = input_seq.to(device) 
-	target_seq = target_seq.to(device)
+	# set the training_input_seq ant training_target_seq to the device used
+	training_input_seq = training_input_seq.to(device) 
+	training_target_seq = training_target_seq.to(device)
 
+	#idem pour les test
+	test_input_seq = test_input_seq.to(device) 
+	test_target_seq = test_target_seq.to(device)
 
 	# Define hyperparameters
-	n_epochs = 50
-	lr=0.001
+	n_epochs = 40
+	lr=0.01
 
 
 	# Define Loss, Optimizer
@@ -219,32 +253,81 @@ def rnn_rythme(txt):
 
 	print("Début de l'Entraînement")
 
+	old_training_loss = 100
+	old_test_loss = 100
+	list_training_loss = []
+	list_test_loss = []
+	list_lr = []
+
 	# Training Run
 	t1 = time.time()
 	for epoch in range(1, n_epochs):
 		optimizer.zero_grad() # Clears existing gradients from previous epoch
-		#input_sample, target_sample = sample_seq(batch_len, batch_size, input_seq, target_seq)
-		output, hidden = model(input_seq)
-		loss = criterion(output, target_seq.view(-1).long())
+		if (is_batch):
+			training_input_sample, training_target_sample = sample_seq(batch_len, training_batch_size, training_input_seq, training_target_seq)
+			output, hidden = model(training_input_sample)
+			new_training_loss = criterion(output, training_target_sample.view(-1).long())
+		else:
+			output, hidden = model(training_input_seq)
+			new_training_loss = criterion(output, training_target_seq.view(-1).long())
 
-		loss.backward() # Does backpropagation and calculates gradients
+		new_training_loss.backward() # Does backpropagation and calculates gradients
 		optimizer.step() # Updates the weights accordingly
 		
 		if epoch%1 == 0:
 			t2 = time.time()-t1
 			t1 = time.time()
 			print('Epoch: {}/{}.............'.format(epoch, n_epochs), end=' ')
-			print("Loss: {:.4f}   {:.4f}".format(loss.item(), t2))
+			print("Loss: {:.4f}   {:.4f}".format(new_training_loss.item(), t2))
+
+			if(is_batch):
+				test_input_sample, test_target_sample = sample_seq(batch_len, test_batch_size, test_input_seq, test_target_seq)
+				output, hidden = model(test_input_sample)
+				new_test_loss = criterion(output, test_target_sample.view(-1).long())
+			else:
+				output, hidden = model(test_input_seq)
+				new_test_loss = criterion(output, test_target_seq.view(-1).long())
+
+			if(new_test_loss < old_test_loss):
+				print("Test sur les données de test \t Loss : {} BAISSE".format(new_test_loss.item()))
+			else:
+				print("Test sur les données de test \t Loss : {} AUGMENTATION".format(new_test_loss.item()))
+
+			old_test_loss = new_test_loss
+			list_test_loss.append(new_test_loss)
+
+		old_training_loss = new_training_loss
+		list_training_loss.append(new_training_loss)
+		list_lr.append(lr)
+		lr -= (1/100) * lr #mise à jour du learning rate
 
         # ICI ON RECUPERE LES PARAMETRES CONCERNANT LE NOMBRE DE MORCEAUX, LA DUREE, ETC
 	
 	print("Entraînement fini, génération des morceaux")
 
-	out = [sample(model, 200, "t")] # on retourne le résultat sous la forme d'une liste
+	#random_note = int2char[random.randint(0,len(int2char)-1)]
+
+	x = np.arange(1,n_epochs)
+	y1 = list_training_loss
+	y2 = list_test_loss
+	y3 = list_lr
+
+	plt.figure()
+	plt.plot(x,y1, color='b') #bleu
+	plt.xlabel("Nb d'Epoch")
+	plt.plot(x,y2, color='r') #rouge
+	plt.ylabel("Training loss en bleu\nTest loss en rouge")
+
+	plt.figure()
+	plt.plot(x,y3, color='g') #vert
+	#plt.show()
+
+	out = [sample(model, 100, int2char[random.randint(0,len(int2char)-1)]) for i in range(3)] # on retourne le résultat sous la forme d'une liste
 
 	print(out)
 
-	# /!\ Attention, il faut couper la sortie en enlevant les triplets non complets !!
+	plt.draw()
+	#plt.show()
 
 	return out
 
