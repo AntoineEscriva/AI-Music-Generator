@@ -80,18 +80,19 @@ def main():
 			liste_textes.append(content) #recuperation des donnees
 
 	
+	# en fonction des paramètres de génération, on appelle différents RNN
 	if (parametres["TypeGeneration"] == "Rythme seulement"):
-		out = RNN.rnn_rythme(liste_textes[0]) #on envoie au RNN et on récupère la sortie
+		out = RNN.rnn_rythme(liste_textes) #on envoie au RNN et on récupère la sortie
 	elif (parametres["TypeGeneration"] == "Rythme et mélodie"):
-		out = RNN.rnn_rythme_melodie(liste_textes[0])
+		out = RNN.rnn_rythme_melodie(liste_textes)
 
-
+	temp = int(time.time())
 
 	for index in range(len(out)):
 		if (parametres["TypeGeneration"] == "Rythme seulement"):
-			listeMorceaux[index].format_to_csv_rythme(out[index]) # enregistre le morceau sous format MIDI
+			listeMorceaux[0].format_to_csv_rythme(out[index], str(temp)+" "+str(index)) # enregistre le morceau sous format MIDI
 		elif (parametres["TypeGeneration"] == "Rythme et mélodie"):
-			listeMorceaux[index].format_to_csv(out[index]) # enregistre le morceau sous format MIDI
+			listeMorceaux[0].format_to_csv(out[index], str(temp)+" "+str(index)) # enregistre le morceau sous format MIDI
 
 
 if __name__ == "__main__":
