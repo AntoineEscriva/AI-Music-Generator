@@ -25,15 +25,6 @@ def main():
 	os.makedirs(parametres["URL_Dossier"]+os.sep+"Conversion_melodie",exist_ok=True)
 	os.makedirs(parametres["URL_Dossier"]+os.sep+"Resultat",exist_ok=True)
 	
-
-	#on recupere les fichiers du repertoire
-	listeFichiers = []
-	for (repertoire, sousRepertoires, fichiers) in walk(parametres["URL_Dossier"]):
-		listeFichiers.extend(fichiers)
-	print(listeFichiers)
-	#On filtre les fichiers pour n'avoir que du .mid
-	listeFichiers = [i for i in listeFichiers if ".mid" in i]
-
 	#on récupère tous les noms des fichiers .mid du dossier
 	listeFichiers = [i for i in os.listdir(parametres["URL_Dossier"]) if ".mid" in i]	
 	
