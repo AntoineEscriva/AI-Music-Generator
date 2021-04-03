@@ -32,7 +32,7 @@ def sample_seq(nb_samples, total, input_t, target_t):
     for a in range(len(indexes)):
         new_input[a] = input_t[indexes[a]].detach().clone()
         new_target[a] = target_t[indexes[a]].detach().clone()
-    return new_input, new_target
+    return new_input.to(device), new_target.to(device)
 
 
 
