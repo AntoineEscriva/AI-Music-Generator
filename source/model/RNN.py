@@ -143,7 +143,7 @@ def sample_rythme(model, out_len, start):
 def predict_melodie(model, character):
     # One-hot encoding our input to fit into the model
     character = triplets_to_notes(character)[0]
-    character = one_hot_encode(character, dict_size, len(character), 1)
+    character = one_hot_encode_melodie(character, dict_size, len(character), 1)
     character = torch.from_numpy(character)
     character = character.to(device)
     
@@ -163,7 +163,7 @@ def sample_melodie(model, out_len, start):
     size = out_len - len(chars)
     # Now pass in the previous characters and get a new one
     for ii in range(size):
-        char, h = predict_rythme(model, chars)
+        char, h = predict_melodie(model, chars)
         chars.append(char)
 
     return ' '.join(chars)
@@ -481,7 +481,7 @@ def rnn_rythme_melodie(input_list):
 	test_target_seq = test_target_seq.to(device)
 
 	# Define hyperparameters
-	n_epochs = 100
+	n_epochs = 20
 	lr=0.01
 
 
