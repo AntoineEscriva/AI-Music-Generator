@@ -324,7 +324,7 @@ class Morceau:
 		return chaine_retour
 
 
-	def format_to_csv(self, entree): # transforme une chaine sous le format et renvoie le csv associé
+	def format_to_csv(self, entree, save_name="default"): # transforme une chaine sous le format et renvoie le csv associé
 		output_path= self.path
 		header = "0, 0, Header, {0}, {1}, {2}\n".format(self.format,self.nbTracks, self.division)
 		start1 = "1, 0, Start_track\n"
@@ -339,12 +339,17 @@ class Morceau:
 		temps = 0
 		duree_n = 0
 		liste_note = []
+
+		print(self.time_to_note_dict)
+
 		for note in all_notes:
 		    triplet = note.split(":")
 		    if(len(triplet) == 3):
 		        tps, duree_n, note_nb = triplet
 		        tps = int(tps)
-		        duree_n = int(list(self.time_to_note_dict.keys())[list(self.time_to_note_dict.values()).index(duree_n)])
+		        #duree_n = int(list(self.time_to_note_dict.keys())[list(self.time_to_note_dict.values()).index(duree_n)])
+		        # ^^ USELESS
+		        duree_n = int(duree_n)
 		        note_nb = int(note_nb)
 		        temps += tps #on incrémente le temps global
 		        liste_note.append([temps, "2, {0}, Note_on_c, 0, {1}, {2}\n".format(temps,note_nb,80)]) # la velocité est mise à 80 par défaut (choix sans raison)
@@ -375,7 +380,12 @@ class Morceau:
 
 		        
 		midi_object = pm.csv_to_midi(csv_path)
-		name_out = output_path.replace("CSV"+os.sep+self.filename, "Resultat"+os.Sep+self.filename).replace(".csv","-généré.mid")
+
+		if(save_name !="default"):
+			name_out = output_path.replace("CSV"+os.sep+self.filename, "Resultat"+os.sep+save_name).replace(".csv", "-généré.mid")
+		else:
+			name_out = output_path.replace("CSV"+os.sep+self.filename, "Resultat"+os.sep+self.filename).replace(".csv","-généré.mid")
+
 		   
 		# Save the parsed MIDI file to disk
 		with open(name_out, "wb") as output_file:
