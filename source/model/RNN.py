@@ -7,8 +7,6 @@ import numpy as np
 import time
 from math import ceil
 import random
-from matplotlib import pyplot as plt
-
 
 
 def triplets_to_notes(entree):
@@ -19,7 +17,6 @@ def triplets_to_notes(entree):
     notes = [ [int(n[0]), int(n[1]), int(n[2])] for n in notes] #on caste les informations tirées des triplets en int
     sortie.append(notes)
   return sortie
-
 
 
 def one_hot_encode_rythme(sequence, dict_size, seq_len, batch_size):
@@ -358,31 +355,11 @@ def rnn_rythme(input_list, param_list):
 	
 	print("Entraînement fini, génération des morceaux")
 
-	x = np.arange(1,nb_epochs)
-	y1 = list_training_loss
-	y2 = list_test_loss
-	y3 = list_lr
-
-	plt.figure()
-	plt.plot(x,y1, color='b') #bleu
-	plt.xlabel("Nb d'Epoch")
-	plt.plot(x,y2, color='r') #rouge
-	plt.ylabel("Training loss en bleu\nTest loss en rouge")
-
-	plt.figure()
-	plt.plot(x,y3, color='g') #vert
-	#plt.show()
-
 	# on retourne le résultat sous la forme d'une liste
 	out = []
 	for a in range(nb_morceaux):
 		note_aleatoire = int2char[random.randint(0,len(int2char)-1)]
 		out.append(sample_rythme(model, 100, note_aleatoire))
-
-	print(out)
-
-	plt.draw()
-	#plt.show()
 
 	return out
 
@@ -530,7 +507,5 @@ def rnn_rythme_melodie(input_list, param_list):
 	for a in range(nb_morceaux):
 		note_aleatoire = ["480:120:76"]
 		out.append(sample_melodie(model, duree_morceaux, note_aleatoire))
-
-	print(out)
 
 	return out
