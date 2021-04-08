@@ -338,7 +338,6 @@ def rnn_rythme(input_list, param_list):
 					test_input_sample, test_target_sample = sample_seq_rythme(batch_len, test_batch_size, test_input_seq, test_target_seq)
 					output, hidden = model(test_input_sample)
 					new_test_loss = criterion(output, test_target_sample.view(-1).long())
-					print("test_batch_size", test_batch_size)
 				else:
 					output, hidden = model(test_input_seq)
 					new_test_loss = criterion(output, test_target_seq.view(-1).long())
@@ -362,7 +361,7 @@ def rnn_rythme(input_list, param_list):
 	out = []
 	for a in range(nb_morceaux):
 		note_aleatoire = int2char[random.randint(0,len(int2char)-1)]
-		out.append(sample_rythme(model, 100, note_aleatoire))
+		out.append(sample_rythme(model, duree_morceaux, note_aleatoire))
 
 	return out
 
@@ -509,7 +508,11 @@ def rnn_rythme_melodie(input_list, param_list):
 
 	out = []
 	for a in range(nb_morceaux):
-		note_aleatoire = ["480:120:76"]
-		out.append(sample_melodie(model, duree_morceaux, note_aleatoire))
+		note_aleatoire = training_input_seq[random.randint(0,training_batch_size-1)][random.randint(0, seq_len-1)].detach().to('cpu').numpy()
+		note_aleatoire = ":".join([str(int(elt)) for elt in note_aleatoire])
+		print([note_aleatoire])
+		out.append(sample_melodie(model, duree_morceaux, [note_aleatoire]))
+
+	print(out)
 
 	return out
