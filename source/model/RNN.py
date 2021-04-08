@@ -323,6 +323,7 @@ def rnn_rythme(input_list, param_list):
 			output, hidden = model(training_input_seq)
 			new_training_loss = criterion(output, training_target_seq.view(-1).long())
 
+
 		new_training_loss.backward() # backpropagation et calcul du nouveau gradient
 		optimizer.step() # mise à jour des poids
 		
@@ -332,24 +333,26 @@ def rnn_rythme(input_list, param_list):
 			print('Epoch: {}/{}.............'.format(epoch, nb_epochs), end=' ')
 			print("Loss: {:.4f}   {:.4f}".format(new_training_loss.item(), t2))
 
-			if(is_batch and test_batch_size != 0):
-				test_input_sample, test_target_sample = sample_seq_rythme(batch_len, test_batch_size, test_input_seq, test_target_seq)
-				output, hidden = model(test_input_sample)
-				new_test_loss = criterion(output, test_target_sample.view(-1).long())
-			else:
-				output, hidden = model(test_input_seq)
-				new_test_loss = criterion(output, test_target_seq.view(-1).long())
+			if(test_batch_size != 0):
+				if(is_batch):
+					test_input_sample, test_target_sample = sample_seq_rythme(batch_len, test_batch_size, test_input_seq, test_target_seq)
+					output, hidden = model(test_input_sample)
+					new_test_loss = criterion(output, test_target_sample.view(-1).long())
+					print("test_batch_size", test_batch_size)
+				else:
+					output, hidden = model(test_input_seq)
+					new_test_loss = criterion(output, test_target_seq.view(-1).long())
 
-			if(new_test_loss < old_test_loss):
-				print("Test sur les données de test \t Loss : {} BAISSE".format(new_test_loss.item()))
-			else:
-				print("Test sur les données de test \t Loss : {} AUGMENTATION".format(new_test_loss.item()))
+				if(new_test_loss < old_test_loss):
+					print("Test sur les données de test \t Loss : {} BAISSE".format(new_test_loss))
+				else:
+					print("Test sur les données de test \t Loss : {} AUGMENTATION".format(new_test_loss))
 
-			old_test_loss = new_test_loss
-			list_test_loss.append(new_test_loss)
+				old_test_loss = new_test_loss
+				list_test_loss.append(new_test_loss)
 
-		old_training_loss = new_training_loss
-		list_training_loss.append(new_training_loss)
+		old_training_loss = new_training_loss.item()
+		list_training_loss.append(new_training_loss.item())
 		list_lr.append(lr)
 		lr -= (1/100) * lr #mise à jour du learning rate
 	
@@ -481,21 +484,22 @@ def rnn_rythme_melodie(input_list, param_list):
 			print('Epoch: {}/{}.............'.format(epoch, nb_epochs), end=' ')
 			print("Loss: {:.4f}   {:.4f}".format(new_training_loss.item(), t2))
 
-			if(is_batch and test_batch_size != 0):
-				test_input_sample, test_target_sample = sample_seq_melodie(batch_len, test_batch_size, test_input_seq, test_target_seq)
-				output, hidden = model(test_input_sample)
-				new_test_loss = criterion(output.view(-1), test_target_sample.view(-1).long())
-			else:
-				output, hidden = model(test_input_seq)
-				new_test_loss = criterion(output.view(-1), test_target_seq.view(-1).long())
+			if(test_batch_size != 0):
+				if(is_batch):
+					test_input_sample, test_target_sample = sample_seq_melodie(batch_len, test_batch_size, test_input_seq, test_target_seq)
+					output, hidden = model(test_input_sample)
+					new_test_loss = criterion(output.view(-1), test_target_sample.view(-1).long())
+				else:
+					output, hidden = model(test_input_seq)
+					new_test_loss = criterion(output.view(-1), test_target_seq.view(-1).long())
 
-			if(new_test_loss < old_test_loss):
-				print("Test sur les données de test \t Loss : {} BAISSE".format(new_test_loss.item()))
-			else:
-				print("Test sur les données de test \t Loss : {} AUGMENTATION".format(new_test_loss.item()))
+				if(new_test_loss < old_test_loss):
+					print("Test sur les données de test \t Loss : {} BAISSE".format(new_test_loss.item()))
+				else:
+					print("Test sur les données de test \t Loss : {} AUGMENTATION".format(new_test_loss.item()))
 
-			old_test_loss = new_test_loss
-			list_test_loss.append(new_test_loss)
+				old_test_loss = new_test_loss
+				list_test_loss.append(new_test_loss)
 
 		old_training_loss = new_training_loss
 		list_training_loss.append(new_training_loss)
