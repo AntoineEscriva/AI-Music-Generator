@@ -58,10 +58,10 @@ class Morceau:
 					
 		csv_list = pm.midi_to_csv(name_in) #midi to csv
 		name_out = name_in.replace(".mid",".csv")
-		print("Chemin "+name_out)
+
 		csv_list = pm.midi_to_csv(name_in) #transformation de midi en csv
 		name_out = name_in.replace(self.filename+".mid","CSV"+os.sep+ self.filename + ".csv")
-		print("Chemin "+name_in)
+
 		# ecriture du fichier
 		with open(name_out, 'w+') as file_out :
 			for row in csv_list:
@@ -286,8 +286,6 @@ class Morceau:
 		    midi_writer = pm.FileWriter(output_file)
 		    midi_writer.write(midi_object)
 
-		        
-		print("Done")
 
 
 	def preparer_track(self, numero):
@@ -340,15 +338,12 @@ class Morceau:
 		duree_n = 0
 		liste_note = []
 
-		print(self.time_to_note_dict)
 
 		for note in all_notes:
 		    triplet = note.split(":")
 		    if(len(triplet) == 3):
 		        tps, duree_n, note_nb = triplet
 		        tps = int(tps)
-		        #duree_n = int(list(self.time_to_note_dict.keys())[list(self.time_to_note_dict.values()).index(duree_n)])
-		        # ^^ USELESS
 		        duree_n = int(duree_n)
 		        note_nb = int(note_nb)
 		        temps += tps #on incrémente le temps global
@@ -391,6 +386,3 @@ class Morceau:
 		with open(name_out, "wb") as output_file:
 		    midi_writer = pm.FileWriter(output_file)
 		    midi_writer.write(midi_object)
-
-
-		print("Fichier écrit sous le nom "+name_out)
