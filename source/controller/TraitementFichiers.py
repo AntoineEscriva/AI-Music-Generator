@@ -99,6 +99,8 @@ def main():
 
 	temp = int(time.time())
 
+	print(listeMorceaux[0].filename) # A ENLEVER
+
 	for index in range(len(out)):
 		if (parametres["TypeGeneration"] == "Rythme seulement"):
 			listeMorceaux[0].format_to_csv_rythme(out[index], str(temp)+" "+str(index)) # enregistre le morceau sous format MIDI
