@@ -242,7 +242,11 @@ class Morceau:
 		key_s = "1, 0, Key_signature, {0},{1}".format(self.ksKey, self.ksMinMaj)
 		tempo1 = "1, 0, Tempo, {0}\n".format(857142)
 
-		csv_notes_list = [header, start1, smpte, time_s, key_s, tempo1]
+		csv_notes_list = [header, start1]
+		if not "None" in smpte:
+			csv_notes_list += [smpte]
+		
+		csv_notes_list += [time_s, key_s, tempo1]
 
 		temps = 0
 		liste_note = []
@@ -269,6 +273,7 @@ class Morceau:
 		csv_notes_list += [end2, end_of_file]
 
 		csv_path = output_path.replace(self.filename, self.filename + "-généré")
+		print("PATH HERE = ", csv_path)
 		
 		with open(csv_path, 'w+') as file_out :
 		    for row in csv_notes_list:
@@ -331,7 +336,12 @@ class Morceau:
 		key_s = "1, 0, Key_signature, {0},{1}".format(self.ksKey, self.ksMinMaj)
 		tempo1 = "1, 0, Tempo, {0}\n".format(857142)
 
-		csv_notes_list = [header, start1, smpte, time_s, key_s, tempo1]
+
+		csv_notes_list = [header, start1]
+		if not "None" in smpte:
+			csv_notes_list += [smpte]
+		
+		csv_notes_list += [time_s, key_s, tempo1]
 
 		all_notes = entree.replace("\n", "").split(" ") # on découpe l'entrée note par note
 		temps = 0
@@ -368,6 +378,7 @@ class Morceau:
 		csv_notes_list += [end2, end_of_file]
 
 		csv_path = output_path.replace(self.filename, self.filename + "-généré")
+		print("PATH HERE = ", csv_path)
 
 		with open(csv_path, 'w+') as file_out :
 		    for row in csv_notes_list:
