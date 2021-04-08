@@ -32,6 +32,13 @@ def importFromCSV():
 			parametres['TonaliteMorceaux']= row['TonaliteMorceaux']
 			parametres['VitesseMorceaux']= row['VitesseMorceaux']
 			parametres['TypeGeneration'] = row['TypeGeneration']
+			parametres['TauxApprentissage'] = row['TauxApprentissage']
+			parametres['NombreEpoch'] = row['NombreEpoch']
+			parametres['NombreDimensionCachee'] = row['NombreDimensionCachee']
+			parametres['NombreLayer'] = row['NombreLayer']
+			parametres['LongeurSequence'] = row['LongeurSequence']
+			parametres['BatchBool'] = row['BatchBool']
+			parametres['NombreSequenceBatch'] = row['NombreSequenceBatch']
 	return parametres
 	
 def getURL():
@@ -40,4 +47,3 @@ def getURL():
 		parametres = {}
 		for row in reader:
 			return row['URL_Dossier']
-			 
