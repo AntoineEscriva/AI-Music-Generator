@@ -80,7 +80,7 @@ class Model(nn.Module):
 
         #Defining the layers
         # RNN Layer
-        self.rnn = nn.RNN(input_size, hidden_dim, n_layers, batch_first=True)   #essayer GRU (ou LSTM)
+        self.rnn = nn.RNN(input_size, hidden_dim, n_layers, batch_first=True) 
         # Fully connected layer
         self.fc = nn.Linear(hidden_dim, output_size)
     
@@ -184,17 +184,17 @@ def device_choice():
 	return device
 
 
-def testfile_number_choice(total):
-	#retourne le nombre de fichiers qui seront utilisés pour le test du RNN mais pas pour l'entraînement
-	return ceil(total * 20/100) # retourne 20% de total arrondi à l'entier supérieur
+def training_file_number_choice(total):
+	#retourne le nombre de fichiers qui seront utilisés pour l'entrainement du RNN mais pas pour les tests
+	return ceil(total * 80/100) # 80% des fichiers sont utilisés pour l'entraînement
 
 
-def testfile_choice(liste, nb):
+def training_file_choice(liste, nb):
 	#retourne une liste composée des fichiers utilisées pour l'entraînement et des fichiers utilisés pour les tests
 	L = [i for i in range(len(liste))] #liste d'index
 	L_id = random.sample(L, nb) #sample de taille nb d'index
-	test = [liste[i] for i in L_id] #liste de training
-	training = [liste[i] for i in range(len(liste)) if i not in L_id] #liste de test
+	training = [liste[i] for i in L_id] #liste de training
+	test = [liste[i] for i in range(len(liste)) if i not in L_id] #liste de test
 	return [training, test]
 
 def decoupe_morceau(morceau, taille):
@@ -205,57 +205,61 @@ def decoupe_morceau(morceau, taille):
 
 
 # Partie RNN pour le rythme seulement
-
-
-def rnn_rythme(input_list):
+def rnn_rythme(input_list, param_list):
 	global device, int2char, char2int, dict_size
 
-	device = device_choice() #choix du device (CPU ou GPU)
+	lr = float(param_list[0]) 		# taux d'apprentissage du RNN
+	nb_epochs = int(param_list[1])	# nombre de cycles d'entraînement
+	len_hidden_dim = int(param_list[2]) # taille de la dimension cachée
+	nb_layers = int(param_list[3])	# nombre de couches
+	seq_len = int(param_list[4])	# longueur d'une séquence
+	is_batch = bool(param_list[5])	# entraînement sous forme de batch ou non
+	batch_len = int(param_list[6])	# nombre de séquences dans un batch
+	nb_morceaux = int(param_list[7])# nombre de morceaux à produire
+	duree_morceaux = int(param_list[8]) #longueur des morceaux 
+	# LA DUREE DES MORCEAUX EST DONNEE EN NOMBRE DE NOTES !
+	# PAS EN SECONDES
 
-	taille = 200 #longueur d'une séquence # de 100 à 200 généralement
-	batch_len = 8 # 16 ou 32
-	is_batch = True
+
+	device = device_choice() #choix du device (CPU ou GPU)
 
 	training_text = [] # liste des training files de longueur taille+1 que l'on va découper
 	test_text = [] # liste des tests files de longueur taille+1 que l'on va découper 
 
-	nb_test_files = testfile_number_choice(len(input_list))
-	training_files, test_files = testfile_choice(input_list, nb_test_files)
+	nb_training_files = training_file_number_choice(len(input_list))
+	training_files, test_files = training_file_choice(input_list, nb_training_files)
 
 
 	for i in training_files:
-		training_text += decoupe_morceau(i, taille)
+		training_text += decoupe_morceau(i, seq_len)
 
 
 	for i in test_files:
-		test_text += decoupe_morceau(i, taille)
+		test_text += decoupe_morceau(i, seq_len)
 
-	# on joint les text et on extrait les caractères de manière unique
-	chars = set(''.join(training_text)).union(''.join(test_text))
+	chars = set(''.join(training_text)).union(''.join(test_text)) # on joint les text et on extrait les caractères de manière unique
+	int2char = dict(enumerate(chars)) # on crée un dictionnaire pour maper les entiers aux caractères
+	char2int = {char: ind for ind, char in int2char.items()} 	# on crée un autre dictionnaire qui map les caractères aux entiers
 
+	dict_size = len(char2int)	# taille du dictionnaire
+	training_batch_size = len(training_text) # nombre de séquences de training
+	test_batch_size = len(test_text) # nombre de séquences de test
 
-	# on crée un dictionnaire pour maper les entiers aux caractères
-	int2char = dict(enumerate(chars))
-
-	# on crée un autre dictionnaire qui map les caractères aux entiers
-	char2int = {char: ind for ind, char in int2char.items()}
-
-
-	# Creating lists that will hold our input and target sequences
+	# Création des listes qui vont contenir les séquences de test et d'entraînement
 	training_input_seq = []
 	training_target_seq = []
 	test_input_seq = []
 	test_target_seq = []
 
 
-	for i in range(len(training_text)):
+	for i in range(training_batch_size):
 		# Remove last character for input sequence
 		training_input_seq.append(training_text[i][:-1])
 
 		# Remove first character for target sequence
 		training_target_seq.append(training_text[i][1:])
 
-	for i in range(len(test_text)):
+	for i in range(test_batch_size):
 		# Remove last character for input sequence
 		test_input_seq.append(test_text[i][:-1])
 
@@ -264,27 +268,22 @@ def rnn_rythme(input_list):
 
 
 
-	for i in range(len(training_text)):
-		training_input_seq[i] = [char2int[character] for character in training_input_seq[i]]
-		training_target_seq[i] = [char2int[character] for character in training_target_seq[i]]
+	for i in range(training_batch_size):
+		training_input_seq[i] = [char2int[char] for char in training_input_seq[i]]
+		training_target_seq[i] = [char2int[char] for char in training_target_seq[i]]
 
-	for i in range(len(test_text)):
-		test_input_seq[i] = [char2int[character] for character in test_input_seq[i]]
-		test_target_seq[i] = [char2int[character] for character in test_target_seq[i]]
+	for i in range(test_batch_size):
+		test_input_seq[i] = [char2int[char] for char in test_input_seq[i]]
+		test_target_seq[i] = [char2int[char] for char in test_target_seq[i]]
 
-	dict_size = len(char2int)
-	seq_len = taille
-	training_batch_size = len(training_text)
-	test_batch_size = len(test_text)
 
-	# Input shape --> (Batch Size, Sequence Length, One-Hot Encoding Size)
-	#encodage pour training
+	#encodage des input de training
 	training_input_seq = one_hot_encode_rythme(training_input_seq, dict_size, seq_len, training_batch_size)
 
 	training_input_seq = torch.from_numpy(training_input_seq)
 	training_target_seq = torch.Tensor(training_target_seq)
 
-	# idem pour test
+	#encodage des input de test
 	test_input_seq = one_hot_encode_rythme(test_input_seq, dict_size, seq_len, test_batch_size)
 
 	test_input_seq = torch.from_numpy(test_input_seq)
@@ -292,26 +291,17 @@ def rnn_rythme(input_list):
 
 
 
+	# on crée le modèle avec les hyperparamètres
+	model = Model(input_size=dict_size, output_size=dict_size, hidden_dim=len_hidden_dim, n_layers=nb_layers)
+	model = model.to(device) # on déplace le modèle vers le device utilisé
 
-	# Instantiate the model with hyperparameters
-	model = Model(input_size=dict_size, output_size=dict_size, hidden_dim=512, n_layers=1)
-	# We'll also set the model to the device that we defined earlier
-	model = model.to(device)
-
-	# set the training_input_seq ant training_target_seq to the device used
+	# on déplace les input et target des tests et entraînements vers le device utilisé
 	training_input_seq = training_input_seq.to(device) 
 	training_target_seq = training_target_seq.to(device)
-
-	#idem pour les test
 	test_input_seq = test_input_seq.to(device) 
 	test_target_seq = test_target_seq.to(device)
 
-	# Define hyperparameters
-	n_epochs = 40
-	lr=0.01
-
-
-	# Define Loss, Optimizer
+	# définition de la fontcion d'erreur et de l'optimiseur
 	criterion = nn.CrossEntropyLoss()
 	optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
@@ -323,11 +313,12 @@ def rnn_rythme(input_list):
 	list_test_loss = []
 	list_lr = []
 
-	# Training Run
+	# Boucle d'entraînement
 	t1 = time.time()
-	for epoch in range(1, n_epochs):
-		optimizer.zero_grad() # Clears existing gradients from previous epoch
+	for epoch in range(1, nb_epochs):
+		optimizer.zero_grad() # on efface les gradients de l'entraînement précédent
 		if (is_batch):
+			# si on utilise des batch, alors on récupère une fraction des inputs et des targets
 			training_input_sample, training_target_sample = sample_seq_rythme(batch_len, training_batch_size, training_input_seq, training_target_seq)
 			output, hidden = model(training_input_sample)
 			new_training_loss = criterion(output, training_target_sample.view(-1).long())
@@ -335,16 +326,16 @@ def rnn_rythme(input_list):
 			output, hidden = model(training_input_seq)
 			new_training_loss = criterion(output, training_target_seq.view(-1).long())
 
-		new_training_loss.backward() # Does backpropagation and calculates gradients
-		optimizer.step() # Updates the weights accordingly
+		new_training_loss.backward() # backpropagation et calcul du nouveau gradient
+		optimizer.step() # mise à jour des poids
 		
 		if epoch%1 == 0:
 			t2 = time.time()-t1
 			t1 = time.time()
-			print('Epoch: {}/{}.............'.format(epoch, n_epochs), end=' ')
+			print('Epoch: {}/{}.............'.format(epoch, nb_epochs), end=' ')
 			print("Loss: {:.4f}   {:.4f}".format(new_training_loss.item(), t2))
 
-			if(is_batch):
+			if(is_batch and test_batch_size != 0):
 				test_input_sample, test_target_sample = sample_seq_rythme(batch_len, test_batch_size, test_input_seq, test_target_seq)
 				output, hidden = model(test_input_sample)
 				new_test_loss = criterion(output, test_target_sample.view(-1).long())
@@ -364,14 +355,10 @@ def rnn_rythme(input_list):
 		list_training_loss.append(new_training_loss)
 		list_lr.append(lr)
 		lr -= (1/100) * lr #mise à jour du learning rate
-
-        # ICI ON RECUPERE LES PARAMETRES CONCERNANT LE NOMBRE DE MORCEAUX, LA DUREE, ETC
 	
 	print("Entraînement fini, génération des morceaux")
 
-	#random_note = int2char[random.randint(0,len(int2char)-1)]
-
-	x = np.arange(1,n_epochs)
+	x = np.arange(1,nb_epochs)
 	y1 = list_training_loss
 	y2 = list_test_loss
 	y3 = list_lr
@@ -386,7 +373,11 @@ def rnn_rythme(input_list):
 	plt.plot(x,y3, color='g') #vert
 	#plt.show()
 
-	out = [sample_rythme(model, 100, int2char[random.randint(0,len(int2char)-1)]) for i in range(3)] # on retourne le résultat sous la forme d'une liste
+	# on retourne le résultat sous la forme d'une liste
+	out = []
+	for a in range(nb_morceaux):
+		note_aleatoire = int2char[random.randint(0,len(int2char)-1)]
+		out.append(sample_rythme(model, 100, note_aleatoire))
 
 	print(out)
 
@@ -398,32 +389,44 @@ def rnn_rythme(input_list):
 
 # Partie RNN pour le rythme et la mélodie
 
-def rnn_rythme_melodie(input_list):
+def rnn_rythme_melodie(input_list, param_list):
 	global device, int2char, char2int, dict_size
+
+	lr = float(param_list[0]) 		# taux d'apprentissage du RNN
+	nb_epochs = int(param_list[1])	# nombre de cycles d'entraînement
+	len_hidden_dim = int(param_list[2]) # taille de la dimension cachée
+	nb_layers = int(param_list[3])	# nombre de couches
+	seq_len = int(param_list[4])	# longueur d'une séquence
+	is_batch = bool(param_list[5])	# entraînement sous forme de batch ou non
+	batch_len = int(param_list[6])	# nombre de séquences dans un batch
+	nb_morceaux = int(param_list[7])# nombre de morceaux à produire
+	duree_morceaux = int(param_list[8]) #longueur des morceaux 
+	# LA DUREE DES MORCEAUX EST DONNEE EN NOMBRE DE NOTES !
+	# PAS EN SECONDES
+	dict_size = 3
 
 	input_list = triplets_to_notes(input_list) #on transforme la chaîne de triplets en liste de triplets
 
 	device = device_choice() #choix du device (CPU ou GPU)
 
-	taille = 200 #longueur d'une séquence # de 100 à 200 généralement
-	batch_len = 8 # 16 ou 32
-	is_batch = True
+	#taille = 200 #longueur d'une séquence # de 100 à 200 généralement
 
 	training_text = [] # liste des training files de longueur taille+1 que l'on va découper
 	test_text = [] # liste des tests files de longueur taille+1 que l'on va découper 
 
-	nb_test_files = testfile_number_choice(len(input_list))
-	training_files, test_files = testfile_choice(input_list, nb_test_files)
+	nb_training_files = training_file_number_choice(len(input_list))
+	training_files, test_files = training_file_choice(input_list, nb_training_files)
 
 
 	for i in training_files:
-		training_text += decoupe_morceau(i, taille)
+		training_text += decoupe_morceau(i, seq_len)
 	
-
 	for i in test_files:
-		test_text += decoupe_morceau(i, taille)
+		test_text += decoupe_morceau(i, seq_len)
 
-	
+
+	training_batch_size = len(training_text)
+	test_batch_size = len(test_text)
 	# Creating lists that will hold our input and target sequences
 	training_input_seq = []
 	training_target_seq = []
@@ -431,14 +434,14 @@ def rnn_rythme_melodie(input_list):
 	test_target_seq = []
 
 
-	for i in range(len(training_text)):
+	for i in range(training_batch_size):
 		# Remove last character for input sequence
 		training_input_seq.append(training_text[i][:-1])
 
 		# Remove first character for target sequence
 		training_target_seq.append(training_text[i][1:])
 
-	for i in range(len(test_text)):
+	for i in range(test_batch_size):
 		# Remove last character for input sequence
 		test_input_seq.append(test_text[i][:-1])
 
@@ -446,47 +449,29 @@ def rnn_rythme_melodie(input_list):
 		test_target_seq.append(test_text[i][1:])
 
 
-
-	dict_size = 3 #constante
-	seq_len = taille
-	training_batch_size = len(training_text)
-	test_batch_size = len(test_text)
-
-	# Input shape --> (Batch Size, Sequence Length, One-Hot Encoding Size)
-	#encodage pour training
-
+	# encodage des input et target de training
 	training_input_seq = one_hot_encode_melodie(training_input_seq, dict_size, seq_len, training_batch_size)
-
 	training_input_seq = torch.from_numpy(training_input_seq)
 	training_target_seq = torch.Tensor(training_target_seq)
 
-	# idem pour test
+	# encodage des input et target de test
 	test_input_seq = one_hot_encode_melodie(test_input_seq, dict_size, seq_len, test_batch_size)
-
 	test_input_seq = torch.from_numpy(test_input_seq)
 	test_target_seq = torch.Tensor(test_target_seq)
 
 
-	# Instantiate the model with hyperparameters
-	model = Model(input_size=dict_size, output_size=dict_size, hidden_dim=512, n_layers=2)
-	# We'll also set the model to the device that we defined earlier
-	model = model.to(device)
 
-	# set the training_input_seq ant training_target_seq to the device used
+	# on crée le modèle avec les hyperparamètres
+	model = Model(input_size=dict_size, output_size=dict_size, hidden_dim=len_hidden_dim, n_layers=nb_layers)
+	model = model.to(device) # on déplace le modèle vers le device utilisé
+
+	# on déplace les input et target des tests et entraînements vers le device utilisé
 	training_input_seq = training_input_seq.to(device) 
 	training_target_seq = training_target_seq.to(device)
-
-	#idem pour les test
 	test_input_seq = test_input_seq.to(device) 
 	test_target_seq = test_target_seq.to(device)
 
-	# Define hyperparameters
-	n_epochs = 20
-	lr=0.01
-
-
-	# Define Loss, Optimizer
-	#criterion = nn.CrossEntropyLoss()
+	# définition de la fontcion d'erreur et de l'optimiseur
 	criterion = nn.L1Loss()
 	optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
@@ -498,10 +483,10 @@ def rnn_rythme_melodie(input_list):
 	list_test_loss = []
 	list_lr = []
 
-	# Training Run
+	# Boucle d'entraînement
 	t1 = time.time()
-	for epoch in range(1, n_epochs):
-		optimizer.zero_grad() # Clears existing gradients from previous epoch
+	for epoch in range(1, nb_epochs):
+		optimizer.zero_grad() # on efface les gradients de l'entraînement précédent
 		if (is_batch):
 			training_input_sample, training_target_sample = sample_seq_melodie(batch_len, training_batch_size, training_input_seq, training_target_seq)
 			output, hidden = model(training_input_sample)
@@ -510,16 +495,16 @@ def rnn_rythme_melodie(input_list):
 			output, hidden = model(training_input_seq)
 			new_training_loss = criterion(output.veiw(-1), training_target_seq.view(-1).long())
 
-		new_training_loss.backward() # Does backpropagation and calculates gradients
-		optimizer.step() # Updates the weights accordingly
+		new_training_loss.backward() # backpropagation et calcul du nouveau gradient
+		optimizer.step() # mise à jour des poids
 		
 		if epoch%10 == 0:
 			t2 = time.time()-t1
 			t1 = time.time()
-			print('Epoch: {}/{}.............'.format(epoch, n_epochs), end=' ')
+			print('Epoch: {}/{}.............'.format(epoch, nb_epochs), end=' ')
 			print("Loss: {:.4f}   {:.4f}".format(new_training_loss.item(), t2))
 
-			if(is_batch):
+			if(is_batch and test_batch_size != 0):
 				test_input_sample, test_target_sample = sample_seq_melodie(batch_len, test_batch_size, test_input_seq, test_target_seq)
 				output, hidden = model(test_input_sample)
 				new_test_loss = criterion(output.view(-1), test_target_sample.view(-1).long())
@@ -538,12 +523,13 @@ def rnn_rythme_melodie(input_list):
 		old_training_loss = new_training_loss
 		list_training_loss.append(new_training_loss)
 		list_lr.append(lr)
-		#lr -= (1/100) * lr #mise à jour du learning rate
 	
 	print("Entraînement fini, génération des morceaux")
 
-	out = [sample_melodie(model, 100, ["480:120:76"])]
-	#out = [sample(model, 100, int2char[random.randint(0,len(int2char)-1)]) for i in range(3)] # on retourne le résultat sous la forme d'une liste
+	out = []
+	for a in range(nb_morceaux):
+		note_aleatoire = ["480:120:76"]
+		out.append(sample_melodie(model, duree_morceaux, note_aleatoire))
 
 	print(out)
 
