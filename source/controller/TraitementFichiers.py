@@ -18,8 +18,18 @@ def ecrire_fichier(nom, donnees):
 		    file.write(a)
 
 
+def get_rnn_parameters(parametres):
+	l = "TauxApprentissage,NombreEpoch,NombreDimensionCachee,NombreLayer,LongeurSequence,BatchBool,NombreSequenceBatch,NombreMorceaux,DureeMorceaux"
+	p = []
+	for key in l.split(","):
+		p.append(parametres[key])
+	print("RNN PARAMETRES = ", p)
+	return p
+
+
 def main():
 	parametres = iep.importFromCSV()
+	rnn_parametres = get_rnn_parameters(parametres)
 
 	os.makedirs(parametres["URL_Dossier"]+os.sep+"CSV",exist_ok=True)
 	os.makedirs(parametres["URL_Dossier"]+os.sep+"Conversion_rythme",exist_ok=True)
@@ -39,21 +49,21 @@ def main():
 		listeFichiersConvertis = [i for i in os.listdir(parametres["URL_Dossier"]+os.sep+"Conversion_melodie")]
 
 
-	listeFichiersAConvertir = [listeFichiers[0]] #totalement artificiel, pour avoir au moins 1 objet morceau pour plus tard
+	listeFichiersAConvertir = []
 	for nom_mid in listeFichiers:
 		nom = nom_mid.replace(".mid",".format") #en admettant que notre extension sera ".format"
 		if nom not in listeFichiersConvertis:
 			listeFichiersAConvertir.append(nom_mid)
+	if (listeFichiers[0] not in listeFichiersAConvertir):
+		listeFichiersAConvertir.append(listeFichiers[0]) 
+		#totalement artificiel, pour avoir au moins 1 objet morceau pour plus tard
 
 
 	#on tranforme les fichiers midi non convertis en objets Morceau
 	listeMorceaux = [] # liste d'objets de type Morceau
 	for files in listeFichiersAConvertir:
 		listeMorceaux.append(Morceau.Morceau(parametres["URL_Dossier"]+os.sep+files))
-		print(files, " a besoin d'etre converti !")
 	
-	
-	## A CHANGER ##
 
 	#on prépare les morceaux pour le RNN
 	liste_textes = []
@@ -83,9 +93,9 @@ def main():
 	
 	# en fonction des paramètres de génération, on appelle différents RNN
 	if (parametres["TypeGeneration"] == "Rythme seulement"):
-		out = RNN.rnn_rythme(liste_textes) #on envoie au RNN et on récupère la sortie
+		out = RNN.rnn_rythme(liste_textes, rnn_parametres) #on envoie au RNN et on récupère la sortie
 	elif (parametres["TypeGeneration"] == "Rythme et mélodie"):
-		out = RNN.rnn_rythme_melodie(liste_textes)
+		out = RNN.rnn_rythme_melodie(liste_textes, rnn_parametres)
 
 	temp = int(time.time())
 
