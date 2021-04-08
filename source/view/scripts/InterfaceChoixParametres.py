@@ -56,6 +56,9 @@ class Menu(tkinter.Frame):
     def __init__(self, master):
         tkinter.Frame.__init__(self, master)
         
+        #Réglage de la taille de la fenêtre
+        self.master.geometry("525x750")
+        
         #Réglage police du titre et du texte
         self.titre = tkFont.Font(family='Helvetica', size=20)
         self.texte = tkFont.Font(family='Helvetica', size=13)
@@ -220,10 +223,9 @@ class Menu(tkinter.Frame):
 
 
     def changeInterface(self):
-        #print("hey")
         if (self.varButton == 0):
           self.varButton = 1
-          #enable everyon
+          #enable everyone
           self.txApprentissage["state"]=tkinter.NORMAL
           self.nbEpoch["state"]=tkinter.NORMAL
           self.nbDimCachee["state"]=tkinter.NORMAL
@@ -269,7 +271,7 @@ class Menu(tkinter.Frame):
         centrefenetre(popup)
         popup.title("Erreur")
         popup.config(bg="white")
-        label = tkinter.Label(popup, text="Attention : Le nombre de moreaux, ou \nla durée, ou les bpm est incorrect", bg="white")
+        label = tkinter.Label(popup, text="Attention : Le nombre de morceaux, ou \nla durée, ou les bpm est incorrect", bg="white")
         popup.geometry("315x120")
         label.pack(side="top", fill="x", pady=10)
         ok = tkinter.Button(popup, text="Ok", bg="white", command = popup.destroy, width=10)
@@ -315,26 +317,26 @@ class Menu(tkinter.Frame):
 
     def credits(self):
         pageCredit = tkinter.Tk()
-        pageCredit.geometry("600x220")
+        pageCredit.geometry("200x155")
+        pageCredit.resizable(False, False)
         pageCredit.config(bg='white')
         pageCredit.title("Credits")
         centrefenetre(pageCredit)
-        texte = "Créé par Antoine Escriva, Florian Bossard, Clément Guérin, Raphaël Garnier, Clément Bruschini"
-        tkinter.Label(pageCredit, text=texte, bg="white", relief = tkinter.RAISED).grid(row=0, column=0, sticky="EW")
-        #tkinter.Message(pageCredit, text=texte, bg="white", relief = RAISED, anchor = 'w', width =500).pack(fill = tkinter.X)
-        tkinter.Button(pageCredit,text="Ok", width=10,bg="white",command= pageCredit.destroy).grid(row=2,column=1)
-        
-        print("Page credits")
+        texte = "Créé par:\nAntoine Escriva\nFlorian Bossard\nClément Guérin\nRaphaël Garnier\nClément Bruschini"
+        #tkinter.Label(pageCredit, text=texte, bg="white", relief = tkinter.RAISED).grid(row=0, column=0, sticky="EW")
+        tkinter.Message(pageCredit, text=texte, bg="white", relief = tkinter.RAISED, anchor = 'w', width =200).pack(fill = tkinter.X)
+        tkinter.Button(pageCredit,text="Ok", width=10,bg="white",command= pageCredit.destroy).pack(fill = tkinter.X)
     
     def about(self):
         pageAbout = tkinter.Tk()
-        pageAbout.geometry("400x400")
+        pageAbout.geometry("450x100")
+        pageAbout.resizable(False, False)
         pageAbout.config(bg='white')
         pageAbout.title("A propos")
         centrefenetre(pageAbout)
-        text = "Application développée dans le cadre de la matière Gestion de Projet en 2e année d'Ingénieur à Sup Galilée. Version 1.0, 2021"
-        tkinter.Message(pageAbout, text=text, bg="white", relief = tkinter.RAISED).grid(row =0, column=0)
-        tkinter.Button(pageAbout,text="Ok",bg="white",command= pageAbout.destroy, width=10).grid(row =1, column=0)
+        text = "Application développée dans le cadre de la matière Conduite et gestion de projet en 2ème année du cycle Ingénieur à Sup Galilée.\nVersion 1.0, 2021"
+        tkinter.Message(pageAbout, text=text, bg="white", relief = tkinter.RAISED, width=450).pack(fill = tkinter.X)
+        tkinter.Button(pageAbout,text="Ok", bg="white",command= pageAbout.destroy, width=10).pack(fill = tkinter.X)
         
     
 ####################################################### 
