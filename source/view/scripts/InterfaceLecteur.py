@@ -25,7 +25,10 @@ class Lecteur(tkinter.Frame):
 	def __init__(self, master):
 		#Initialisation du Cadre du lecteur MP3
 		tkinter.Frame.__init__(self, master)
-		
+
+		#Réglage de la taille de la fenêtre
+		self.master.geometry("525x350")
+
 		self.URL = iep.getURL()+os.sep+"Resultat"+os.sep
 		
 		#Réglages de la police du titre puis du texte
