@@ -20,17 +20,19 @@ INSTALLATION :
 	Vous devez vous assurer que Python soit installé sur votre machine
 	si ce n'est pas le cas, référez vous à cette page :
 		https://www.python.org/downloads/
-	
+		
+	Lors du lancement de l'application, les packages nécessaires seront téléchargés ou mis à jours.
 	L'ensemble de l'application se trouve dans l'archive Generation_aleatoire_musique.zip
 -----------------------------------------------------------------------------
-EXECUTION :
-	Dans le dossier principal se trouve le fichier MusicRNNLauncher.py lancer ce fichier via un terminal
-	avec la commande suivante : python MusicRNNLauncher.py
+EXÉCUTION :
+	Dans le dossier principal se trouve le fichier MusicRNNLauncher.py
+	Lancer ce fichier via un terminal avec la commande suivante : python MusicRNNLauncher.py
 -----------------------------------------------------------------------------
 FONCTIONNEMENT :
 	Sur la première fenêtre de l'interface vous devez selectionner les paramètres que vous souhaitez utiliser 
 		(Si vous ne donnez pas de valeur au champ "Dossier", l'application ne fonctionnera pas idéalement)
 		(Les autres paramètres ont tous une valeure par défaut)
+	Nous avons donner la possibilité à l'utilisateur de modifier les paramètres du RNN mais faites attention cela pourrait causer des problèmes
 	Le bouton Valider permet de lancer l'entrainement du RNN et la génération de musique
 		(en version 1.0 on affiche juste chargement à la place de valider pendant tout le temps de travail)
 		(l'entrainement du RNN peut être très long en fonction de la taille de la base de données fournit)
