@@ -33,11 +33,6 @@ class Musique(tkinter.Tk):
         self.configure(bg='white')
         #Appel de la methode switch_frame qui se situe ci-dessous
         self.switch_frame(Menu)
-
-
-    def on_closing(self):
-        if messagebox.askokcancel("Quit", "Do you want to quit?"):
-            self.destroy()    
         
     #Cette méthode permet de supprimer le cadre actuel dans la fenetre principale par frame_class
     def switch_frame(self, frame_class):
