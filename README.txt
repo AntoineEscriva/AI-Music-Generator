@@ -12,21 +12,18 @@
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
-FRANCAIS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+FRANÇAIS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ----------------------------------------------------------------------------
 INSTALLATION :
-	Vous devez vous assurer que Python est installé sur votre machine
-	si ce n'est pas le cas, référerz vous à cette page :
-		https://www.python.org/downloads/
-
-	Assurez vous que Pygame est installé sur votre machine
+	Vous devez vous assurer que Python soit installé sur votre machine
 	si ce n'est pas le cas, référez vous à cette page :
-		https://www.pygame.org/wiki/GettingStarted
-
+		https://www.python.org/downloads/
+	
 	L'ensemble de l'application se trouve dans l'archive Generation_aleatoire_musique.zip
 -----------------------------------------------------------------------------
 EXECUTION :
-	Dans le dossier principal se trouve le fichier EXE.py lancer ce fichier (double clic)
+	Dans le dossier principal se trouve le fichier MusicRNNLauncher.py lancer ce fichier via un terminal
+	avec la commande suivante : python MusicRNNLauncher.py
 -----------------------------------------------------------------------------
 FONCTIONNEMENT :
 	Sur la première fenêtre de l'interface vous devez selectionner les paramètres que vous souhaitez utiliser 
@@ -50,15 +47,10 @@ INSTALLATION :
 	if not, follow this page :
 		https://www.python.org/downloads/
 
-	Check if Pygame is installed on your computer
-	(if you just install Python then Pygame is not installed)
-	follow this page :
-		https://www.pygame.org/wiki/GettingStarted
-
 	All the files needed are in the archive Generation_aleatoire_musique.zip
 -----------------------------------------------------------------------------
 EXECUTION :
-	In the first folder you will find EXE.py, launch this file (double clic)
+	In the first folder you will find MusicRNNLauncher.py, launch this file 
 -----------------------------------------------------------------------------
 HOW IT WORKS :
 	On the first window you have to select all the parameters you want to use 
