@@ -1,37 +1,38 @@
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-||||||                                                               |||||||
-||||||   PROJET DE GENERATION ALEATOIRE DE MUSIQUE A PARTIR DE RNN   |||||||
-||||||                                                               |||||||
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-||||||    Authors :                       Clients :                  |||||||
-||||||        GUERIN CLEMENT                  BODINI OLIVIER         |||||||
-||||||        GARNIER RAPHAEL                 TOMEH NADI             |||||||
-||||||        ESCRIVA ANTOINE                                        |||||||
-||||||        BRUSCHINI CLEMENT           Version :                  |||||||
-||||||        BOSSARD FLORIAN                 v1.0 - 12/04/21        |||||||
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+     ; 			||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||		     ;	
+     ;;			||||||                                                               |||||||		     ;;
+     ;';.		||||||   PROJET DE GENERATION ALEATOIRE DE MUSIQUE A PARTIR DE RNN   |||||||		     ;';.
+     ;  ;;		||||||                                                               |||||||                 ;  ;;
+     ;   ;;		||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||                 ;   ;;
+     ;    ;;		||||||    Authors :                       Clients :                  |||||||                 ;    ;;
+     ;    ;;		||||||        GUERIN CLEMENT                  BODINI OLIVIER         |||||||                 ;    ;;
+     ;   ;'		||||||        GARNIER RAPHAEL                 TOMEH NADI             |||||||                 ;   ;'
+     ;  ' 		||||||        ESCRIVA ANTOINE                                        |||||||		     ;  ' 
+,;;;,; 			||||||        BRUSCHINI CLEMENT           Version :                  |||||||		,;;;,;
+;;;;;;			||||||        BOSSARD FLORIAN                 v1.0 - 12/04/21        |||||||		;;;;;;
+`;;;;'			||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||		`;;;;'
+			 
+ 
 
-FRANCAIS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+FRANÇAIS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ----------------------------------------------------------------------------
 INSTALLATION :
-	Vous devez vous assurer que Python est installé sur votre machine
-	si ce n'est pas le cas, référerz vous à cette page :
-		https://www.python.org/downloads/
-
-	Assurez vous que Pygame est installé sur votre machine
+	Vous devez vous assurer que Python soit installé sur votre machine
 	si ce n'est pas le cas, référez vous à cette page :
-		https://www.pygame.org/wiki/GettingStarted
-
+		https://www.python.org/downloads/
+		
+	Lors du lancement de l'application, les packages nécessaires seront téléchargés ou mis à jours.
 	L'ensemble de l'application se trouve dans l'archive Generation_aleatoire_musique.zip
 -----------------------------------------------------------------------------
-EXECUTION :
-	Dans le dossier principal se trouve le fichier EXE.py lancer ce fichier (double clic)
+EXÉCUTION :
+	Dans le dossier principal se trouve le fichier MusicRNNLauncher.py
+	Lancer ce fichier via un terminal avec la commande suivante : python MusicRNNLauncher.py
 -----------------------------------------------------------------------------
 FONCTIONNEMENT :
 	Sur la première fenêtre de l'interface vous devez selectionner les paramètres que vous souhaitez utiliser 
 		(Si vous ne donnez pas de valeur au champ "Dossier", l'application ne fonctionnera pas idéalement)
 		(Les autres paramètres ont tous une valeure par défaut)
+	Nous avons donner la possibilité à l'utilisateur de modifier les paramètres du RNN mais faites attention cela pourrait causer des problèmes
 	Le bouton Valider permet de lancer l'entrainement du RNN et la génération de musique
 		(en version 1.0 on affiche juste chargement à la place de valider pendant tout le temps de travail)
 		(l'entrainement du RNN peut être très long en fonction de la taille de la base de données fournit)
@@ -50,15 +51,10 @@ INSTALLATION :
 	if not, follow this page :
 		https://www.python.org/downloads/
 
-	Check if Pygame is installed on your computer
-	(if you just install Python then Pygame is not installed)
-	follow this page :
-		https://www.pygame.org/wiki/GettingStarted
-
 	All the files needed are in the archive Generation_aleatoire_musique.zip
 -----------------------------------------------------------------------------
 EXECUTION :
-	In the first folder you will find EXE.py, launch this file (double clic)
+	In the first folder you will find MusicRNNLauncher.py, launch this file 
 -----------------------------------------------------------------------------
 HOW IT WORKS :
 	On the first window you have to select all the parameters you want to use 
