@@ -172,7 +172,7 @@ class Menu(tkinter.Frame):
 		self.labelTaux = tkinter.Label(self, text="Taux apprentissage",height = hauteurBout, font = self.texte, bg='white')
 		#self.labelTaux.grid(row = 9, column =0, sticky="W")
 		#Création et placement d'une spinbox pour choisir le taux d'apprentissage
-		self.txApprentissage = tkinter.Spinbox(self, from_=0, to=1, width=10, format='%4.3f', increment=0.001, textvariable=varTxApp, state=tkinter.DISABLED)
+		self.txApprentissage = tkinter.Spinbox(self, from_=0, to=1, width=10, format='%4.3f', increment=0.001, textvariable=varTxApp)
 		#self.txApprentissage.grid(row = 9, column =1, sticky="W")
 		self.label01 = tkinter.Label(self, text="(0-1)", bg="white")
 		#self.label01.grid(row=9, column=1, sticky="e")
@@ -183,7 +183,7 @@ class Menu(tkinter.Frame):
 		self.labelEpoch = tkinter.Label(self, text="Nombre d'Epoch",height = hauteurBout, font = self.texte, bg='white')
 		#self.labelEpoch.grid(row = 10, column =0, sticky="W")
 		#Création et placement d'une spinbox pour choisir le nombre d'epoch
-		self.nbEpoch = tkinter.Spinbox(self, from_=1, to=7000, width=10, textvariable=varEpoch, state=tkinter.DISABLED)
+		self.nbEpoch = tkinter.Spinbox(self, from_=1, to=7000, width=10, textvariable=varEpoch)
 		#self.nbEpoch.grid(row = 10, column =1, sticky="W")
 		self.label17=tkinter.Label(self, text="(1-7000)", bg="white")
 		#self.label17.grid(row=10, column=1, sticky="e")
@@ -194,7 +194,7 @@ class Menu(tkinter.Frame):
 		self.labelDimension = tkinter.Label(self, text="Dimension cachée",height = hauteurBout, font = self.texte, bg='white')
 		#self.labelDimension.grid(row = 11, column =0, sticky="W")
 		#Création et placement d'une spinbox pour choisir le nombre de dimension cachée
-		self.nbDimCachee = tkinter.Spinbox(self, from_=16, to=2048, width=10, textvariable=varDimCach, state=tkinter.DISABLED)
+		self.nbDimCachee = tkinter.Spinbox(self, from_=16, to=2048, width=10, textvariable=varDimCach)
 		#self.nbDimCachee.grid(row = 11, column =1, sticky="W")
 		self.label2421 = tkinter.Label(self, text="(2"+chr(0x2074)+"-2"+chr(0x00B9)+chr(0x00B9)+")", bg="white")
 		#self.label2421.grid(row=11, column=1, sticky="e")
@@ -205,7 +205,7 @@ class Menu(tkinter.Frame):
 		self.labelLayers = tkinter.Label(self, text="Nombre de layer",height = hauteurBout, font = self.texte, bg='white')
 		#self.labelLayers.grid(row = 12, column =0, sticky="W")
 		#Création et placement d'une spinbox pour choisir le nombre de layer
-		self.nbLayer = tkinter.Spinbox(self, from_=1, to=5, width=10, textvariable=varNbLayer, state=tkinter.DISABLED)
+		self.nbLayer = tkinter.Spinbox(self, from_=1, to=5, width=10, textvariable=varNbLayer)
 		#self.nbLayer.grid(row = 12, column =1, sticky="W")
 		self.label15 = tkinter.Label(self, text="(1-5)", bg="white")
 		#self.label15.grid(row=12, column=1, sticky="e")
@@ -216,7 +216,7 @@ class Menu(tkinter.Frame):
 		self.labelLongSeq = tkinter.Label(self, text="Longueur séquence",height = hauteurBout, font = self.texte, bg='white')
 		#self.labelLongSeq.grid(row = 13, column =0, sticky="W")
 		#Création et placement d'une spinbox pour choisir la Longueur de sequence
-		self.lgSeq = tkinter.Spinbox(self, from_=1, to=2000, width=10, textvariable=varLgSeq, state=tkinter.DISABLED)
+		self.lgSeq = tkinter.Spinbox(self, from_=1, to=2000, width=10, textvariable=varLgSeq)
 		#self.lgSeq.grid(row = 13, column =1, sticky="W")
 		self.label12 = tkinter.Label(self, text="(1-2000)", bg="white")
 		#self.label12.grid(row=13, column=1, sticky="e")
@@ -227,8 +227,8 @@ class Menu(tkinter.Frame):
 		self.labelBatch = tkinter.Label(self, text="Utiliser batch",height = hauteurBout,  font = self.texte, bg='white')
 		#self.label.batch.grid(row = 14, column =0, sticky="W")
 		#Bouton utilisation du batch
-		#self.boolBatch = tkinter.Spinbox(self, values = ("True", "False"), width=10, textvariable=varUseBa, state=tkinter.DISABLED)
-		self.boolBatch = tkinter.ttk.Combobox(self, values = ["True","False"],state=tkinter.DISABLED)
+		#self.boolBatch = tkinter.Spinbox(self, values = ("True", "False"), width=10, textvariable=varUseBa)
+		self.boolBatch = tkinter.ttk.Combobox(self, values = ["True","False"])
 		#Réglage de l'item actuel sur 0
 		self.boolBatch.current(0)
 		#self.boolBatch.grid(row = 14, column =1, sticky="W")
@@ -239,7 +239,7 @@ class Menu(tkinter.Frame):
 		self.labelSeqBatch = tkinter.Label(self, text="Séquence/batch",height = hauteurBout, font = self.texte, bg='white')
 		#self.labelSeqBatch.grid(row = 15, column =0, sticky="W")
 		#Création et placement d'une spinbox pour choisir le nombre de seq du batch
-		self.nbSeqBatch = tkinter.Spinbox(self, from_=1, to=512, width=10, textvariable=varSeqBa, state=tkinter.DISABLED)
+		self.nbSeqBatch = tkinter.Spinbox(self, from_=1, to=512, width=10, textvariable=varSeqBa)
 		#self.nbSeqBatch.grid(row = 15, column =1, sticky="W")
 		self.label2029 = tkinter.Label(self, text="(2"+chr(0x2070)+"-2"+chr(0x2079)+")", bg="white")
 		#self.label2029.grid(row=15, column=1, sticky="e")
