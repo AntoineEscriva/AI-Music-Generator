@@ -1,7 +1,7 @@
 # !/usr/bin/python3
 #coding: utf-8
 
-import time
+import datetime
 from source.model import RNN, Morceau
 from source.controller import ImportExportParametres as iep 
 import os
@@ -97,10 +97,9 @@ def main():
 	elif (parametres["TypeGeneration"] == "Rythme et mélodie"):
 		out = RNN.rnn_rythme_melodie(liste_textes, rnn_parametres)
 
-	temp = int(time.time())
-
-	print(listeMorceaux[0].filename) # A ENLEVER
-
+	date = datetime.datetime.now()
+	temp = "".join([str(date.year),"-",str(date.month),"-",str(date.day)," ",str(date.hour),"-",str(date.minute),"-",str(date.second)])
+    
 	for index in range(len(out)):
 		if (parametres["TypeGeneration"] == "Rythme seulement"):
 			listeMorceaux[0].format_to_csv_rythme(out[index], str(temp)+" "+str(index)) # enregistre le morceau sous format MIDI
