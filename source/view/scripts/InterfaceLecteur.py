@@ -16,6 +16,7 @@ largeurBout = 15
 hauteurBout = 2
 margeX = 0
 margeY = 0
+tailleLecteur = "525x250"
 
 #######################################################
 # Classe du lecteur de musique
@@ -27,13 +28,15 @@ class Lecteur(tkinter.Frame):
 		tkinter.Frame.__init__(self, master)
 
 		#Réglage de la taille de la fenêtre
-		self.master.geometry("525x350")
+		self.master.geometry(tailleLecteur)
 
+                #URL du répertoire Resultat
 		self.URL = iep.getURL()+os.sep+"Resultat"+os.sep
 		
 		#Réglages de la police du titre puis du texte
 		self.titre = tkFont.Font(family='Helvetica', size=20)
 		self.texte = tkFont.Font(family='Helvetica', size=13)
+		
 		#Couleur de fond
 		self.configure(bg='white')
 		
@@ -98,21 +101,8 @@ class Lecteur(tkinter.Frame):
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white', command = lambda:[self.nextSong()])
 		
-		
-		#Création et placement du Label Enregistrement, avec background blanc
-		tkinter.Label(self, text="Enregistrement",bg='white', font = self.titre).grid(row = 5, column = 0, sticky="W") 
-		#Création et placement du label Choix de l'Extension
-		tkinter.Label(self, text="Choix de l'extension :", font = self.texte, height = hauteurBout,bg='white').grid(row = 6, column = 0, sticky="W") 
-		
-		#Création d'une Combobox pour le choix de l'extension
-		self.extension = ttk.Combobox(self,state='readonly', values = [".midi",".wav"])
-		#Selection de l'item par défaut
-		self.extension.current(0)
-		#Placement
-		self.extension.grid(row=7, column=0, sticky = "W")
-		
-		#Bouton Enregistrement
-		#Création du bouton, relié à une fonction de sélection du chemin d'enregistrement (FNC_selection)
+		#Bouton Supprimer les fichiers
+		#Création du bouton
 		self.download_button = tkinter.Button(self, text="Supprimer les fichiers", font = self.texte,  command = lambda:[self.supprimerFichiers()])
 		#Placement
 		self.download_button.grid(row = 7, column =2, sticky="W")
@@ -169,12 +159,13 @@ class Lecteur(tkinter.Frame):
 			self.listeMusiques.extend(fichiers)
 			
 		self.listeMusiques = [i for i in self.listeMusiques if ".mid" in i] #Filtre les fichiers pour n'avoir que du .mid
-		try:
-			pygame.mixer.music.load(self.URL+str(self.listeMusiques[0]))	#Charge le premier titre
-		except pygame.error:
-			print("Echec de chargement du fichier midi\n")
-		self.comboTitres["values"]=self.listeMusiques
-		self.comboTitres.current(0)
+		if len(self.listeMusiques) > 0:
+                        try:
+                        	pygame.mixer.music.load(self.URL+str(self.listeMusiques[0]))	#Charge le premier titre
+                        except pygame.error:
+                        	print("Echec de chargement du fichier midi\n")
+                        self.comboTitres["values"]=self.listeMusiques
+                        self.comboTitres.current(0)
 	
 	
 	def playUnPause(self):
