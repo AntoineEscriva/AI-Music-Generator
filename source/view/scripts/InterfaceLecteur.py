@@ -16,7 +16,7 @@ largeurBout = 15
 hauteurBout = 2
 margeX = 0
 margeY = 0
-tailleLecteur = "525x250"
+tailleLecteur = "525x350"
 
 #######################################################
 # Classe du lecteur de musique
@@ -27,9 +27,11 @@ class Lecteur(tkinter.Frame):
 		#Initialisation du Cadre du lecteur MP3
 		tkinter.Frame.__init__(self, master)
 		#Réglage de la taille de la fenêtre
-		self.master.geometry("525x350")
+		self.master.geometry(tailleLecteur)
 
         #URL du répertoire Resultat
+        #URL du répertoire Resultat
+
 		self.URL = iep.getURL()+os.sep+"Resultat"+os.sep
 		
 		#Réglages de la police du titre puis du texte
@@ -100,11 +102,9 @@ class Lecteur(tkinter.Frame):
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white', command = lambda:[self.nextSong()])
 		
-		
 		#Un espace 
 		tkinter.Label(self,text=" ",bg="white").grid(row=6)
 		tkinter.Label(self,text=" ",bg="white").grid(row=2)
-		
 		
 		#Bouton Supprimer les fichiers
 		#Création du bouton
