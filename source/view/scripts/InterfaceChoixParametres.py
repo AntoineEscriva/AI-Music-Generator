@@ -15,6 +15,7 @@ largeurBout = 15
 hauteurBout = 2
 margeX = 0
 margeY = 0
+tailleMenu = "525x775"
 
 #######################################################
 #Classe mère de l'interface
@@ -28,7 +29,7 @@ class Musique(tkinter.Tk):
         #Affectation du titre de la fenêtre
         self.title("Génération musique aléatoire")
         #Réglage de la taille de la fenêtre
-        self.geometry("525x750")
+        self.geometry(tailleMenu)
         #Réglage du fond en blanc
         self.configure(bg='white')
         #Appel de la methode switch_frame qui se situe ci-dessous
@@ -57,7 +58,7 @@ class Menu(tkinter.Frame):
         
 
         #Réglage de la taille de la fenêtre
-        self.master.geometry("525x750")
+        self.master.geometry(tailleMenu)
         
         #Réglage police du titre et du texte
         self.titre = tkFont.Font(family='Helvetica', size=20)
@@ -140,6 +141,12 @@ class Menu(tkinter.Frame):
         self.textBoutonValider.set("Valider")
         self.Valider = tkinter.Button(self, textvariable=self.textBoutonValider, bg="white", font = self.texte, bd=1, command=lambda :[self.charging(master)])
         self.Valider.grid(row=16,column = 1,sticky="EW")
+
+        #Création et placement du Bouton Lecteur
+        self.textBoutonLecteur = tkinter.StringVar()
+        self.textBoutonLecteur.set("Accès direct au lecteur")
+        self.Lecteur = tkinter.Button(self, textvariable=self.textBoutonLecteur, bg = "white", font = self.texte, bd = 1, command=lambda :[self.acces_lecteur(master)])
+        self.Lecteur.grid(row=17,column = 1, sticky="EW")
         
         
         #Création de la combobox de Choix de generation    
@@ -291,6 +298,9 @@ class Menu(tkinter.Frame):
             self.textBoutonValider.set("Valider")
             master.switch_frame(InterfaceLecteur.Lecteur)
         return
+
+    def acces_lecteur(self, master):
+        master.switch_frame(InterfaceLecteur.Lecteur)
         
 
     def export(self):
