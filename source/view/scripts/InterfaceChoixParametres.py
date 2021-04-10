@@ -33,7 +33,11 @@ class Musique(tkinter.Tk):
         self.configure(bg='white')
         #Appel de la methode switch_frame qui se situe ci-dessous
         self.switch_frame(Menu)
-        
+
+
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            self.destroy()    
         
     #Cette méthode permet de supprimer le cadre actuel dans la fenetre principale par frame_class
     def switch_frame(self, frame_class):
@@ -56,6 +60,7 @@ class Menu(tkinter.Frame):
     def __init__(self, master):
         tkinter.Frame.__init__(self, master)
         
+
         #Réglage de la taille de la fenêtre
         self.master.geometry("525x750")
         
@@ -83,9 +88,9 @@ class Menu(tkinter.Frame):
         self.menubarre = tkinter.Menu(self.master)
         
         self.menuPropos = tkinter.Menu(self.menubarre, tearoff=0)
-        self.menuPropos.add_command(label="A propos",command = self.about)
+        self.menuPropos.add_command(label="À propos",command = self.about)
         self.menuPropos.add_command(label="Crédits", command = self.credits)
-        self.menubarre.add_cascade(label="A propos", menu = self.menuPropos)
+        self.menubarre.add_cascade(label="À propos", menu = self.menuPropos)
         
         self.master.config(menu = self.menubarre)
 
@@ -152,7 +157,7 @@ class Menu(tkinter.Frame):
         #---------Label------------#
         #Création et placement du titre2
         self.titre2 = tkinter.Label(self, text="Choix avancés", bg='white', font = self.titre).grid(row=7,column=0,sticky="W")
-        self.warning = tkinter.Label(self, text="non recommandé", bg='white', font = self.texte).grid(row=8,column=0,sticky="W")
+        self.warning = tkinter.Label(self, text="Non recommandé", bg='white', font = self.texte).grid(row=8,column=0,sticky="W")
 
 
         #Création et placement du label Taux apprentissage
@@ -194,7 +199,7 @@ class Menu(tkinter.Frame):
         #Création et placement du label Longueur de sequence
         varLgSeq = tkinter.StringVar(self)
         varLgSeq.set("200")
-        tkinter.Label(self, text="Longueur sequence",height = hauteurBout, font = self.texte, bg='white').grid(row = 13, column =0, sticky="W")
+        tkinter.Label(self, text="Longueur séquence",height = hauteurBout, font = self.texte, bg='white').grid(row = 13, column =0, sticky="W")
         #Création et placement d'une spinbox pour choisir la Longueur de sequence
         self.lgSeq = tkinter.Spinbox(self, from_=1, to=2000, width=10, textvariable=varLgSeq, state=tkinter.DISABLED)
         self.lgSeq.grid(row = 13, column =1, sticky="W")
@@ -203,15 +208,18 @@ class Menu(tkinter.Frame):
         #utilisation batch
         varUseBa = tkinter.StringVar(self)
         varUseBa.set("True")
-        tkinter.Label(self, text="utilise batch",height = hauteurBout,  font = self.texte, bg='white').grid(row = 14, column =0, sticky="W")
+        tkinter.Label(self, text="Utiliser batch",height = hauteurBout,  font = self.texte, bg='white').grid(row = 14, column =0, sticky="W")
         #Bouton utilisation du batch
-        self.boolBatch = tkinter.Spinbox(self, values = ("True", "False"), width=10, textvariable=varUseBa, state=tkinter.DISABLED)
+        #self.boolBatch = tkinter.Spinbox(self, values = ("True", "False"), width=10, textvariable=varUseBa, state=tkinter.DISABLED)
+        self.boolBatch = tkinter.ttk.Combobox(self, values = ["True","False"],state=tkinter.DISABLED)
+        #Réglage de l'item actuel sur 0
+        self.boolBatch.current(0)
         self.boolBatch.grid(row = 14, column =1, sticky="W")
 
         #Création et placement du label Nombre de sequence par batch
         varSeqBa = tkinter.StringVar(self)
         varSeqBa.set("16")
-        tkinter.Label(self, text="Sequence/batch",height = hauteurBout, font = self.texte, bg='white').grid(row = 15, column =0, sticky="W")
+        tkinter.Label(self, text="Séquence/batch",height = hauteurBout, font = self.texte, bg='white').grid(row = 15, column =0, sticky="W")
         #Création et placement d'une spinbox pour choisir le nombre de seq du batch
         self.nbSeqBatch = tkinter.Spinbox(self, from_=1, to=512, width=10, textvariable=varSeqBa, state=tkinter.DISABLED)
         self.nbSeqBatch.grid(row = 15, column =1, sticky="W")
@@ -219,22 +227,25 @@ class Menu(tkinter.Frame):
         
         #button to enable choix avancés
         self.varButton = 0
-        self.buttonA = tkinter.Button(self, text="continuer quand même", bg="white", command=lambda:[self.changeInterface()]).grid(row=8,column=1,sticky="W")
+        self.buttonA = tkinter.Button(self, text="Activer les paramètres avancés", bg="white", command=lambda:[self.changeInterface()])
+        self.buttonA.grid(row=8,column=1,sticky="W")
 
 
     def changeInterface(self):
         if (self.varButton == 0):
           self.varButton = 1
+          self.buttonA.config(text="Désactiver les paramètres avancés")
           #enable everyone
           self.txApprentissage["state"]=tkinter.NORMAL
           self.nbEpoch["state"]=tkinter.NORMAL
           self.nbDimCachee["state"]=tkinter.NORMAL
           self.nbLayer["state"]=tkinter.NORMAL
           self.lgSeq["state"]=tkinter.NORMAL
-          self.boolBatch["state"]=tkinter.NORMAL
+          self.boolBatch["state"]="readonly"
           self.nbSeqBatch["state"]=tkinter.NORMAL
         elif (self.varButton == 1):
           self.varButton = 0
+          self.buttonA.config(text="Activer les paramètres avancés")
           #disable everyone
           self.txApprentissage["state"]=tkinter.DISABLED
           self.nbEpoch["state"]=tkinter.DISABLED
@@ -332,7 +343,7 @@ class Menu(tkinter.Frame):
         pageAbout.geometry("450x100")
         pageAbout.resizable(False, False)
         pageAbout.config(bg='white')
-        pageAbout.title("A propos")
+        pageAbout.title("À propos")
         centrefenetre(pageAbout)
         text = "Application développée dans le cadre de la matière Conduite et gestion de projet en 2ème année du cycle Ingénieur à Sup Galilée.\nVersion 1.0, 2021"
         tkinter.Message(pageAbout, text=text, bg="white", relief = tkinter.RAISED, width=450).pack(fill = tkinter.X)
@@ -369,6 +380,7 @@ def start():
     #Pour la netteté de la police de caractères sur Windows
     if(os.name != "posix"):
         windll.shcore.SetProcessDpiAwareness(1)
+    
 
     #Boucle principale de l'interface
     app.mainloop()
