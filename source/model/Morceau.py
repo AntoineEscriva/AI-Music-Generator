@@ -353,7 +353,7 @@ class Morceau:
 		    if(len(triplet) == 3):
 		        tps, duree_n, note_nb = triplet
 		        tps = int(tps)
-		        duree_n = int(duree_n)
+		        duree_n = int(list(self.time_to_note_dict.keys())[list(self.time_to_note_dict.values()).index(duree_n)])
 		        note_nb = int(note_nb)
 		        temps += tps #on incrémente le temps global
 		        liste_note.append([temps, "2, {0}, Note_on_c, 0, {1}, {2}\n".format(temps,note_nb,80)]) # la velocité est mise à 80 par défaut (choix sans raison)
