@@ -229,7 +229,7 @@ class Menu(tkinter.Frame):
         
         #button to enable choix avancés
         self.varButton = 0
-        self.buttonA = tkinter.Button(self, text="Activer les paramètres avancés", bg="white", command=lambda:[self.changeInterface()])
+        self.buttonA = tkinter.Button(self, text="Activer les paramètres avancés", width = 30, bg="white", command=lambda:[self.changeInterface()])
         self.buttonA.grid(row=8,column=1,sticky="W")
 
 
