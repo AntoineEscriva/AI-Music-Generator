@@ -30,12 +30,14 @@ def get_rnn_parameters(parametres):
 def main():
 	parametres = iep.importFromCSV()
 	rnn_parametres = get_rnn_parameters(parametres)
-
+	
+	#Bloc 1
 	os.makedirs(parametres["URL_Dossier"]+os.sep+"CSV",exist_ok=True)
 	os.makedirs(parametres["URL_Dossier"]+os.sep+"Conversion_rythme",exist_ok=True)
 	os.makedirs(parametres["URL_Dossier"]+os.sep+"Conversion_melodie",exist_ok=True)
 	os.makedirs(parametres["URL_Dossier"]+os.sep+"Resultat",exist_ok=True)
 	
+	#Bloc 2
 	#on récupère tous les noms des fichiers .mid du dossier
 	listeFichiers = [i for i in os.listdir(parametres["URL_Dossier"]) if ".mid" in i]	
 	
@@ -43,12 +45,11 @@ def main():
 		#on récupère tous les noms des fichiers du dossier /Conversion_rythme pour ne pas avoir à reconvertir des fichiers
 		listeFichiersConvertis = [i for i in os.listdir(parametres["URL_Dossier"]+os.sep+"Conversion_rythme")]
 	
-
 	if (parametres["TypeGeneration"] == "Rythme et mélodie"):
 		#on récupère tous les noms des fichiers du dossier /Conversion_melodie pour ne pas avoir à reconvertir des fichiers
 		listeFichiersConvertis = [i for i in os.listdir(parametres["URL_Dossier"]+os.sep+"Conversion_melodie")]
 
-
+	#Bloc 3
 	listeFichiersAConvertir = []
 	for nom_mid in listeFichiers:
 		nom = nom_mid.replace(".mid",".format") #en admettant que notre extension sera ".format"
@@ -58,13 +59,13 @@ def main():
 		listeFichiersAConvertir.append(listeFichiers[0]) 
 		#totalement artificiel, pour avoir au moins 1 objet morceau pour plus tard
 
-
+	#Bloc 4
 	#on tranforme les fichiers midi non convertis en objets Morceau
 	listeMorceaux = [] # liste d'objets de type Morceau
 	for files in listeFichiersAConvertir:
 		listeMorceaux.append(Morceau.Morceau(parametres["URL_Dossier"]+os.sep+files))
 	
-
+	#Bloc 5
 	#on prépare les morceaux pour le RNN
 	liste_textes = []
 	for m in listeMorceaux:
@@ -80,7 +81,7 @@ def main():
 				ecrire_fichier(nom, [content]) #on récupère la piste 2 du morceau
 				liste_textes.append(content)
 
-
+	#Bloc 6
 	for m in listeFichiersConvertis:
 		if (parametres["TypeGeneration"] == "Rythme seulement"):
 			content = lire_fichier(parametres["URL_Dossier"]+os.sep+"Conversion_rythme"+os.sep+m)
@@ -90,10 +91,11 @@ def main():
 			content = lire_fichier(parametres["URL_Dossier"]+os.sep+"Conversion_melodie"+os.sep+m)
 			liste_textes.append(content) #recuperation des donnees
 
-
+	#Bloc 7
 	rnn_object = RNN.RNN(parametres["TypeGeneration"], liste_textes, rnn_parametres) # on crée un objet de type RNN avec les bons paramètres
 	out = rnn_object.generate() # on génère les morceaux en fonction des paramètres	
 
+	#Bloc 8
 	date = datetime.datetime.now()
 	temp = "".join([str(date.year),"-",str(date.month),"-",str(date.day)," ",str(date.hour),"-",str(date.minute),"-",str(date.second)])
     
