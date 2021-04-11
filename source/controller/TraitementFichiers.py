@@ -90,21 +90,19 @@ def main():
 			content = lire_fichier(parametres["URL_Dossier"]+os.sep+"Conversion_melodie"+os.sep+m)
 			liste_textes.append(content) #recuperation des donnees
 
-	
-	# en fonction des paramètres de génération, on appelle différents RNN
-	if (parametres["TypeGeneration"] == "Rythme seulement"):
-		out = RNN.rnn_rythme(liste_textes, rnn_parametres) #on envoie au RNN et on récupère la sortie
-	elif (parametres["TypeGeneration"] == "Rythme et mélodie"):
-		out = RNN.rnn_rythme_melodie(liste_textes, rnn_parametres)
+
+	rnn_object = RNN.RNN(parametres["TypeGeneration"], liste_textes, rnn_parametres) # on crée un objet de type RNN avec les bons paramètres
+	out = rnn_object.generate() # on génère les morceaux en fonction des paramètres	
 
 	date = datetime.datetime.now()
 	temp = "".join([str(date.year),"-",str(date.month),"-",str(date.day)," ",str(date.hour),"-",str(date.minute),"-",str(date.second)])
     
 	for index in range(len(out)):
+		save_name = str(temp)+" "+str(index)
 		if (parametres["TypeGeneration"] == "Rythme seulement"):
-			listeMorceaux[0].format_to_csv_rythme(out[index], str(temp)+" "+str(index)) # enregistre le morceau sous format MIDI
+			listeMorceaux[0].format_to_csv_rythme(out[index], save_name) # enregistre le morceau sous format MIDI
 		elif (parametres["TypeGeneration"] == "Rythme et mélodie"):
-			listeMorceaux[0].format_to_csv(out[index], str(temp)+" "+str(index)) # enregistre le morceau sous format MIDI
+			listeMorceaux[0].format_to_csv(out[index], save_name) # enregistre le morceau sous format MIDI
 
 
 if __name__ == "__main__":
