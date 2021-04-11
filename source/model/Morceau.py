@@ -273,7 +273,6 @@ class Morceau:
 		csv_notes_list += [end2, end_of_file]
 
 		csv_path = output_path.replace(self.filename, self.filename + "-généré")
-		print("PATH HERE = ", csv_path)
 		
 		with open(csv_path, 'w+') as file_out :
 		    for row in csv_notes_list:
@@ -378,7 +377,6 @@ class Morceau:
 		csv_notes_list += [end2, end_of_file]
 
 		csv_path = output_path.replace(self.filename, self.filename + "-généré")
-		print("PATH HERE = ", csv_path)
 
 		with open(csv_path, 'w+') as file_out :
 		    for row in csv_notes_list:
