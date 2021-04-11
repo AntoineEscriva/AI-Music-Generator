@@ -1,6 +1,7 @@
 #coding: utf-8
 
 import tkinter
+import tkinter.filedialog
 import tkinter.font as tkFont
 from tkinter import ttk
 from source.view.scripts import InterfaceLecteur
