@@ -312,7 +312,7 @@ class Morceau:
 
 			time2 = int(line2[1]) # récupération deuxième temps
 			duree = self.arrondi_note(time2-time1)
-			type_note = int(duree)
+			type_note = self.time_to_note_dict[duree]
 
 
 			if save == None:
