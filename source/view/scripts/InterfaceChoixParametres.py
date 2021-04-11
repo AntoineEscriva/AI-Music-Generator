@@ -109,7 +109,7 @@ class Menu(tkinter.Frame):
         #Création et placement d'une spinbox pour choisir le nombre de morceaux
         self.nbMorceaux = tkinter.Spinbox(self, from_=1, to=20, width=10)
         self.nbMorceaux.grid(row = 2, column =1, sticky="W")
-        tkinter.Label(self, text="IN 1-20", bg="white").grid(row=2, column=1, sticky="e")
+        tkinter.Label(self, text="(1-20)", bg="white").grid(row=2, column=1, sticky="e")
         
         #Création et placement du label Durée de morceaux
         tkinter.Label(self, text="Durée de morceaux",height = hauteurBout,  font = self.texte, bg='white').grid(row = 3, column =0, sticky="W")
@@ -125,7 +125,7 @@ class Menu(tkinter.Frame):
         #Bouton bpm des morceau
         self.bpmMorceau = tkinter.Spinbox(self, from_=30,to=240, width=10)
         self.bpmMorceau.grid(row = 5, column =1, sticky="W")
-        tkinter.Label(self, text="IN 30-240", bg="white").grid(row=5, column=1, sticky="e")
+        tkinter.Label(self, text="(30-240)", bg="white").grid(row=5, column=1, sticky="e")
         
         #Choix de génération
         tkinter.Label(self, text="Type de génération", width = 15, height = hauteurBout, font = self.texte, bg='white').grid(row = 6, column =0, sticky="W")
@@ -134,19 +134,19 @@ class Menu(tkinter.Frame):
         self.dureeMorceau = tkinter.Spinbox(self, from_=60,to=340, width=10)
         #Placement de la spinbox
         self.dureeMorceau.grid(row = 3, column =1, sticky="W")
-        tkinter.Label(self, text="IN 60-340", bg="white").grid(row=3, column=1, sticky="e")
+        tkinter.Label(self, text="(60-340)", bg="white").grid(row=3, column=1, sticky="e")
         
         #Création et placement du Bouton valider
         self.textBoutonValider = tkinter.StringVar()
         self.textBoutonValider.set("Valider")
-        self.Valider = tkinter.Button(self, textvariable=self.textBoutonValider, bg="white", font = self.texte, bd=1, command=lambda :[self.charging(master)])
-        self.Valider.grid(row=16,column = 1,sticky="EW")
+        self.Valider = tkinter.Button(self, textvariable=self.textBoutonValider, width = 20, bg="white", font = self.texte, bd=1, command=lambda :[self.charging(master)])
+        self.Valider.grid(row=16,column = 1,sticky="E")
 
         #Création et placement du Bouton Lecteur
         self.textBoutonLecteur = tkinter.StringVar()
         self.textBoutonLecteur.set("Accès direct au lecteur")
         self.Lecteur = tkinter.Button(self, textvariable=self.textBoutonLecteur, bg = "white", font = self.texte, bd = 1, command=lambda :[self.acces_lecteur(master)])
-        self.Lecteur.grid(row=17,column = 1, sticky="EW")
+        self.Lecteur.grid(row=16,column =0, sticky="EW")
         
         
         #Création de la combobox de Choix de generation    
@@ -169,7 +169,7 @@ class Menu(tkinter.Frame):
         #Création et placement d'une spinbox pour choisir le taux d'apprentissage
         self.txApprentissage = tkinter.Spinbox(self, from_=0, to=1, width=10, format='%4.3f', increment=0.001, textvariable=varTxApp, state=tkinter.DISABLED)
         self.txApprentissage.grid(row = 9, column =1, sticky="W")
-        tkinter.Label(self, text="IN 0-1", bg="white").grid(row=9, column=1, sticky="e")
+        tkinter.Label(self, text="(0-1)", bg="white").grid(row=9, column=1, sticky="e")
 
         #Création et placement du label Nombre d'epoch
         varEpoch = tkinter.StringVar(self)
@@ -178,7 +178,7 @@ class Menu(tkinter.Frame):
         #Création et placement d'une spinbox pour choisir le nombre d'epoch
         self.nbEpoch = tkinter.Spinbox(self, from_=1, to=7000, width=10, textvariable=varEpoch, state=tkinter.DISABLED)
         self.nbEpoch.grid(row = 10, column =1, sticky="W")
-        tkinter.Label(self, text="IN 1-7000", bg="white").grid(row=10, column=1, sticky="e")
+        tkinter.Label(self, text="(1-7000)", bg="white").grid(row=10, column=1, sticky="e")
 
         #Création et placement du label Nombre de dimension cachée
         varDimCach = tkinter.StringVar(self)
@@ -187,7 +187,7 @@ class Menu(tkinter.Frame):
         #Création et placement d'une spinbox pour choisir le nombre de dimension cachée
         self.nbDimCachee = tkinter.Spinbox(self, from_=16, to=2048, width=10, textvariable=varDimCach, state=tkinter.DISABLED)
         self.nbDimCachee.grid(row = 11, column =1, sticky="W")
-        tkinter.Label(self, text="IN 2^4-2^11", bg="white").grid(row=11, column=1, sticky="e")
+        tkinter.Label(self, text="(2"+chr(0x2074)+"-2"+chr(0x00B9)+chr(0x00B9)+")", bg="white").grid(row=11, column=1, sticky="e")
 
         #Création et placement du label Nombre de layer
         varNbLayer = tkinter.StringVar(self)
@@ -196,7 +196,7 @@ class Menu(tkinter.Frame):
         #Création et placement d'une spinbox pour choisir le nombre de layer
         self.nbLayer = tkinter.Spinbox(self, from_=1, to=5, width=10, textvariable=varNbLayer, state=tkinter.DISABLED)
         self.nbLayer.grid(row = 12, column =1, sticky="W")
-        tkinter.Label(self, text="IN 1-5", bg="white").grid(row=12, column=1, sticky="e")
+        tkinter.Label(self, text="(1-5)", bg="white").grid(row=12, column=1, sticky="e")
 
         #Création et placement du label Longueur de sequence
         varLgSeq = tkinter.StringVar(self)
@@ -205,7 +205,7 @@ class Menu(tkinter.Frame):
         #Création et placement d'une spinbox pour choisir la Longueur de sequence
         self.lgSeq = tkinter.Spinbox(self, from_=1, to=2000, width=10, textvariable=varLgSeq, state=tkinter.DISABLED)
         self.lgSeq.grid(row = 13, column =1, sticky="W")
-        tkinter.Label(self, text="IN 1-2000", bg="white").grid(row=13, column=1, sticky="e")
+        tkinter.Label(self, text="(1-2000)", bg="white").grid(row=13, column=1, sticky="e")
 
         #utilisation batch
         varUseBa = tkinter.StringVar(self)
@@ -225,7 +225,7 @@ class Menu(tkinter.Frame):
         #Création et placement d'une spinbox pour choisir le nombre de seq du batch
         self.nbSeqBatch = tkinter.Spinbox(self, from_=1, to=512, width=10, textvariable=varSeqBa, state=tkinter.DISABLED)
         self.nbSeqBatch.grid(row = 15, column =1, sticky="W")
-        tkinter.Label(self, text="IN 2^0-2^9", bg="white").grid(row=15, column=1, sticky="e")
+        tkinter.Label(self, text="(2"+chr(0x2070)+"-2"+chr(0x2079)+")", bg="white").grid(row=15, column=1, sticky="e")
         
         #button to enable choix avancés
         self.varButton = 0

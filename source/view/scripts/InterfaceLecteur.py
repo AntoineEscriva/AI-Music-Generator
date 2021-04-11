@@ -16,7 +16,7 @@ largeurBout = 15
 hauteurBout = 2
 margeX = 0
 margeY = 0
-tailleLecteur = "525x250"
+tailleLecteur = "525x350"
 
 #######################################################
 # Classe du lecteur de musique
@@ -101,6 +101,10 @@ class Lecteur(tkinter.Frame):
 		#Quelques réglages d'apparence : couleur du background, épaisseur des bordures, et affectation de l'image au bouton
 		self.skip_right_button.config(image = self.skip_right, bd=0,bg='white', command = lambda:[self.nextSong()])
 		
+		#Un espace 
+		tkinter.Label(self,text=" ",bg="white").grid(row=6)
+		tkinter.Label(self,text=" ",bg="white").grid(row=2)
+		
 		#Bouton Supprimer les fichiers
 		#Création du bouton
 		self.download_button = tkinter.Button(self, text="Supprimer les fichiers", font = self.texte,  command = lambda:[self.supprimerFichiers()])
@@ -113,14 +117,14 @@ class Lecteur(tkinter.Frame):
 		#Creation du bouton retour, relié la classe menu 
 		self.retour = tkinter.Button(self, text="Retour", font = self.texte, command=lambda : [pygame.mixer.music.pause(),master.switch_frame(InterfaceChoixParametres.Menu)])
 		#Placement
-		self.retour.grid(row=9,column=0, sticky="WS")
+		self.retour.grid(row=7,column=0, sticky="WS")
 		#Réglage de la bordure du bouton et du background
 		self.retour.config(bd=1, bg="white")
 		
 		#Combobox listant tous les titres
-		self.comboTitres = ttk.Combobox(self,state="readonly")
+		self.comboTitres = ttk.Combobox(self,state="readonly", width=30)
 		#Placement
-		self.comboTitres.grid(row=1, column=0, columnspan=2)
+		self.comboTitres.grid(row=1, column=0, columnspan=3)
 		self.comboTitres.bind("<<ComboboxSelected>>", lambda e:[master.focus(),self.selectionMusique("<<ComboboxSelected>>")])
 		
 		#Initialisation des musiques lecteur 
@@ -128,18 +132,9 @@ class Lecteur(tkinter.Frame):
 		
 		
 	def supprimerFichiers(self):
-		print("Code effectif à écrire")
+		for filename in os.listdir(self.URL) :
+			os.remove(self.URL + filename)
 	
-	'''#Fonction d'enregistrement de fichier
-	def FNC_Selection(self, formatChoisi) :
-		if(formatChoisi==".midi"):
-			extension = [("fichier MIDI",".midi")]
-			defaut = '".midi"'
-		else:
-			extension = [("fichier WAV",".wav")]
-			defaut = '".wav"'
-		file = tkinter.filedialog.asksaveasfile(filetypes = extension, title="Choisissez le nom de fichier", defaultextension = defaut)
-	'''
 	#Fonction de l'explorateur de fichier
 	def BrowserFile(self):
 		filename = tkinter.filedialog.askdirectory(initialdir = os.sep)
